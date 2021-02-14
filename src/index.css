@@ -391,3 +391,7 @@ div.bottom ul {
     padding-left: 0;
   }
 }
+
+.MuiButton-containedPrimary{
+  margin-right: 6px;
+}

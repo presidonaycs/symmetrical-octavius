@@ -118,10 +118,14 @@ header .nav-menu li {
 /* SEARCH INPUT STYLING */
 .search-input {
   border: 1px solid #1C801C;
-  padding: 5px 10px;
+  padding: 2px 2px;
   background-color: #D5FFD5;
   border-radius: 3px;
-  width: 350px;
+  width: 100px;
+  height: 35px;
+  margin-top: auto;
+  margin-bottom: auto;
+  
 }
 .search-input input {
   border: none;
