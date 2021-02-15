@@ -3,18 +3,18 @@ import React, { useEffect, useState } from 'react';
 import { MdNotifications } from 'react-icons/md';
 import { TiArrowSortedDown } from 'react-icons/ti';
 
-//import UserAvater from '../../assets/images/user-avater.png';
-//import HeaderSearch from '../inputs/HeaderSearch';
+import UserAvater from '../../assets/images/user-avater.png';
+import HeaderSearch from '../inputs/HeaderSearch';
 
-//import { formatFileUrl } from '../../utility/general';
+import { formatFileUrl } from '../../utility/general';
 
-const Header1 = ({ history, details = {}, navList = [] }) => {
+const Header = ({ history, details = {}, navList = [] }) => {
   const [userPix, setUserPix] = useState('');
   const [imgHasError, setImgHasError] = useState(false);
 
-  /**useEffect(() => {
+  useEffect(() => {
     !imgHasError && setUserPix(formatFileUrl(details.userProfilePicture));
-  }, [imgHasError, details]); **/
+  }, [imgHasError, details]);
 
   const handleImgError = () => {
     setUserPix('');
@@ -25,7 +25,7 @@ const Header1 = ({ history, details = {}, navList = [] }) => {
     <header>
       <div className="content header-content space-between flex-v-center">
         <div className="header-left">
-          
+          <HeaderSearch placeholder="Search transactions or invoices" />
         </div>
         <div className="header-right flex flex-v-center">
           <div className="right-item notification flex p-r">
@@ -48,7 +48,7 @@ const Header1 = ({ history, details = {}, navList = [] }) => {
                 <p className="role">{details.userRole || 'Officer 1'}</p>
               </div>
               <div className="flex">
-                <img onError={handleImgError} src={userPix} alt="user avater" />
+                <img onError={handleImgError} src={userPix || UserAvater} alt="user avater" />
               </div>
               <div className="flex arrow">
                 <TiArrowSortedDown />
@@ -61,4 +61,4 @@ const Header1 = ({ history, details = {}, navList = [] }) => {
   );
 };
 
-export default Header1;
+export default Header;

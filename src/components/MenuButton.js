@@ -79,6 +79,7 @@ const StyledMenuItem = withStyles((theme) => ({
 }))(MenuItem);
 
 export default function MenuButton() {
+    
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -98,7 +99,7 @@ export default function MenuButton() {
         color="primary"
         onClick={handleClick}
       >
-        Filter Items By      
+        Filter Items By 
       </BootButton>
       <StyledMenu
         id="customized-menu"

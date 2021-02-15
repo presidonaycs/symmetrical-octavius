@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { IoIosArrowBack } from 'react-icons/io';
 
-
+import EdsgLogo from '../../assets/images/edsg-logo-250.png';
 
 const Sidebar = ({ history, menuList }) => {
   const { location: { pathname } } = history;
@@ -10,10 +10,12 @@ const Sidebar = ({ history, menuList }) => {
   return (
     <nav className="page-sidebar">
 
-      
+      <div className="sidebar-header">
+        <img src={EdsgLogo} alt="logo" className="brand" width="150" />
+      </div>
 
       <div className="sidebar-menu">
-      
+
         <ul className="menu-items">
           {menuList && menuList.map((item) => (
             <MenuItem props={item} pathname={pathname} key={item.title} />
