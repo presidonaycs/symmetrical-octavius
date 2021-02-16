@@ -107,13 +107,7 @@ const chkStatus = (status) => {
   return {color:'green',margin: '2px',  fontSize: '10px'}
 }
 
-const rows = [
-  createData('asterix', 159, 6.0, 24, 4.0, 3, 5),
-  createData('Ice cream sandwich', 237, 9.0, 37, <div><LensIcon style={chkStatus(1)} /><span> </span><span>Johnn</span></div>, 56, 60),
-  createData('Eclair', 262, 16.0, 24, 6.0, 55, 23),
-  createData('Cupcake', 305, 3.7, 67, 4.3, 22, 45),
-  createData('Gingerbread', 356, 16.0, 49, 3.9, 45, 66),
-];
+
 
 export default function Tables() {
   const classes = useStyles();

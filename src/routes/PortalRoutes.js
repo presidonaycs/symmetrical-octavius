@@ -13,6 +13,9 @@ import SupervisorOrganogram from '../components/pages/SupervisorOrganogram';
 import RequestMaintenance from '../pages/RequestMaintenance';
 import ReviewRequest from '../pages/MaintenanceRequestManagement';
 import Dashboard1 from '../components/Dashboard1';
+import Request from '../components/RequestForm';
+import Mainmemo from '../components/MainMemo';
+import RequestForm from '../components/RequestForm';
 
 
 
@@ -26,7 +29,8 @@ export default pure(() => (
     <ProtectedRoute
       path="/facility-portal/request-maintainance"
       exact
-      component={RequestMaintenance}
+    //  component={RequestMaintenance}
+    component={RequestForm}
     />
     <ProtectedRoute
       path="/facility-portal/review-request"
