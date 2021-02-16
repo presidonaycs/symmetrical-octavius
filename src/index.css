@@ -395,3 +395,7 @@ div.bottom ul {
 .MuiButton-containedPrimary{
   margin-right: 6px;
 }
+
+.col-sm-3{
+  width: 2px;
+}

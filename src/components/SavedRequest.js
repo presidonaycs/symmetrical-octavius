@@ -8,10 +8,10 @@ const BooButton = withStyles({
         boxShadow: 'none',
         textTransform: 'none',
         fontSize: 12,
-        padding: '2px 12px',
+        padding: '2px 8px',
         borderRadius: '20px 20px 20px 20px',
         width:'140px',
-        lineHeight: 2.5,
+        lineHeight: 2.1,
         backgroundColor: 'lightgreen',
         fontFamily: [
             '-apple-system',
@@ -40,19 +40,19 @@ const BooButton = withStyles({
 
 export default function SavedRequest(props) {
     return (
-        <div style={{display:'flex', justifyContent:'space-between', backgroundColor:'white', alignItems:'center'}}>
-            <div style={{ width:'600px',display:'flex', wordBreak:'break-word', fontSize:'15px'} }>
+        <div style={{display:'flex', justifyContent:'space-between', backgroundColor:'white', alignItems:'center', padding:'2px'}}>
+            <div style={{ width:'600px',display:'flex', wordBreak:'break-word', fontSize:'15px', marginLeft:'16px'} }>
                 {props.title}
             </div>
             <div style={{display:'flex'}}>
-                <div style={{margin:'8px', marginTop:'18px'}}>
+                <div style={{marginRight:'3px', marginTop:'10px'}}>
                     <BooButton>Submit Request</BooButton>
                 </div>
-                <div style={{margin:'8px'}}>
-                   <IconButton><EditIcon style={{backgroundColor:'lightgreen',borderRadius:'2px', fontSize:'32px'}}/></IconButton> 
+                <div style={{marginLeft:'3px'}}>
+                   <IconButton><EditIcon style={{backgroundColor:'lightgreen',borderRadius:'2px', fontSize:'25px'}}/></IconButton> 
                 </div>
-                <div style={{margin:'8px'}}>
-                    <IconButton ><DeleteIcon style={{backgroundColor:'red',borderRadius:'2px', fontSize:'32px'}}/></IconButton>
+                <div style={{marginLeft:'0px'}}>
+                    <IconButton ><DeleteIcon style={{backgroundColor:'red',borderRadius:'2px', fontSize:'25px'}}/></IconButton>
                 </div>
             </div>
         </div>

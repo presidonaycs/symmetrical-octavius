@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-var token ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOiIxIiwiRmlyc3ROYW1lIjoiRWRvIEdvdiIsIkxhc3ROYW1lIjoiQWRtaW4iLCJleHAiOjE2MTM0MjA2NjcsImlzcyI6InNlcnZlciIsImF1ZCI6ImNsaWVudCJ9.R_tIxY6EkzOMfFlT8WdhOLwWNFDO_PLIeoFwLq2qMtU';
+var token ='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOiIxIiwiRmlyc3ROYW1lIjoiRWRvIEdvdiIsIkxhc3ROYW1lIjoiQWRtaW4iLCJleHAiOjE2MTM0NDY3OTksImlzcyI6InNlcnZlciIsImF1ZCI6ImNsaWVudCJ9.zlWEhuNOL3ml3oe0tUKOtP0SdfgU9DknmABLOyMvXbg'
 export default axios.create({
-     baseURL:  "http://devsvr.edogoverp.com/facility/api/facilityrequest/",
+      baseURL: 'http://devsvr.edogoverp.com/facility/api/facilityrequest/',
       headers: {
           "content-type" : "application/json",
           'Authorization': `Bearer ${token}`,

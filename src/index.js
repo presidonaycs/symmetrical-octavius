@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import MUIRichTextEditor from 'mui-rte';
 
 import './assets/css/pages-icons.css';
 import './assets/css/pages-sidebar.css';

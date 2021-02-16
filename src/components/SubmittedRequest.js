@@ -35,18 +35,17 @@ export default function SubmittedRequest(props) {
 
 
     return (
-        <div style={{display:'flex', justifyContent:'space-between', backgroundColor:'white', alignItems:'center', margin:"18px 0 18px 0", minHeight:'74px'}}>
-            <div style={{ width:'600px',display:'flex', wordBreak:'break-word', fontSize:'15px'} }>
+        <div style={{display:'flex', justifyContent:'space-between', backgroundColor:'white', alignItems:'center', margin:"13px 0 13px 0", minHeight:'54px'}}>
+            <div style={{ width:'600px',display:'flex', wordBreak:'break-word', fontSize:'15px', marginLeft:'16px'} }>
                 {props.title}
             </div>
-            <div style={{display:'flex', justifyContent:'space-between'}}>
-                <div style={{marginRight:"45px"}}>
+            <div style={{display:'flex', justifyContent:'flex-end'}}>
+                <div style={{marginRight:"24px"}}>
                     <span><LensIcon style={{color:col, fontSize:'14px'}}/></span> {message} <span style={{fontWeight:'bolder'}}>{props.officerName}</span> ({props.officerPost})
                 </div>
-                |
-                <div style={{marginLeft:"15"}}>
-                   <span style={{marginRight:"15"}}></span>
-                    <span style={{fontWeight:'bolder'}}>Last treated:  {props.date}</span>
+                <Divider orientation='vertical' flexItem style={{marginLeft:"15"}}/>
+                <div >
+                    <span style={{fontWeight:'bolder', marginLeft:'13px'}}>Last treated:  {props.date}</span>
                 </div>
             </div>
         </div>

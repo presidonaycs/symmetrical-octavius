@@ -12,6 +12,7 @@ import EmployeeDetails from '../components/pages/EmployeeDetails';
 import SupervisorOrganogram from '../components/pages/SupervisorOrganogram';
 import RequestMaintenance from '../pages/RequestMaintenance';
 import ReviewRequest from '../pages/MaintenanceRequestManagement';
+import Dashboard1 from '../components/Dashboard1';
 
 
 
@@ -20,7 +21,7 @@ export default pure(() => (
     <ProtectedRoute
       path="/facility-portal/"
       exact
-      component={Dashboard}
+      component={Dashboard1}
     />
     <ProtectedRoute
       path="/facility-portal/request-maintainance"
