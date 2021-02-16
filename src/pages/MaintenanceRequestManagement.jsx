@@ -10,7 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import LensIcon from '@material-ui/icons/Lens'
 import StyledMenu from "../components/MenuButton";
-import FormSearchInput from '../input/FormSearchInput'
+import ActionButton from '../input/SplitButton'
 import SearchInput from '../input/SearchInput'
 import http from '../httpCommon.js'
 import SelectInput from '../input/SelectInput'
@@ -137,6 +137,7 @@ export default function Tables() {
   const [isEntry, setIsEntry] = React.useState([]);
   let [error, setError] = React.useState(null)
   let [rows, setRow] = React.useState([])
+  let [isCount, setIsCount] = React.useState('')
   var InitiatedRequest = 7786790;
   var CompletedRequest = 7786790;
   var status = 3;
@@ -149,19 +150,21 @@ export default function Tables() {
   var numb = 78943
   var grade = 'Grade level 8'
   var descriptions = 'sorry its ovaaaaaaaaaaaaaaaaaa'
+  var shtate;
 
 
-
-
+  console.log(0==false)
   const fetchData = async () => {
-    http.get('Director-PendingApprovals')
+    var url = (shtate === isRequest) ? 'Director-PendingApprovals' : 'Director-ReviewedApprovals';
+    http.get(url)
       .then((response) => {
         console.log('server')
         console.log(response.data)
         setError(response.data.code)
         setRow(response.data.data)
-
-
+        if(isRequest){
+          setIsCount((response.data.count).toString())
+}
 
 
 
@@ -254,7 +257,7 @@ const action={}
                   </div>
                       <div style={{ display: 'flex' }}>
                         <div>
-                          <Badge badgeContent={12} showZero
+                          <Badge badgeContent={isCount} showZero
                             anchorOrigin={{
                               vertical: 'top',
                               horizontal: 'left',
@@ -278,7 +281,7 @@ const action={}
                       <TableHead>
 
                         <TableRow>
-                          <StyldTableCell align="left" colSpan={2} style={{ border: '1px solid red' }}>Items</StyldTableCell>
+                          <StyldTableCell align="left" style={{ border: '1px solid red' }}>Items</StyldTableCell>
                           <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Request initiator</StyldTableCell>
                           <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Request Type</StyldTableCell>
                           <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Initiated Date</StyldTableCell>
@@ -288,17 +291,16 @@ const action={}
                       </TableHead>
                       <TableBody>
                         {rows.map((row) => (
-                          <TableRow key={row.items}>
-                            <TableCell align='left' component="th" scope="row" colSpan={5} >
+                          <TableRow key={row.requestId}>
+                            <TableCell align='left' component="th" scope="row" >
                               {row.items}
                             </TableCell>
-                            <TableCell styles={{width:'70px'}} align="left" style={{ border: '1px solid lightgrey' }}>{row.item}</TableCell>
-                            <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.requestType}</TableCell>
-                            <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.cost} </TableCell>
-                            <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.evaluation}</TableCell>
-                            <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.officerName}</TableCell>
+                            <TableCell styles={{width:'70px'}} align="left" style={{ border: '1px solid lightgrey' }}>{row.items}</TableCell>
+                            <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.requestInitiator}</TableCell>
+                            <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.requestType} </TableCell>
+                            <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.initiatedDate}</TableCell>
                             <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.reviewStatus}</TableCell>
-                            <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{action}</TableCell>
+                            <TableCell align="left" style={{ border: '1px solid lightgrey' }}>hello</TableCell>
 
 
 
@@ -332,7 +334,7 @@ const action={}
                 </div>
                 <div style={{ display: 'flex' }}>
                   <div>
-                    <Badge badgeContent={12} showZero
+                    <Badge badgeContent={isCount} showZero
                       anchorOrigin={{
                         vertical: 'top',
                         horizontal: 'left',
@@ -356,7 +358,7 @@ const action={}
                 <TableHead>
 
                   <TableRow>
-                    <StyldTableCell align="left" colSpan={5} style={{ border: '1px solid #b8b1b7' }}>Items</StyldTableCell>
+                    <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Items</StyldTableCell>
                     <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Request Type</StyldTableCell>
                     <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Cost</StyldTableCell>
                     <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Evaluation</StyldTableCell>
@@ -369,14 +371,12 @@ const action={}
                 <TableBody>
                   {rows.map((row) => (
                     <TableRow key={row.items}>
-                      <TableCell align='left' component="th" scope="row" colSpan={5} >
-                        {row.items}
-                      </TableCell>
+                      <TableCell align='left' component="th" scope="row"  >{row.items}</TableCell>
                       <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.requestInitiator}</TableCell>
                       <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.requestType} </TableCell>
                       <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.initiatedDate}</TableCell>
                       <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.reviewStatus}</TableCell>
-                      <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.Action}</TableCell>
+                      <TableCell align="left" style={{ border: '1px solid lightgrey' }}></TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

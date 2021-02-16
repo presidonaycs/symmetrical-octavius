@@ -59,12 +59,12 @@ export default function MemoSide() {
 
     return (
         <div>
-        <div style={{width:'400px', margin:'0px', padding:'0px'}}>
+        <div style={{width:'auto', margin:'0px', padding:'0px'}}>
             
                 <div className={classes.root}>
-                    <Paper style={{ marginBottom: '8px' }}>
+                    <Paper style={{ marginBottom: '8px',  }}>
                         <div style={{ backgroundColor: 'white' }, { borderRadius: '3px' }, { margin: '10px' }}>
-                            <div >
+                            <div  style={{margin:'10px 0px 10px 0px'}}>
                                 <FormControl className={classes.formControl} >
                                     <InputLabel shrink id="demo-simple-select-placeholder-label-label" style={{ minWidth: '420px' }}>
                                         Select Request type:
@@ -76,7 +76,7 @@ export default function MemoSide() {
                                         onChange={handleChange}
                                         displayEmpty
                                         disableUnderline
-                                        style={{ minWidth: '380px' }}
+                                        style={{ minWidth: '235px' }}
                                         className={classes.selectEmpty}
                                     >
                                         <MenuItem value="">
@@ -85,22 +85,22 @@ export default function MemoSide() {
                                         <MenuItem value={10}>Ten</MenuItem>
                                         <MenuItem value={20}>Twenty</MenuItem>
                                         <MenuItem value={30}>Thirty</MenuItem>
-                                        <MenuItem></MenuItem>
                                         <MenuItem value={2}>Energy Management</MenuItem>
                                     </Select>
                                 </FormControl>
                             </div>
 
-                            <Divider />
-                            <div className={classes.myDivs}><span style={{ fontWeight: 'bolder' }}> Memo initiation date: </span> {initiationDate}</div>
-                            <div className={classes.myDivs}> <span style={{ fontWeight: 'bolder' }}>Memo initiator:</span> {initiator}</div>
-                            <div className={classes.myDivs}> <span style={{ fontWeight: 'bolder' }}>View Memo:</span> {viewMemo}</div>
+                            <Divider style={{margin:'10px 0px 10px 0px'}}/>
+                            <div className={classes.myDivs}><span style={{ fontWeight: 'bolder', margin:'10px 0px 10px 0px' }}> Memo initiation date: </span> {initiationDate}</div>
+                            <div className={classes.myDivs}> <span style={{ fontWeight: 'bolder', margin:'10px 0px 10px 0px'}}>Memo initiator:</span> {initiator}</div>
+                            <div className={classes.myDivs}> <span style={{ fontWeight: 'bolder', margin:'10px 0px 20px 0px'}}>View Memo:</span> {viewMemo}</div>
                         </div>
                     </Paper>
                     <Paper style={{ marginBottom: '8px' }}>
                         <div className={classes.costBox}>
                             <div className={classes.innerDiv}>
                                 <Box style={{ fontWeight: 'bolder',margin:'8px' }}>Cost implication</Box>
+                                <Divider flexItem variant='middle'/>
                                 <Box style={{ fontWeight: 'bolder',margin:'8px' }}>(N)</Box>
                             </div>
 
