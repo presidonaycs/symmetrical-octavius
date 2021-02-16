@@ -11,6 +11,7 @@ import { ReactComponent as Circle } from "./../components/iconComponent/circle-f
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
 
 
+
 const useStyles = makeStyles({
     costBox: {
         display: 'flex',
@@ -57,14 +58,15 @@ export default function MemoSide() {
 
 
     return (
-        <div style={{width:'400px'}}>
+        <div>
+        <div style={{width:'400px', margin:'0px', padding:'0px'}}>
             
                 <div className={classes.root}>
                     <Paper style={{ marginBottom: '8px' }}>
-                        <div style={{ backgroundColor: 'white' }, { border: '1px solid blue' }, { borderRadius: '3px' }, { margin: '10px' }}>
+                        <div style={{ backgroundColor: 'white' }, { borderRadius: '3px' }, { margin: '10px' }}>
                             <div >
                                 <FormControl className={classes.formControl} >
-                                    <InputLabel shrink id="demo-simple-select-placeholder-label-label" style={{ minWidth: '720px' }}>
+                                    <InputLabel shrink id="demo-simple-select-placeholder-label-label" style={{ minWidth: '420px' }}>
                                         Select Request type:
                                 </InputLabel>
                                     <Select
@@ -98,7 +100,7 @@ export default function MemoSide() {
                     <Paper style={{ marginBottom: '8px' }}>
                         <div className={classes.costBox}>
                             <div className={classes.innerDiv}>
-                                <Box style={{ fontWeight: 'bolder',margin:'8px' }}>cost implication</Box>
+                                <Box style={{ fontWeight: 'bolder',margin:'8px' }}>Cost implication</Box>
                                 <Box style={{ fontWeight: 'bolder',margin:'8px' }}>(N)</Box>
                             </div>
 
@@ -116,6 +118,7 @@ export default function MemoSide() {
 
                 </div>
             
+        </div>
         </div>
     )
 }
