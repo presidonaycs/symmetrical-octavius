@@ -9,8 +9,17 @@ import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
+import { green } from '@material-ui/core/colors';
+import { withStyles } from '@material-ui/core';
 
 const options = ['Create a merge commit', 'Squash and merge', 'Rebase and merge'];
+const Bbutton = withStyles({
+    root:{
+        textTransform:'none',
+        width: '200px',
+        height: '35px'
+    }
+})(Button)
 
 export default function SplitButton() {
   const [open, setOpen] = React.useState(false);
@@ -42,9 +51,9 @@ export default function SplitButton() {
     <Grid container direction="column" alignItems="center">
       <Grid item xs={12}>
         <ButtonGroup variant="contained" color="primary" ref={anchorRef} aria-label="split button">
-          <Button onClick={handleClick}>{options[selectedIndex]}</Button>
+          <Bbutton onClick={handleClick}>{options[selectedIndex]}</Bbutton>
           <Button
-            color="primary"
+            backgroundColor='green'
             size="small"
             aria-controls={open ? 'split-button-menu' : undefined}
             aria-expanded={open ? 'true' : undefined}
@@ -55,12 +64,13 @@ export default function SplitButton() {
             <ArrowDropDownIcon />
           </Button>
         </ButtonGroup>
-        <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
+        <Popper   open={open} anchorEl={anchorRef.current} role={undefined} transition >
           {({ TransitionProps, placement }) => (
             <Grow
               {...TransitionProps}
               style={{
                 transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom',
+            
               }}
             >
               <Paper>

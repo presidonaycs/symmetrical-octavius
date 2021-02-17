@@ -77,9 +77,8 @@ export default function Dashboard1() {
             </Grid>
 
             <Grid style={{fontFamily:'auto'}}>
-                <SavedRequest title={descriptions}/>
-                <SubmittedRequest status={status} officerName={officerName} officerPost={officerPost} date={date} title={title}/>
-            </Grid>
+                <Paper> <SavedRequest title={descriptions}/> </Paper>
+                <Paper>  <SubmittedRequest status={status} officerName={officerName} officerPost={officerPost} date={date} title={title}/> </Paper>            </Grid>
         </div>
         </div>
     )

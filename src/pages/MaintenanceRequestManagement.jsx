@@ -19,6 +19,7 @@ import { Badge, Button, InputAdornment, MenuItem, Select, TextField } from '@mat
 import { SearchOutlined } from '@material-ui/icons';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import LocationDetails from './.././components/LocationDetails';
+import SplitButton from '../input/SplitButton';
 
 
 
@@ -68,7 +69,7 @@ const StyldTableCell = withStyles({
   head: {
     backgroundColor: 'lightgrey',
     fontWeight: 'bolder',
-
+    textTransform:'none',
 
   },
   body: {
@@ -89,12 +90,12 @@ const useStyles = makeStyles({
     justifyContent: 'space-between',
     alignItems: 'center',
     fontSize: '14'
-    
+
 
   },
 
   tbCells: {
-    maxWidth :'70px'
+    maxWidth: '70px'
 
   },
 
@@ -132,11 +133,12 @@ const chkStatus = (status) => {
 export default function Tables() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const [isRequest, setIsRequest] = React.useState(true);
+  var [isRequest, setIsRequest] = React.useState(true);
   const [isReview, setIsReview] = React.useState(false);
   const [isEntry, setIsEntry] = React.useState([]);
   let [error, setError] = React.useState(null)
   let [rows, setRow] = React.useState([])
+  let [rowsReviewed, setReviewedRow] = React.useState([])
   let [isCount, setIsCount] = React.useState('')
   var InitiatedRequest = 7786790;
   var CompletedRequest = 7786790;
@@ -150,22 +152,24 @@ export default function Tables() {
   var numb = 78943
   var grade = 'Grade level 8'
   var descriptions = 'sorry its ovaaaaaaaaaaaaaaaaaa'
-  var shtate;
+  
 
 
-  console.log(0==false)
+  console.log(0 == false)
   const fetchData = async () => {
-    var url = (shtate === isRequest) ? 'Director-PendingApprovals' : 'Director-ReviewedApprovals';
+    let url =  'Director-PendingApprovals' // 'Director-ReviewedApprovals';
+
+    console.log(url)
     http.get(url)
       .then((response) => {
         console.log('server')
         console.log(response.data)
         setError(response.data.code)
         setRow(response.data.data)
-        if(isRequest){
+        
+       
           setIsCount((response.data.count).toString())
-}
-
+        
 
 
       })
@@ -175,6 +179,32 @@ export default function Tables() {
     fetchData()
 
   }, [])
+
+
+
+
+  const fetchReviewedData = async () => {
+    let url = 'Director-ReviewedApprovals';
+
+    console.log(url)
+    http.get(url)
+      .then((response) => {
+        console.log('server')
+        console.log(response.data.data)
+        setError(response.data.code)
+        setReviewedRow(response.data.data)
+        
+
+
+
+      })
+
+  }
+  useEffect(() => {
+    fetchReviewedData()
+
+  }, [])
+
 
 
   // http.get('http://devsvr.edogoverp.com/facility/api/facilityrequest/Director-PendingApprovals')
@@ -204,7 +234,7 @@ export default function Tables() {
 
 
 
-const action={}
+ 
 
 
 
@@ -216,8 +246,17 @@ const action={}
 
   const handleIsRequest = () => {
 
-    setIsRequest(!isRequest)
+   isRequest=true;
+  
+fetchData()
+setIsRequest(isRequest)
+  }
 
+  const handleIsReviewedRequest = () => {
+
+   isRequest=false;
+fetchReviewedData()
+setIsRequest(isRequest)
   }
 
   const isGreen = { backgroundColor: 'light-green', borderRadius: '40px' }
@@ -229,163 +268,161 @@ const action={}
 
   if (isRequest) {
     return (
-          <div style={{width:'100%'}}>
-             <div style={{display:'flex', justifyContent:'space-between'}}>
-            <div>
+      <div style={{ width: '100%' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div>
 
-                    <div>Good Morning</div>
-                    <div style={{fontSize:'23px'}}>Osagie Osaigbovo; #{numb}</div>
-                    
-                    <div>{post} {ministry} | {grade}</div>
-                </div>
-                <div>
-                    <LocationDetails />
-                </div>
-                </div>
-            <div style={{ marginLeft: '58%' }} className='row'>
-              <div style={{ margin: '7px' }}><StyledMenu /></div>
-              <SearchInput className='col-sm-3' style={{ width: '100%' }}  />
-            </div>
-            <div style={{ display: 'flex' }} className='row'>
+            <div>Good Morning</div>
+            <div style={{ fontSize: '23px' }}>Osagie Osaigbovo; #{numb}</div>
 
-              <Grid container sm={12}  justify="center">
-                <Grid item sm={10}>
-                  <TableContainer component={Paper} style={{ width: '100%' }}>
-                    <div className={classes.clDiv}>
-                      <div style={{fontWeight:'900', fontFamily:'auto'}}>
-                        Maintenance Request Management
-                  </div>
-                      <div style={{ display: 'flex' }}>
-                        <div>
-                          <Badge badgeContent={isCount} showZero
-                            anchorOrigin={{
-                              vertical: 'top',
-                              horizontal: 'left',
-
-                            }} color='secondary'>
-                            <BootstrapButton size='small' disableRipple disableFocusRipple style={isRequest ? isWhite : isGreen}>
-                              Request
-                      </BootstrapButton>
-                          </Badge>
-                        </div>
-                        <div>
-                          <Badge>
-                            <BootstrapButton size='small' style={{ borderRadius: '40px' }} onClick={handleIsRequest}>
-                              Review
-                      </BootstrapButton>
-                          </Badge>
-                        </div>
-                      </div>
-                    </div>
-                    <Table className={classes.table} aria-label="simple table" size='small'>
-                      <TableHead>
-
-                        <TableRow>
-                          <StyldTableCell align="left" style={{ border: '1px solid red' }}>Items</StyldTableCell>
-                          <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Request initiator</StyldTableCell>
-                          <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Request Type</StyldTableCell>
-                          <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Initiated Date</StyldTableCell>
-                          <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Review Status</StyldTableCell>
-                          <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Action</StyldTableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {rows.map((row) => (
-                          <TableRow key={row.requestId}>
-                            <TableCell align='left' component="th" scope="row" >
-                              {row.items}
-                            </TableCell>
-                            <TableCell styles={{width:'70px'}} align="left" style={{ border: '1px solid lightgrey' }}>{row.items}</TableCell>
-                            <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.requestInitiator}</TableCell>
-                            <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.requestType} </TableCell>
-                            <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.initiatedDate}</TableCell>
-                            <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.reviewStatus}</TableCell>
-                            <TableCell align="left" style={{ border: '1px solid lightgrey' }}>hello</TableCell>
-
-
-
-
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                </Grid>
-              </Grid>
-            </div>
+            <div>{post} {ministry} | {grade}</div>
           </div>
+          <div>
+            <LocationDetails />
+          </div>
+        </div>
+        <div style={{ marginLeft: '46%' , marginBottom:'1%'}} className='row'>
+          <div style={{ marginRight: '107px', width: '150px' }}><SplitButton  /></div>
+          <SearchInput className='col-sm-3' style={{ width: '100%' }} />
+        </div>
+        <div style={{ display: 'flex' }} className='row'>
+
+          <Grid container  justify="center">
+            <Grid item sm={10}>
+              <TableContainer component={Paper} style={{ width: '100%' }}>
+                <div className={classes.clDiv}>
+                  <div style={{ fontWeight: '900', fontFamily: 'auto' }}>
+                    Maintenance Request Management
+                  </div>
+                  <div style={{ display: 'flex' }}>
+                    <div>
+                      <Badge badgeContent={isCount} showZero
+                        anchorOrigin={{
+                          vertical: 'top',
+                          horizontal: 'left',
+
+                        }} color='error'>
+                        <BootstrapButton size='small' disableRipple disableFocusRipple style={isRequest ? isWhite : isGreen}>
+                          Request
+                      </BootstrapButton>
+                      </Badge>
+                    </div>
+                    <div>
+                      <Badge>
+                        <BootstrapButton size='small' style={{ borderRadius: '40px' }} onClick={handleIsReviewedRequest}>
+                          Review
+                      </BootstrapButton>
+                      </Badge>
+                    </div>
+                  </div>
+                </div>
+                <Table className={classes.table} aria-label="simple table" size='small'>
+                  <TableHead>
+
+                    <TableRow>
+                      <StyldTableCell align="left" style={{ border: '1px solid red' }}>Items</StyldTableCell>
+                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Request initiator</StyldTableCell>
+                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Request Type</StyldTableCell>
+                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Initiated Date</StyldTableCell>
+                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Review Status</StyldTableCell>
+                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Action</StyldTableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {rows.map((row) => (
+                      <TableRow key={row.requestId}>
+                       
+                        <TableCell  align="left" style={{ border: '1px solid lightgrey' }}>{row.items}</TableCell>
+                        <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.requestInitiator}</TableCell>
+                        <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.requestType} </TableCell>
+                        <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.initiatedDate}</TableCell>
+                        <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.reviewStatus}</TableCell>
+                        <TableCell align="left" style={{ border: '1px solid lightgrey' }}><SplitButton/></TableCell>
+
+
+
+
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Grid>
+          </Grid>
+        </div>
+      </div>
     );
   }
   else {
     return (
-    <div style={{width:'100%'}}>
-      <div style={{ marginLeft: '58%' }} className='row'>
-        <div style={{ margin: '7px' }}><StyledMenu className='col-sm-6' /></div>
-        <SearchInput className='col-sm-3' />
-      </div>
-      <div style={{ display: 'flex' }} className='row'>
+      <div style={{ width: '100%' }}>
+        <div style={{ marginLeft: '58%' }} className='row'>
+          <div style={{ margin: '7px' }}><StyledMenu className='col-sm-6' /></div>
+          <SearchInput className='col-sm-3' />
+        </div>
+        <div style={{ display: 'flex' }} className='row'>
 
-        <Grid container sm={12} justify='center' alignItems='center'>
-          <Grid item sm={10}>
-            <TableContainer component={Paper} style={{ width: '100%' }}>
-              <div className={classes.clDiv}>
-                <div>
-                  Maintenance Request Management
-                </div>
-                <div style={{ display: 'flex' }}>
+          <Grid container sm={12} justify='center' alignItems='center'>
+            <Grid item sm={10}>
+              <TableContainer component={Paper} style={{ width: '100%' }}>
+                <div className={classes.clDiv}>
                   <div>
-                    <Badge badgeContent={isCount} showZero
-                      anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'left',
+                    Maintenance Request Management
+                </div>
+                  <div style={{ display: 'flex' }}>
+                    <div>
+                      <Badge badgeContent={isCount} showZero
+                        anchorOrigin={{
+                          vertical: 'top',
+                          horizontal: 'left',
 
-                      }} color='secondary'>
-                      <BootstrapButton size='small' disableRipple disableFocusRipple style={{ borderRadius: '40px' }} onClick={handleIsRequest}>
-                        Request
+                        }} color='error'>
+                        <BootstrapButton size='small' disableRipple disableFocusRipple style={{ borderRadius: '40px' }} onClick={handleIsRequest}>
+                          Request
                       </BootstrapButton>
-                    </Badge>
-                  </div>
-                  <div>
-                    <Badge>
-                      <BootstrapButton size='small' style={{ borderRadius: '40px' }} style={isRequest ? isGreen : isWhite}>
-                        Review
+                      </Badge>
+                    </div>
+                    <div>
+                      <Badge>
+                        <BootstrapButton size='small' style={{ borderRadius: '40px' }} style={isRequest ? isGreen : isWhite}>
+                          Review
                       </BootstrapButton>
-                    </Badge>
+                      </Badge>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <Table className={classes.table} aria-label="simple table" size='small'>
-                <TableHead>
+                <Table className={classes.table} aria-label="simple table" size='small'>
+                  <TableHead>
 
-                  <TableRow>
-                    <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Items</StyldTableCell>
-                    <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Request Type</StyldTableCell>
-                    <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Cost</StyldTableCell>
-                    <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Evaluation</StyldTableCell>
-                    <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Evaluation</StyldTableCell>
-                    <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Officer's Name</StyldTableCell>
-                    <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Review Status</StyldTableCell>
-                    <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Action</StyldTableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.map((row) => (
-                    <TableRow key={row.items}>
-                      <TableCell align='left' component="th" scope="row"  >{row.items}</TableCell>
-                      <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.requestInitiator}</TableCell>
-                      <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.requestType} </TableCell>
-                      <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.initiatedDate}</TableCell>
-                      <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.reviewStatus}</TableCell>
-                      <TableCell align="left" style={{ border: '1px solid lightgrey' }}></TableCell>
+                    <TableRow>
+                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Items</StyldTableCell>
+                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Request Type</StyldTableCell>
+                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Cost</StyldTableCell>
+                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Evaluation</StyldTableCell>
+                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Officer's Name</StyldTableCell>
+                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Review Status</StyldTableCell>
+                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Action</StyldTableCell>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+                  </TableHead>
+                  <TableBody>
+                    {rowsReviewed.map((row1) => (
+                      <TableRow key={row1.requestId}>
+                        <TableCell align='left' component="th" scope="row"  >{row1.items}</TableCell>
+                        <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.requestType}</TableCell>
+                        <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.cost} </TableCell>
+                        <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.evaluation}</TableCell>
+                        <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.officerName}</TableCell>
+                        <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.reviewStatus}</TableCell>
+                        <TableCell align="left" style={{ border: '1px solid lightgrey' }}><SplitButton/></TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Grid>
           </Grid>
-        </Grid>
+        </div>
       </div>
-    </div>
 
     );
 
