@@ -38,21 +38,24 @@ export default function Dashboard1() {
         <div style={{marginTop:'20px'}}>
             <Grid container sm={12} style={{marginBottom:'24px'}}>
                 <Grid item sm={3}>
-                    <span style={{fontWeight:'900', fontFamily:'auto'}}>Issued maintenance requests</span>
-                    <Paper style={{backgroundColor:'white', height:'250px', width:'330px'}}>
+                    <span style={{fontWeight:'900', fontFamily:'auto', marginBottom:'30px'}}>Issued maintenance requests</span>
+                   <div style={{fontWeight:'900', fontFamily:'auto', marginTop:'3px'}}></div>
+
+                    <Paper style={{backgroundColor:'white', height:'300px', width:'350px'}}>
                         
                     </Paper>
                 </Grid>
-                <Grid item sm={3} style={{marginLeft:'80px'}}>
+                <Grid item sm={3} style={{marginLeft:'90px'}}>
                 <span style={{fontWeight:'900', fontFamily:'auto'}}>Approved Requests</span>
-                    <Paper style={{backgroundColor:'white',height:'250px', width:'330px'}}>
+                <div style={{fontWeight:'900', fontFamily:'auto', marginTop:'3px'}}></div>
+                    <Paper style={{backgroundColor:'white',height:'300px', width:'350px', padding:'4px'}}>
 
                     </Paper>
                 </Grid>
                 <Grid item container sm={3}  style={{marginLeft:'120px'}}>
-                    <Grid item sm={12} style={{margin:'0px', height: '100px'}}>
-                        <Paper style={{backgroundColor:'white'}}>
-                            <div style={{fontWeight:'bolder', padding:'4px', fontFamily:'auto'}}>
+                    <Grid item sm={12} style={{marginTop:'8px', padding:'12px'}}>
+                        <Paper style={{backgroundColor:'white', height:'140px', width:'300px'}}>
+                            <div style={{fontWeight:'bolder', padding:'10px', fontFamily:'auto',marginTop:'3px'}}>
                                 Initiated Request
                             </div>
                             <Divider/>
@@ -62,9 +65,12 @@ export default function Dashboard1() {
                             
                         </Paper>
                     </Grid>
-                    <Grid item sm={12} style={{margin:'0px', height:'100px'}}>
-                        <Paper style={{backgroundColor:'white'}}>
-                        <div style={{fontWeight:'bolder', padding:'14px', fontFamily:'auto'}}>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <Grid item sm={12} style={{marginTop:'-6px', padding:'12px'}}>
+                        <Paper style={{backgroundColor:'white', height:'138px', width:'300px'}}>
+                        <div style={{fontWeight:'bolder', padding:'10px', fontFamily:'auto',marginTop:'3px'}}>
                                 Completed Request
                             </div>
                             <Divider/>
@@ -76,9 +82,10 @@ export default function Dashboard1() {
                 </Grid>
             </Grid>
 
-            <Grid style={{fontFamily:'auto'}}>
+            <Grid  style={{fontFamily:'auto', width:'97%'}}>
                 <Paper> <SavedRequest title={descriptions}/> </Paper>
-                <Paper>  <SubmittedRequest status={status} officerName={officerName} officerPost={officerPost} date={date} title={title}/> </Paper>            </Grid>
+                <Paper>  <SubmittedRequest status={status} officerName={officerName} officerPost={officerPost} date={date} title={title}/> </Paper>
+              </Grid>
         </div>
         </div>
     )
