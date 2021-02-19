@@ -92,11 +92,11 @@ const MainMemo = ({ history }) => {
     }, []);
 
     return (
-        <div>
-        <div className='col col-sm-12'>
-        <div className='row'>
-            <Paper style={{ marginTop: '147px' }, { padding: '20px', border:'1px  red', width:'800px' }} className=' col col-sm-12'>
-                <div className='row col-sm-12'>
+        <Box flexDirection='column' style={{ maxWidth: '100%' }, { padding: '20px', border:'1px  red',  }} fontSize='62.5%' >
+        <Box >
+        <Box flexDirection='column' maxWidth='100%' width='600px' minWidth='10%'>
+            <Paper style={{ marginTop: '147px' }, { padding: '20px', border:'1px  red',maxWidth:'100%' , minWidth:'10%'}}>
+                <Box>
                     <TextField  id="outlined-details-static"
                         label="Subject:"
                         multiline
@@ -110,10 +110,10 @@ const MainMemo = ({ history }) => {
 
 
                     />
-                </div>
+                </Box>
                 <Divider />
 
-                <div className='row' >
+                <Box>
                     <TextField
                         id="outlined-details-stati"
                         label="Details:"
@@ -128,10 +128,10 @@ const MainMemo = ({ history }) => {
                         fullWidth
 
                     />
-                </div>
+                </Box>
                 <Divider />
 
-        <div className='row'>
+        <Box>
                 <BootstrapButton
                     variant='contained'
                     startIcon={<SvgIcon style={{ marginTop: '9px' }}>
@@ -139,23 +139,23 @@ const MainMemo = ({ history }) => {
                     </SvgIcon>}
                 >
                     Upload Supporting Documents</BootstrapButton>
-                    </div>
+                    </Box>
             </Paper>
-        </div>
-        <div style={{ marginTop:'12px', display:'flex', justifyContent:'space-between'}} className='row' >
-            <div className='col-lg-3'>
+        </Box>
+        <Box flexDirection='row' style={{ marginTop:'12px', display:'flex', justifyContent:'space-between'}} >
+            <Box style={{justifyContent:'flex-start'}}>
                 <BooButton className='btn-block' style={{marginRight:'0px', maxWidth:'320px'}}>
                     Save Request
                 </BooButton>
-            </div>
-            <div className='col-lg-3'>
-                <BooButton className='btn-block' style={{marginLeft:'0px', maxWidth:'320px', marginRight:'0px'}} >
+            </Box>
+            <Box  style={{justifyContent:'flex-end'}}>
+                <BooButton className='btn-block' style={{marginLeft:'0px', maxWidth:'100%', marginRight:'0px'}} >
                     Submit Request
                 </BooButton>
-            </div>
-        </div>
-    </div>
-    </div>
+            </Box>
+        </Box>
+    </Box>
+    </Box>
     );
 
                     };

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import dom from 'react-dom';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -23,6 +24,9 @@ import SplitButton from '../input/SplitButton';
 import CustomizedMenus from '../input/SplitsButton';
 import SplitsButton from '../input/SplitsButton';
 
+
+import ViewMemoForm from '../components/pages/ViewMemoForm';
+import IoMdClose from 'react-icons/io';
 
 
 
@@ -65,9 +69,9 @@ const BootstrapButton = withStyles({
 })(Button);
 
 const StyleTableCell = withStyles({
-  root:{
-    fontSize:'11px',
-    padding:'4px 8px 4px 8px'
+  root: {
+    fontSize: '11px',
+    padding: '4px 8px 4px 8px'
   }
 })(TableCell)
 
@@ -76,11 +80,11 @@ const StyldTableCell = withStyles({
   head: {
     backgroundColor: 'lightgrey',
     fontWeight: 'bolder',
-    textTransform:'none',
+    textTransform: 'none',
     fontSize: '12px'
 
   },
-  
+
 })(TableCell);
 
 const useStyles = makeStyles({
@@ -146,6 +150,10 @@ export default function Tables() {
   let [rows, setRow] = React.useState([])
   let [rowsReviewed, setReviewedRow] = React.useState([])
   let [isCount, setIsCount] = React.useState('')
+  const [showFormModal, setShowFormModal] = useState(false);
+  const [details, setDetails] = useState([]);
+  const [selectedRecord, setSelectedRecord] = useState([]);
+
   var InitiatedRequest = 7786790;
   var CompletedRequest = 7786790;
   var status = 3;
@@ -158,12 +166,12 @@ export default function Tables() {
   var numb = 78943
   var grade = 'Grade level 8'
   var descriptions = 'sorry its ovaaaaaaaaaaaaaaaaaa'
-  
 
 
-  console.log(0 == false)
+
+
   const fetchData = async () => {
-    let url =  'Director-PendingApprovals' // 'Director-ReviewedApprovals';
+    let url = 'Director-PendingApprovals' // 'Director-ReviewedApprovals';
 
     console.log(url)
     http.get(url)
@@ -172,10 +180,10 @@ export default function Tables() {
         console.log(response.data)
         setError(response.data.code)
         setRow(response.data.data)
-        
-       
-          setIsCount((response.data.count).toString())
-        
+
+
+        setIsCount((response.data.count).toString())
+
 
 
       })
@@ -199,7 +207,7 @@ export default function Tables() {
         console.log(response.data.data)
         setError(response.data.code)
         setReviewedRow(response.data.data)
-        
+
 
 
 
@@ -249,7 +257,11 @@ export default function Tables() {
       return { color: 'yellow', margin: '2px', fontSize: '14px' }
   }
 
+  const handleClick = (e) => {
+    console.log(e);
 
+
+  }
 
 
 
@@ -259,24 +271,24 @@ export default function Tables() {
 
   const handleIsRequest = () => {
 
-   isRequest=true;
-  
-fetchData()
-setIsRequest(isRequest)
+    isRequest = true;
+
+    fetchData()
+    setIsRequest(isRequest)
   }
 
   const handleIsReviewedRequest = () => {
 
-   isRequest=false;
-fetchReviewedData()
-setIsRequest(isRequest)
+    isRequest = false;
+    fetchReviewedData()
+    setIsRequest(isRequest)
   }
 
   const isGreen = { backgroundColor: 'light-green', borderRadius: '40px' }
   const isWhite = { backgroundColor: 'white', borderRadius: '40px' }
 
 
-          
+
 
   if (isRequest) {
     return (
@@ -293,13 +305,13 @@ setIsRequest(isRequest)
             <LocationDetails />
           </div>
         </div>
-        <div style={{ marginLeft: '46%' , marginBottom:'1%'}} className='row'>
-          <div style={{ marginRight: '107px', width: '150px' }}><SplitButton  /></div>
+        <div style={{ marginLeft: '46%', marginBottom: '1%' }} className='row'>
+          <div style={{ marginRight: '107px', width: '150px' }}><SplitButton /></div>
           <SearchInput className='col-sm-3' style={{ width: '100%' }} />
         </div>
         <div style={{ display: 'flex' }} className='row'>
-
-          <Grid container  justify="center">
+          <ViewMemoForm></ViewMemoForm>
+          <Grid container justify="center">
             <Grid item sm={10}>
               <TableContainer component={Paper} style={{ width: '100%' }}>
                 <div className={classes.clDiv}>
@@ -343,16 +355,12 @@ setIsRequest(isRequest)
                   <TableBody>
                     {rows.map((row) => (
                       <TableRow key={row.requestId} >
-                       
-                        <StyleTableCell style={{fontSize:'10px'}} align="left" style={{ border: '1px solid lightgrey' }}>{row.items}</StyleTableCell>
+                        <StyleTableCell style={{ fontSize: '10px' }} align="left" style={{ border: '1px solid lightgrey' }}><a href='#'>{row.items}</a></StyleTableCell>
                         <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.requestInitiator}</StyleTableCell>
                         <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.requestType} </StyleTableCell>
                         <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.initiatedDate}</StyleTableCell>
-                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}><div style={{display:'flex', flexDirection:'row'}}><div ><LensIcon style={chkStatus(row.requestStatusId)}/></div><div>{row.reviewStatus}</div></div></StyleTableCell>
+                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}><div style={{ display: 'flex', flexDirection: 'row' }}><div ><LensIcon style={chkStatus(row.requestStatusId)} /></div><div>{row.reviewStatus}</div></div></StyleTableCell>
                         <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}> <SplitsButton /></StyleTableCell>
-
-
-
 
                       </TableRow>
                     ))}
@@ -403,7 +411,8 @@ setIsRequest(isRequest)
                     </div>
                   </div>
                 </div>
-                <Table className={classes.table} aria-label="simple table" size='small'>
+
+                <Table className={classes.table} aria-label="simple table" size='small'  >
                   <TableHead>
 
                     <TableRow>
@@ -419,7 +428,7 @@ setIsRequest(isRequest)
                   <TableBody>
                     {rowsReviewed.map((row1) => (
                       <TableRow key={row1.requestId}>
-                        <StyleTableCell align='left' component="th" scope="row"  >{row1.items}</StyleTableCell>
+                        <StyleTableCell align='left' component="th" scope="row"  ><a href='#'>{row1.items}</a></StyleTableCell>
                         <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.requestType}</StyleTableCell>
                         <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.cost} </StyleTableCell>
                         <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.evaluation}</StyleTableCell>
@@ -434,11 +443,9 @@ setIsRequest(isRequest)
             </Grid>
           </Grid> 
         </div>     
-
-      </div>
-      
-
-    );
+        </div >
+      </div >
+      );
 
 
   }
