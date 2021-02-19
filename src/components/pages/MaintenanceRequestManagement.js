@@ -98,14 +98,7 @@ function createData(items, requestInitiator, RequestType, InitiatedDate, ReviewS
   return { items, requestInitiator, RequestType, InitiatedDate, ReviewStatus, Action };
 }
 
-const chkStatus = (status) => {
-  if(status === 1)
-  return {color:'yellow',margin: '2px',  fontSize: '12px'}
-  else if(status === 2)
-  return {color:'red',margin: '2px',  fontSize: '10px'}
-  else
-  return {color:'green',margin: '2px',  fontSize: '10px'}
-}
+
 
 
 
@@ -125,8 +118,18 @@ export default function Tables() {
     
   }
 
-    const isGreen = { backgroundColor: 'light-green' , borderRadius:'40px'}
-    const isWhite = { backgroundColor: 'white' ,borderRadius:'40px'}
+    const isGreen = { backgroundColor: 'light-green', borderRadius:'40px'}
+    const isWhite = { backgroundColor: 'white', borderRadius:'40px'}
+
+    const chkStatus = (status) => {
+      if(status === 1)
+      return {color:'yellow',margin: '2px',  fontSize: '12px'}
+      else if(status === 2)
+      return {color:'red',margin: '2px',  fontSize: '10px'}
+      else
+      return {color:'green',margin: '2px',  fontSize: '10px'}
+    }
+    
 
    
 
@@ -148,7 +151,7 @@ export default function Tables() {
                   <div className={classes.clDiv}>
                     <div>
                       Maintenance Request Management
-                </div>
+                    </div>
                     <div style={{ display: 'flex' }}>
                       <div>
                         <Badge badgeContent={12} showZero

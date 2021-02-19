@@ -7,7 +7,6 @@ import LensIcon from '@material-ui/icons/Lens';
 import Brightness1Icon from '@material-ui/icons/Brightness1';
 import { TextareaAutosize } from '@material-ui/core';
 
-import MUIRichTextEditor from 'mui-rte';
 
 
 const BootstrapButton = withStyles({

@@ -16,6 +16,7 @@ import Dashboard1 from '../components/Dashboard1';
 import Request from '../components/RequestForm';
 import Mainmemo from '../components/MainMemo';
 import RequestForm from '../components/RequestForm';
+import RequestReport from '../components/pages/RequestReport'
 
 
 
@@ -25,7 +26,7 @@ export default pure(() => (
       path="/facility-portal/"
       exact
       component={Dashboard1}
-    />
+    />  
     <ProtectedRoute
       path="/facility-portal/request-maintainance"
       exact
@@ -38,9 +39,9 @@ export default pure(() => (
       component={ReviewRequest}
     />
     <ProtectedRoute
-      path="/admin-portal/employee-profile"
+      path="/facility-portal/request-report"
       exact
-      component={EmployeeProfile}
+      component={RequestReport}
     />
     <ProtectedRoute
       path="/admin-portal/employee-details"

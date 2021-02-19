@@ -11,7 +11,7 @@ export default [
   { title: 'Request Maintainance', href: '/facility-portal/request-maintainance', icon: <RiUserSettingsLine className="icon" /> },
   { title: 'Review Request', href: '/facility-portal/review-request', icon: <RiUserSettingsLine className="icon" /> },
   { title: 'Manage Request', href: '/facility-portal/manage-request', icon: <RiUserSettingsLine className="icon" /> },
-  { title: 'Settings', href: 'facility-portal/settings', icon: <RiUserSettingsLine className="icon" /> },
+  { title: 'Settings', href: '/facility-portal/request-report', icon: <RiUserSettingsLine className="icon" /> },
   { title: 'Report', href: '/facility-portal/report', icon: <RiUserSettingsLine className="icon" /> },
   { title: 'Log Out', href: '/facility-portal/logout', icon: <RiUserSettingsLine className="icon" /> }
 

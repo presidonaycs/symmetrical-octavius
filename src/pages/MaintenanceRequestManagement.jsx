@@ -20,6 +20,8 @@ import { SearchOutlined } from '@material-ui/icons';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import LocationDetails from './.././components/LocationDetails';
 import SplitButton from '../input/SplitButton';
+import CustomizedMenus from '../input/SplitsButton';
+import SplitsButton from '../input/SplitsButton';
 
 
 
@@ -62,7 +64,12 @@ const BootstrapButton = withStyles({
   },
 })(Button);
 
-
+const StyleTableCell = withStyles({
+  root:{
+    fontSize:'11px',
+    padding:'4px 8px 4px 8px'
+  }
+})(TableCell)
 
 
 const StyldTableCell = withStyles({
@@ -70,11 +77,10 @@ const StyldTableCell = withStyles({
     backgroundColor: 'lightgrey',
     fontWeight: 'bolder',
     textTransform:'none',
+    fontSize: '12px'
 
   },
-  body: {
-    fontSize: 14,
-  },
+  
 })(TableCell);
 
 const useStyles = makeStyles({
@@ -234,7 +240,14 @@ export default function Tables() {
 
 
 
- 
+  const chkStatus = (status) => {
+    if (status === 3)
+      return { color: 'green', margin: '2px', fontSize: '14px' }
+    else if (status === 2)
+      return { color: 'red', margin: '2px', fontSize: '14px' }
+    else
+      return { color: 'yellow', margin: '2px', fontSize: '14px' }
+  }
 
 
 
@@ -263,8 +276,7 @@ setIsRequest(isRequest)
   const isWhite = { backgroundColor: 'white', borderRadius: '40px' }
 
 
-
-
+          
 
   if (isRequest) {
     return (
@@ -330,14 +342,14 @@ setIsRequest(isRequest)
                   </TableHead>
                   <TableBody>
                     {rows.map((row) => (
-                      <TableRow key={row.requestId}>
+                      <TableRow key={row.requestId} >
                        
-                        <TableCell  align="left" style={{ border: '1px solid lightgrey' }}>{row.items}</TableCell>
-                        <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.requestInitiator}</TableCell>
-                        <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.requestType} </TableCell>
-                        <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.initiatedDate}</TableCell>
-                        <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.reviewStatus}</TableCell>
-                        <TableCell align="left" style={{ border: '1px solid lightgrey' }}><SplitButton/></TableCell>
+                        <StyleTableCell style={{fontSize:'10px'}} align="left" style={{ border: '1px solid lightgrey' }}>{row.items}</StyleTableCell>
+                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.requestInitiator}</StyleTableCell>
+                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.requestType} </StyleTableCell>
+                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.initiatedDate}</StyleTableCell>
+                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}><div style={{display:'flex', flexDirection:'row'}}><div ><LensIcon style={chkStatus(row.requestStatusId)}/></div><div>{row.reviewStatus}</div></div></StyleTableCell>
+                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}> <SplitsButton /></StyleTableCell>
 
 
 
@@ -407,22 +419,24 @@ setIsRequest(isRequest)
                   <TableBody>
                     {rowsReviewed.map((row1) => (
                       <TableRow key={row1.requestId}>
-                        <TableCell align='left' component="th" scope="row"  >{row1.items}</TableCell>
-                        <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.requestType}</TableCell>
-                        <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.cost} </TableCell>
-                        <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.evaluation}</TableCell>
-                        <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.officerName}</TableCell>
-                        <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.reviewStatus}</TableCell>
-                        <TableCell align="left" style={{ border: '1px solid lightgrey' }}><SplitButton/></TableCell>
+                        <StyleTableCell align='left' component="th" scope="row"  >{row1.items}</StyleTableCell>
+                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.requestType}</StyleTableCell>
+                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.cost} </StyleTableCell>
+                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.evaluation}</StyleTableCell>
+                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.officerName}</StyleTableCell>
+                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}><LensIcon style={chkStatus(row1.reviewStatusId)}/>{row1.reviewStatus}</StyleTableCell>
+                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}><SplitsButton /></StyleTableCell>
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
               </TableContainer>
             </Grid>
-          </Grid>
-        </div>
+          </Grid> 
+        </div>     
+
       </div>
+      
 
     );
 

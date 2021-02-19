@@ -1,5 +1,7 @@
 import { Divider, Grid, Paper } from '@material-ui/core'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import httpCommon from '../httpCommon';
+import SplitsButton from '../input/SplitsButton';
 import LocationDetails from './layouts/LocationDetails';
 import SavedRequest from './SavedRequest';
 import SubmittedRequest from './SubmittedRequest';
@@ -8,6 +10,8 @@ import SubmittedRequest from './SubmittedRequest';
 
 
 export default function Dashboard1() {
+
+  const [dashBoardRequest, setDashBoard] = useState([])
     var InitiatedRequest = 7786790;
     var CompletedRequest = 7786790;
     var status = 3;
@@ -20,6 +24,40 @@ export default function Dashboard1() {
     var numb = 78943
     var grade = 'Grade level 8'
     var descriptions = 'sorry its ovaaaaaaaaaaaaaaaaaa'
+    var isSubmittedList=[]
+    var isSavedList = []
+
+
+    
+    
+
+
+    const fetchReviewedData = async () => {
+      let url = 'dashboard-request';
+
+    httpCommon.get(url)
+    .then((response) => {
+      console.log('server')
+      console.log(response.data.data)
+      
+      setDashBoard(response.data)
+      
+
+
+
+    })
+
+}
+useEffect(() => {
+  fetchReviewedData()
+
+}, [])
+
+   
+
+
+
+    
 
     return (
         <div style={{width:'100%'}}>
@@ -34,7 +72,6 @@ export default function Dashboard1() {
                     <LocationDetails />
                 </div>
             </div>
-            
         <div style={{marginTop:'20px'}}>
             <Grid container sm={12} style={{marginBottom:'24px'}}>
                 <Grid item sm={3}>
@@ -82,10 +119,16 @@ export default function Dashboard1() {
                 </Grid>
             </Grid>
 
-            <Grid  style={{fontFamily:'auto', width:'97%'}}>
-                <Paper> <SavedRequest title={descriptions}/> </Paper>
-                <Paper>  <SubmittedRequest status={status} officerName={officerName} officerPost={officerPost} date={date} title={title}/> </Paper>
-              </Grid>
+          
+
+    
+          
+            <SubmittedRequest status={status} officerName={officerName} officerPost={officerPost} date={date} title={title}/>          
+            <SubmittedRequest status={status} officerName={officerName} officerPost={officerPost} date={date} title={title}/>          
+            <SubmittedRequest status={status} officerName={officerName} officerPost={officerPost} date={date} title={title}/>          
+            <SubmittedRequest status={status} officerName={officerName} officerPost={officerPost} date={date} title={title}/>          
+
+
         </div>
         </div>
     )

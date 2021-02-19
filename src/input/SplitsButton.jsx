@@ -12,17 +12,17 @@ import MenuList from '@material-ui/core/MenuList';
 import { green } from '@material-ui/core/colors';
 import { withStyles } from '@material-ui/core';
 
-const options = ['Create a merge commit', 'Squash and merge', 'Rebase and merge'];
+const options = ['Accept', 'Cancel'];
 const Bbutton = withStyles({
     root:{
         textTransform:'none',
-        width: '200px',
-        height: '35px',
-        borderRadius:'0px'
+        width: '70px',
+        height: '25px',
+        borderRadius: '0'
     }
 })(Button)
 
-export default function SplitButton() {
+export default function SplitsButton() {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
   const [selectedIndex, setSelectedIndex] = React.useState(1);
@@ -54,7 +54,7 @@ export default function SplitButton() {
         <ButtonGroup variant="contained" color="primary" ref={anchorRef} aria-label="split button">
           <Bbutton onClick={handleClick}>{options[selectedIndex]}</Bbutton>
           <Button
-            style={{borderRadius:'0'}}
+            style={{height:'25px', width:'6px', borderRadius:'0px'}}
             backgroundColor='green'
             size="small"
             aria-controls={open ? 'split-button-menu' : undefined}
