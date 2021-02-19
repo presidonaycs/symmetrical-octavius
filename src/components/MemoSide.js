@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Box, Divider, FormControl, FormHelperText, Grid, InputLabel, makeStyles, MenuItem, Select, TextField, withStyles, Paper, SvgIcon } from '@material-ui/core';
+import { Button, Box, Divider, FormControl, FormHelperText, Grid, InputLabel, makeStyles, MenuItem, Select, TextField, withStyles, Paper, SvgIcon, Card, CardContent } from '@material-ui/core';
 import SaveAltIcon from '@material-ui/icons/SaveAlt';
 import { ReactComponent as Logo } from "./../components/iconComponent/upload.svg"
 import LensIcon from '@material-ui/icons/Lens';
@@ -16,13 +16,13 @@ const useStyles = makeStyles({
     costBox: {
         display: 'flex',
         flexDirection: 'column',
-        fontSize:'16px'
-        
-        
+        fontSize: '16px'
+
+
     },
     myDivs: {
-        fontSize: '16px',
-        margin:'8px',
+        fontSize: '14px',
+        marginTop: '12px',
         fontFamily: 'auto',
     },
     innerDiv: {
@@ -31,7 +31,7 @@ const useStyles = makeStyles({
         alignItems: 'center',
         fontSize: '16px',
         padding: '6px',
-       
+
         borderRadius: '3px',
         fontFamily: 'auto'
 
@@ -50,7 +50,7 @@ export default function MemoSide() {
     const status = {};
     const approval = [];
     const position = {};
-    
+
     const handleChange = (event) => {
         setRequestType(event.target.value);
     };
@@ -58,15 +58,15 @@ export default function MemoSide() {
 
 
     return (
-        <div>
-        <div style={{width:'auto', margin:'0px', padding:'0px'}}>
-            
+        <Box flexDirection='column' style={{ justifyContent: 'space-between' }}>
+            <div style={{ width: '21.5vw' }}>
+
                 <div className={classes.root}>
-                    <Paper style={{ marginBottom: '8px',  }}>
-                        <div style={{ backgroundColor: 'white' }, { borderRadius: '3px' }, { margin: '10px' }}>
-                            <div  style={{margin:'10px 0px 10px 0px'}}>
+                    <Card style={{ marginBottom: '1vw', height: '13vw', justifyContent: 'space-between' }}>
+                        <Box style={{ backgroundColor: 'white' }, { borderRadius: '3px' }, { margin: '20px' }}>
+                            <Box style={{ margin: '10px 0px 10px 0px' }}>
                                 <FormControl className={classes.formControl} >
-                                    <InputLabel shrink id="demo-simple-select-placeholder-label-label" style={{ minWidth: '420px' }}>
+                                    <InputLabel shrink id="demo-simple-select-placeholder-label-label" style={{ width: '20vw', fontSize:'1.3em', paddingBottom:'1vw' }}>
                                         Select Request type:
                                 </InputLabel>
                                     <Select
@@ -76,7 +76,7 @@ export default function MemoSide() {
                                         onChange={handleChange}
                                         displayEmpty
                                         disableUnderline
-                                        style={{ minWidth: '235px' }}
+                                        style={{ width: '20vw' }}
                                         className={classes.selectEmpty}
                                     >
                                         <MenuItem value="">
@@ -88,37 +88,59 @@ export default function MemoSide() {
                                         <MenuItem value={2}>Energy Management</MenuItem>
                                     </Select>
                                 </FormControl>
-                            </div>
+                            </Box>
 
-                            <Divider style={{margin:'10px 0px 10px 0px'}}/>
-                            <div className={classes.myDivs}><span style={{ fontWeight: 'bolder', margin:'10px 0px 10px 0px' }}> Memo initiation date: </span> {initiationDate}</div>
-                            <div className={classes.myDivs}> <span style={{ fontWeight: 'bolder', margin:'10px 0px 10px 0px'}}>Memo initiator:</span> {initiator}</div>
-                            <div className={classes.myDivs}> <span style={{ fontWeight: 'bolder', margin:'10px 0px 20px 0px'}}>View Memo:</span> {viewMemo}</div>
-                        </div>
-                    </Paper>
-                    <Paper style={{ marginBottom: '8px' }}>
+                            <Divider style={{ margin: '0px 0px 0px 0px' }} />
+                            <Box className={classes.myDivs} fontSize='12px'><span style={{ fontWeight: 'bolder', size: '18vw',  margin: '10px 0px 10px 0px' }}> Memo initiation date: </span> {initiationDate}</Box>
+                            <Box className={classes.myDivs}> <span style={{ fontWeight: 'bolder', size: '18vw',fontSize:'12px', margin: '10px 0px 10px 0px' }}>Memo initiator:</span> {initiator}</Box>
+                            <Box className={classes.myDivs}> <span style={{ fontWeight: 'bolder', size: '18vw',fontSize:'12px', margin: '10px 10px 20px 0px' }}>View Memo:</span> {viewMemo}</Box>
+                        </Box>
+                    </Card>
+                    <Card style={{ marginBottom: '1vw' }}>
                         <div className={classes.costBox}>
                             <div className={classes.innerDiv}>
-                                <Box style={{ fontWeight: 'bolder',margin:'8px' }}>Cost implication</Box>
-                                <Divider flexItem variant='middle'/>
-                                <Box style={{ fontWeight: 'bolder',margin:'8px' }}>(N)</Box>
+                                <Box style={{ fontWeight: 'bolder', margin: '8px' }}>Cost implication</Box>
+                                <Divider flexItem variant='middle' />
+                                <Box style={{ fontWeight: 'bolder', margin: '8px' }}>(N)</Box>
                             </div>
-
-                            <div className={classes.innerDiv}>
-                                <Box style={{margin:'8px'}}>{cost}</Box>
-                                <a href= '#' style={{ fontSize: '16px' }}>payment Approval <SaveAltIcon size="small" style={{ fontSize: '16px' }} /></a>
-                            </div>
+                            <Divider style={{ margin: '0px 0px 0px 0px' }} />
+                            <Box className={classes.innerDiv} style={{ justifyContent: 'space-between', alignItems:'left' }}>
+                                <Box style={{ margin: '8px',justifyContent: 'space-evenly', alignItems:'left' }}>{cost}</Box>
+                                <a href='#' style={{ fontSize: '17px' }}>payment Approval <SaveAltIcon size="small" style={{ fontSize: '16px' }} /></a>
+                            </Box>
                         </div>
+                    </Card>
+                    <Paper style={{ justifyContent: 'space-between', alignItems:'flex-start' }} >
+                      
+                            <Box style={{ display: 'flex', alignItems: 'center',paddingLeft:'1vw' }}>
+                                <Box style={{ fontWeight: 'bolder'}, { paddingRight: '13px' }, { fontSize: '16px' }}>Status:
+                                 </Box> 
+                                  <Box style={{ paddingLeft: '1vw' }}><SvgIcon style={{ marginTop: '13px', fontSize: '20px' }}><Circle /></SvgIcon>
+                                </Box>
+                             </Box>
+                       
                     </Paper>
-                    <Paper style={{ minWidth: '226px' }, { marginTop: '10px' }}>
-                        <div className={classes.myDivs} style={{ minWidth: '240px' }}>
-                            <div style={{display:'flex', alignItems:'center'}}><div style={{ fontWeight: 'bolder' }, { paddingRight: '13px' }, {fontSize: '16px' }}>Status: </div>  <div style={{paddingLeft:'8px'}}><SvgIcon style={{ marginTop: '13px', fontSize:'20px' }}><Circle /></SvgIcon> </div> </div>
-                        </div>
-                    </Paper>
+                    <Card style={{ justifyContent: 'space-between, space-evenly', alignItems:'flex-start', marginTop:'1vw' }}>
+                        <Box style={{ display: 'flex', alignItems: 'center',padding:'1vw' }} >
+EhigiaMouse Emmanuel, DOAS
+                        </Box>
+                        <Box style={{ display: 'flex', alignItems: 'center',padding:'1vw' }} >
+EhigiaMouse Emmanuel
+                        </Box>
+                        <Box style={{ display: 'flex', alignItems: 'center',padding:'1vw' }} >
+EhigiaMouse Emmanuel
+                        </Box>
+                        <Box style={{ display: 'flex', alignItems: 'center',padding:'1vw' }} >
+EhigiaMouse Emmanuel
+                        </Box>
+                        <Box style={{ display: 'flex', alignItems: 'center',padding:'1vw' }} >
+EhigiaMouse Emmanuel
+                        </Box>
+                    </Card>
 
                 </div>
-            
-        </div>
-        </div>
+
+            </div>
+        </Box>
     )
 }
