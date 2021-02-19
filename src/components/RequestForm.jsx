@@ -6,17 +6,17 @@ import MemoSide from './MemoSide';
 import LocationDetails from './layouts/LocationDetails';
 
 var InitiatedRequest = 7786790;
-    var CompletedRequest = 7786790;
-    var status = 3;
-    var officerName = "John Hancock"
-    var officerPost = "HOS"
-    var date = '08.08.08'
-    var title = 'i can still recall our last summers'
-    var post = 'officer 1'
-    var ministry = 'ministry of Education'
-    var numb = 78943
-    var grade = 'Grade level 8'
-    var descriptions = 'sorry its ovaaaaaaaaaaaaaaaaaa'
+var CompletedRequest = 7786790;
+var status = 3;
+var officerName = "John Hancock"
+var officerPost = "HOS"
+var date = '08.08.08'
+var title = 'i can still recall our last summers'
+var post = 'officer 1'
+var ministry = 'ministry of Education'
+var numb = 78943
+var grade = 'Grade level 8'
+var descriptions = 'sorry its ovaaaaaaaaaaaaaaaaaa'
 
 const RequestForm = ({ history }) => {
     useEffect(() => {
@@ -25,9 +25,9 @@ const RequestForm = ({ history }) => {
     }, []);
 
     return (
-        <Container className='container'>
+        < Grid Container>
             <div className='col'>
-                <div className='row flex space-between' style={{marginBottom:'16px'}}>
+                <div className='row flex space-between' style={{ marginBottom: '16px' }}>
                     <div>
                         <div>Good Morning</div>
                         <div style={{ fontSize: '23px' }}>Osagie Osaigbovo; #{numb}</div>
@@ -39,22 +39,22 @@ const RequestForm = ({ history }) => {
                     </div>
 
                 </div>
-                <div className='row'>
-                    <div className='col' >
-                    <div style={{fontWeight:'bold', fontFamily:'auto'}}>Facility Request Management</div>
-                    <div className='col col-lg-2' style={{ width: '300px', marginRight: '2px', height: 'auto' }}>
-                        <MemoSide />
-                    </div>
-                    </div>
+                <Grid container>
+                    <Grid item lg  style={{ marginBottom:'1vw' }}>
+                        <div style={{ fontWeight: 'bold', fontFamily: 'auto' , paddingBottom:'1vw' }}>Facility Request Management</div>
+                        
+                            <MemoSide />
+                       
+                    </Grid>
 
-                    <div className='col col-lg-10' style={{ width: '680px', marginLeft: '30px' , marginTop:'24px'}} >
+                    <Grid item lg style={{ marginTop:'1vw' }} >
                         <Request />
-                    </div>
-                </div>
+                    </Grid>
+                </Grid>
             </div>
 
 
-        </Container>
+        </ Grid>
     );
 };
 

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import dom from 'react-dom';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -20,7 +21,8 @@ import { SearchOutlined } from '@material-ui/icons';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import LocationDetails from './.././components/LocationDetails';
 import SplitButton from '../input/SplitButton';
-
+import ViewMemoForm from '../components/pages/ViewMemoForm';
+import  IoMdClose  from 'react-icons/io';
 
 
 
@@ -140,6 +142,10 @@ export default function Tables() {
   let [rows, setRow] = React.useState([])
   let [rowsReviewed, setReviewedRow] = React.useState([])
   let [isCount, setIsCount] = React.useState('')
+  const [showFormModal, setShowFormModal] = useState(false);
+  const [details, setDetails] = useState([]);
+  const [selectedRecord, setSelectedRecord] = useState([]);
+
   var InitiatedRequest = 7786790;
   var CompletedRequest = 7786790;
   var status = 3;
@@ -155,7 +161,7 @@ export default function Tables() {
   
 
 
-  console.log(0 == false)
+ 
   const fetchData = async () => {
     let url =  'Director-PendingApprovals' // 'Director-ReviewedApprovals';
 
@@ -236,10 +242,14 @@ export default function Tables() {
 
  
 
+  const handleClick = (e) => {
+    console.log(e);
 
 
+}
 
 
+ 
 
 
 
@@ -286,7 +296,7 @@ setIsRequest(isRequest)
           <SearchInput className='col-sm-3' style={{ width: '100%' }} />
         </div>
         <div style={{ display: 'flex' }} className='row'>
-
+<ViewMemoForm></ViewMemoForm>
           <Grid container  justify="center">
             <Grid item sm={10}>
               <TableContainer component={Paper} style={{ width: '100%' }}>
@@ -332,7 +342,7 @@ setIsRequest(isRequest)
                     {rows.map((row) => (
                       <TableRow key={row.requestId}>
                        
-                        <TableCell  align="left" style={{ border: '1px solid lightgrey' }}>{row.items}</TableCell>
+                        <TableCell  align="left" style={{ border: '1px solid lightgrey' }} ><a href='#'>{row.items}</a></TableCell>
                         <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.requestInitiator}</TableCell>
                         <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.requestType} </TableCell>
                         <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.initiatedDate}</TableCell>
@@ -391,7 +401,7 @@ setIsRequest(isRequest)
                     </div>
                   </div>
                 </div>
-                <Table className={classes.table} aria-label="simple table" size='small'>
+                <Table className={classes.table} aria-label="simple table" size='small'  >
                   <TableHead>
 
                     <TableRow>
@@ -406,9 +416,9 @@ setIsRequest(isRequest)
                   </TableHead>
                   <TableBody>
                     {rowsReviewed.map((row1) => (
-                      <TableRow key={row1.requestId}>
-                        <TableCell align='left' component="th" scope="row"  >{row1.items}</TableCell>
-                        <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.requestType}</TableCell>
+                      <TableRow key={row1.requestId} >
+                        <TableCell align='left' component="th" scope="row" key={row1.requestId} onClick={() => handleClick(row1.requestId)} ><a href='#'>{row1.items}</a></TableCell>
+                        <TableCell align="left" style={{ border: '1px solid lightgrey' }} >{row1.requestType}</TableCell>
                         <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.cost} </TableCell>
                         <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.evaluation}</TableCell>
                         <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.officerName}</TableCell>
@@ -421,6 +431,7 @@ setIsRequest(isRequest)
               </TableContainer>
             </Grid>
           </Grid>
+          <div id='mode'></div>
         </div>
       </div>
 
