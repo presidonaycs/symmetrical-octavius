@@ -12,7 +12,7 @@ import MenuList from '@material-ui/core/MenuList';
 import { green } from '@material-ui/core/colors';
 import { withStyles } from '@material-ui/core';
 
-const options = ['Create a merge commit', 'Squash and merge', 'Rebase and merge'];
+const options = ['Filter By', 'Squash and merge'];
 const Bbutton = withStyles({
     root:{
         textTransform:'none',

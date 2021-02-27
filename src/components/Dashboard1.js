@@ -2,12 +2,10 @@ import { Divider, Grid, Paper } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import httpCommon from '../httpCommon';
 import SplitsButton from '../input/SplitsButton';
-import React, { useEffect } from 'react'
 import http from '../httpCommon';
 import LocationDetails from './layouts/LocationDetails';
 import SavedRequest from './SavedRequest';
 import SubmittedRequest from './SubmittedRequest';
-
 
 
 
@@ -34,14 +32,17 @@ export default function Dashboard1() {
     
 
 
-    const fetchReviewedData = async () => {
+    const fetchDashboardData = async () => {
       let url = 'dashboard-request';
 
-    httpCommon.get(url)
+    httpCommon.get(url, {
+      params:{
+            mdaId:1
+      } 
+    })
     .then((response) => {
       console.log('server')
       console.log(response.data.data)
-      
       setDashBoard(response.data)
       
 
@@ -51,12 +52,13 @@ export default function Dashboard1() {
 
 }
 useEffect(() => {
-  fetchReviewedData()
+  fetchDashboardData()
 
 }, [])
 
    
 
+let requestData = [];
 
 
     
@@ -126,10 +128,19 @@ useEffect(() => {
             </Grid>
 
           
-
+            <div style={{backgroundColor:'lightgreen', display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+              <div style={{fontWeight:'bolder', padding:'15px'}}>
+                Maintenance Request
+              </div>
+              <div style={{fontWeight:'bold', padding:'15px'}}>
+                Action
+              </div>
+            </div>
     
+
+
           
-            <SubmittedRequest status={status} officerName={officerName} officerPost={officerPost} date={date} title={title}/>          
+            <a href='/facility-portal/view-memo-form'><SubmittedRequest status={status} officerName={officerName} officerPost={officerPost} date={date} title={title}/></a>          
             <SubmittedRequest status={status} officerName={officerName} officerPost={officerPost} date={date} title={title}/>          
             <SubmittedRequest status={status} officerName={officerName} officerPost={officerPost} date={date} title={title}/>          
             <SubmittedRequest status={status} officerName={officerName} officerPost={officerPost} date={date} title={title}/>          

@@ -14,12 +14,13 @@ import StyledMenu from "../components/MenuButton";
 import ActionButton from '../input/SplitButton'
 import SearchInput from '../input/SearchInput'
 import http from '../httpCommon.js'
+import TechnicalReview24 from './../components/pages/TechnicalReview24'
 import SelectInput from '../input/SelectInput'
 import TextInput from '../input/TextInput'
 import { Badge, Button, InputAdornment, MenuItem, Select, TextField } from '@material-ui/core';
 import { SearchOutlined } from '@material-ui/icons';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import LocationDetails from './.././components/LocationDetails';
+import LocationDetails from '../components/LocationDetails';
 import SplitButton from '../input/SplitButton';
 import CustomizedMenus from '../input/SplitsButton';
 import SplitsButton from '../input/SplitsButton';
@@ -27,8 +28,7 @@ import SplitsButton from '../input/SplitsButton';
 
 import ViewMemoForm from '../components/pages/ViewMemoForm';
 import IoMdClose from 'react-icons/io';
-import RequestReport from '../components/pages/RequestReport';
-import FrankForm from '../components/pages/FrankForm';
+import TechnicalReview16 from './TechnicalReview16';
 
 
 
@@ -123,9 +123,9 @@ const useStyles = makeStyles({
 
 
 
-function createData(items, requestInitiator, RequestType, InitiatedDate, ReviewStatus, Action) {
+function createData(items,RequestType, Cost, InitiatorsName, Agency, DateReceived, Action) {
 
-  return { items, requestInitiator, RequestType, InitiatedDate, ReviewStatus, Action };
+  return { items, RequestType, Cost, InitiatorsName , Agency, DateReceived, Action };
 }
 
 const chkStatus = (status) => {
@@ -155,11 +155,10 @@ export default function Tables() {
   const [showFormModal, setShowFormModal] = useState(false);
   const [details, setDetails] = useState([]);
   const [selectedRecord, setSelectedRecord] = useState([]);
-  const [fessModal, setFessModal] = useState(false);
-  const [secModal, setSecModal] = useState(false);
-  const [acceptClicked, setAcceptClicked] = useState(false);
-  const [revModal, setRevModal] = useState(false);
-  const [passModal, setPassModal] = useState(false);
+  let [requestID, setRequestID] = React.useState(null);
+  let [showModal16, setShowModal16] = React.useState(false);
+  let [show19, setShow19] = React.useState(false);
+
 
   var InitiatedRequest = 7786790;
   var CompletedRequest = 7786790;
@@ -167,18 +166,54 @@ export default function Tables() {
   var officerName = "John Hancock"
   var officerPost = "HOS"
   var date = '08.08.08'
-  var title = 'i can still recall our last summer'
+  var title = 'i can still recall our last summers'
   var post = 'officer 1'
   var ministry = 'ministry of Education'
   var numb = 78943
   var grade = 'Grade level 8'
   var descriptions = 'sorry its ovaaaaaaaaaaaaaaaaaa'
 
+  const sendRequestId=(e)=>{
+    const req = e.currentTarget.getAttribute('data-item')
+    setRequestID(req);
+    console.log(requestID);
+
+  }
+  const closeModal=()=>{
+    setShowFormModal(false);
+  }
+
+
+  const handleAccept = () =>{
+    setShowFormModal(true);
+  }
+
+  const handleCancel = () =>{
+    
+  }
+
+  const goLink = () =>{
+    setShowModal16(true);
+  }
+
+  const goLinkNot = () =>{
+    setShowModal16(false);
+  }
+
+  const doShow19 = () =>{
+    setShow19(true)
+  }
+
+  const unShow19 = () =>{
+    setShow19(false);
+  }
+
+
 
 
 
   const fetchData = async () => {
-    let url = 'Director-PendingApprovals' // 'Director-ReviewedApprovals';
+    let url = 'FinalApproval' // 'Director-ReviewedApprovals';
 
     console.log(url)
     http.get(url)
@@ -201,41 +236,11 @@ export default function Tables() {
 
   }, [])
 
-  const handleAccept = () => {
-    isRequest ? setSecModal(true) : setPassModal(true);
-  }
-
-  const openFessModal = () => {
-    setFessModal(true);
-  }
-
-  const closeFessModal = () => {
-    setFessModal(false);
-  }
-
-  const openRevModal = () => {
-    setRevModal(true);
-  }
-
-  const closeRevModal = () => {
-    setRevModal(false);
-  }
-
-  const closeSecModal = () => {
-    setSecModal(false);
-  }
-
-  const closePassModal = () => {
-    setSecModal(false);
-  }
-
-
-
 
 
 
   const fetchReviewedData = async () => {
-    let url = 'Director-ReviewedApprovals';
+    let url = 'FinalApprovalReview';
 
     console.log(url)
     http.get(url)
@@ -300,11 +305,11 @@ export default function Tables() {
 
   }
 
+ 
 
-  const sendRequestId = (e) => {
-    const req = e.currentTarget.getAttribute('data-item')
-    console.log(req)
-  }
+
+  
+  
 
 
 
@@ -327,26 +332,25 @@ export default function Tables() {
   const isGreen = { backgroundColor: 'light-green', borderRadius: '40px' }
   const isWhite = { backgroundColor: 'white', borderRadius: '40px' }
 
-
-
-
-
   if (isRequest) {
     return (
-      <div style={{ width: '100%' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <div>
-            <RequestReport show={secModal} handleClose={closeSecModal} />
-            <ViewMemoForm show={fessModal} handleClose={closeFessModal} />
-            <div>Good Morning</div>
-            <div style={{ fontSize: '23px' }}>Osagie Osaigbovo; #{numb}</div>
+      <div style={{width:'100%'}}>
+        <TechnicalReview24 show={showFormModal} handleClose={closeModal} />
+        <TechnicalReview16 show16={showModal16} handleClose16={goLinkNot} />
+         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div>
 
-            <div>{post} {ministry} | {grade}</div>
-          </div>
-          <div>
-            <LocationDetails />
-          </div>
+          <div>Good Morning</div>
+          <div style={{ fontSize: '23px'}}>Osagie Osaigbovo; #{numb}</div>
+
+          <div>{post} {ministry} | {grade}</div>
         </div>
+        <div>
+          <LocationDetails />
+        </div>
+      </div>
+      <div style={{ width: '100%' }}>
+        
         <div style={{ marginLeft: '46%', marginBottom: '1%' }} className='row'>
           <div style={{ marginRight: '107px', width: '150px' }}><SplitButton /></div>
           <SearchInput className='col-sm-3' style={{ width: '100%' }} />
@@ -386,44 +390,52 @@ export default function Tables() {
 
                     <TableRow>
                       <StyldTableCell align="left" style={{ border: '1px solid red' }}>Items</StyldTableCell>
-                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Request initiator</StyldTableCell>
                       <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Request Type</StyldTableCell>
-                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Initiated Date</StyldTableCell>
-                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Review Status</StyldTableCell>
+                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Cost</StyldTableCell>
+                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Initiators Name</StyldTableCell>
+                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Agency</StyldTableCell>
+                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Date Received</StyldTableCell>
                       <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Action</StyldTableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {rows.map((row) => (
-                      <TableRow key={row.requestId} data-item={row.requestId} onClick={sendRequestId}>
-                        <StyleTableCell style={{ fontSize: '10px' }} align="left" style={{ border: '1px solid lightgrey' }}><a href='#' className='allMyLinks' onClick={openFessModal}>{row.items}</a></StyleTableCell>
-                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.requestInitiator}</StyleTableCell>
-                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.requestType} </StyleTableCell>
-                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.initiatedDate}</StyleTableCell>
-                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}><div style={{ display: 'flex', flexDirection: 'row' }}><div ><LensIcon style={chkStatus(row.requestStatusId)} /></div><div>{row.reviewStatus}</div></div></StyleTableCell>
-                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}> <SplitsButton handleAccept={handleAccept} /></StyleTableCell>
-
+                      <TableRow key={row.requestId} data-item ={row.requestId} onClick={sendRequestId} >
+                        <StyleTableCell style={{ fontSize: '10px' }} align="left" style={{ border: '1px solid lightgrey' }}><a href='#' onClick={goLink}>{row.items}</a></StyleTableCell>
+                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.requestType}</StyleTableCell>
+                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.cost} </StyleTableCell>
+                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.initiatorsName}</StyleTableCell>
+                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.agency}</StyleTableCell>
+                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.dateReceived}</StyleTableCell>
+                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{<SplitsButton handleAccept={handleAccept} handleCancel={handleCancel} />}</StyleTableCell>
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
               </TableContainer>
-
-
             </Grid>
           </Grid>
         </div>
+      </div>
       </div>
     );
   }
   else {
     return (
       <div style={{ width: '100%' }}>
+         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div>
+
+          <div>Good Morning</div>
+          <div style={{ fontSize: '23px' }}>Osagie Osaigbovo; #{numb}</div>
+
+          <div>{post} {ministry} | {grade}</div>
+        </div>
+        <div>
+          <LocationDetails />
+        </div>
+      </div>
         <div style={{ marginLeft: '58%' }} className='row'>
-
-          <FrankForm  show={passModal} handleClose={closePassModal} />
-          <ViewMemoForm show={revModal} handleClose={closeRevModal} />
-
           <div style={{ margin: '7px' }}><StyledMenu className='col-sm-6' /></div>
           <SearchInput className='col-sm-3' />
         </div>
@@ -433,6 +445,7 @@ export default function Tables() {
             <Grid item sm={11}>
               <TableContainer component={Paper} style={{ width: '100%' }}>
                 <div className={classes.clDiv}>
+                  <ViewMemoForm show={show19} handleClose={unShow19}/>
                   <div>
                     Maintenance Request Management
                 </div>
@@ -474,25 +487,26 @@ export default function Tables() {
                   </TableHead>
                   <TableBody>
                     {rowsReviewed.map((row1) => (
-                      <TableRow key={row1.requestId} data-item={row1.requestId} onClick={sendRequestId}>
-                        <StyleTableCell align='left' component="th" scope="row"  ><a href='#' className='allMyLinks' onClick={openRevModal}>{row1.items}</a></StyleTableCell>
+                      <TableRow key={row1.requestId} data-item ={row1.requestId} onClick={sendRequestId}>
+                        <StyleTableCell align='left' component="th" scope="row"  ><a href='#' onClick={doShow19}>{row1.items}</a></StyleTableCell>
                         <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.requestType}</StyleTableCell>
                         <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.cost} </StyleTableCell>
-                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.evaluation}</StyleTableCell>
-                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.officerName}</StyleTableCell>
-                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}><LensIcon style={chkStatus(row1.reviewStatusId)} />{row1.reviewStatus}</StyleTableCell>
-                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}><SplitsButton handleAccept={handleAccept} /></StyleTableCell>
+                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.initiatorsName}</StyleTableCell>
+                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.agency}</StyleTableCell>
+                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.approvalType}</StyleTableCell>
+                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}><row1.dateTreated /></StyleTableCell>
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
               </TableContainer>
             </Grid>
-          </Grid>
-        </div>
-      </div >
+          </Grid> 
+        </div>     
+        </div >
     )
 
   }
+
 }
 

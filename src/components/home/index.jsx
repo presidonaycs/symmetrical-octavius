@@ -1,22 +1,59 @@
 /* eslint-disable max-len */
 import React, { Component } from 'react';
-
 import coatOfArm from '../../assets/images/coat-of-arm.png';
 import Footer from '../layouts/Footer';
+import http from './../../httpCommon'
 
 class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      email: '',
+      password:'',
+    };
   }
+
+  
+  handleOnPassChange = () =>{
+
+  }
+
+handleOnChange = () => {
+
+  }
+
 
   handleSignin = () => {
     const { history } = this.props;
+          let url = 'http://devsvr.edogoverp.com/facility/api/facilityrequest/'
+      console.log(url)
+      
+        console.log('wait')
+        http.post(url, {
+          
+
+        })
+          .then((response) => {
+            console.log('server')
+            console.log(response.data)
+            console.log("yess")
+    
+          })
+    
+      
+      
+    
+   
 
     history.push('/facility-portal');
   }
 
+ 
+
   render() {
+    
+  
+   
     return (
       <div className="w-100">
         <div className="banner">
@@ -28,10 +65,10 @@ class Home extends Component {
             </div>
             <div className="form">
               <div className="login-form-group">
-                <input type="email" placeholder="Email Address" />
+                <input type="email" placeholder="Email Address" onChange={this.handleOnChange}/>
               </div>
               <div className="login-form-group">
-                <input type="password" placeholder="Password" />
+                <input type="password" placeholder="Password" onChange={this.handleOnPassChange}/>
               </div>
               <button className="m-b-10" type="button" onClick={this.handleSignin}>LOGIN</button>
               <a href>Forget password?</a>

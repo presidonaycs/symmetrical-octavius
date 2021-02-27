@@ -39,10 +39,9 @@ const useStyles = makeStyles({
 
 })
 
-export default function MemoSide() {
+export default function MemoSide({onChange}) {
 
     const classes = useStyles();
-    const [requestType, setRequestType] = React.useState('');
     const initiationDate = 'January 19, 2020';
     const initiator = 'Osagie Osaigbovo';
     const viewMemo = 'August 1, 2019';
@@ -51,9 +50,7 @@ export default function MemoSide() {
     const approval = [];
     const position = {};
 
-    const handleChange = (event) => {
-        setRequestType(event.target.value);
-    };
+    
 
 
 
@@ -72,20 +69,20 @@ export default function MemoSide() {
                                     <Select
                                         labelId="demo-simple-select-placeholder-label-label"
                                         id="demo-simple-select-placeholder-label"
-                                        value={requestType}
-                                        onChange={handleChange}
+                                        
+                                        onSelect={onChange}
                                         displayEmpty
                                         disableUnderline
                                         style={{ width: '20vw' }}
                                         className={classes.selectEmpty}
                                     >
-                                        <MenuItem value="">
+                                        <MenuItem value={'Facility Maintenance'} >
                                             <span style={{ fontSize: '16px' }}>Facility Maintenance</span>
                                         </MenuItem>
-                                        <MenuItem value={10}>Ten</MenuItem>
-                                        <MenuItem value={20}>Twenty</MenuItem>
-                                        <MenuItem value={30}>Thirty</MenuItem>
-                                        <MenuItem value={2}>Energy Management</MenuItem>
+                                        <MenuItem value={'Energy & Power Maintenance'}>Energy & Power Maintenance</MenuItem>
+                                        <MenuItem value={'Office Equipment'}>Office Equipment</MenuItem>
+                                        <MenuItem value={'Ofice Space Request'}>Office Space Request</MenuItem>
+                                        <MenuItem value={'Work Space Management'}>Work Space Management</MenuItem>
                                     </Select>
                                 </FormControl>
                             </Box>

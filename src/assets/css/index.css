@@ -225,7 +225,11 @@ div.banner {
   background-color: #1C811C55;
   background-position-y: 20%;
 }
-
+.formImage{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
 div.banner .login {
   margin: 0 auto;
   max-width: 600px;

@@ -22,7 +22,7 @@ const Bbutton = withStyles({
     }
 })(Button)
 
-export default function SplitsButton() {
+export default function SplitsButton(props) {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
   const [selectedIndex, setSelectedIndex] = React.useState(1);
@@ -52,7 +52,7 @@ export default function SplitsButton() {
     <Grid container direction="column" alignItems="center">
       <Grid item xs={12}>
         <ButtonGroup variant="contained" color="primary" ref={anchorRef} aria-label="split button">
-          <Bbutton onClick={handleClick}>{options[selectedIndex]}</Bbutton>
+          <Bbutton onClick={options[selectedIndex]==='Accept' ? props.handleAccept : props.handleCancel}>{options[selectedIndex]}</Bbutton>
           <Button
             style={{height:'25px', width:'6px', borderRadius:'0px'}}
             backgroundColor='green'

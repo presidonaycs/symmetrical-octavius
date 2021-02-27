@@ -27,8 +27,6 @@ import SplitsButton from '../input/SplitsButton';
 
 import ViewMemoForm from '../components/pages/ViewMemoForm';
 import IoMdClose from 'react-icons/io';
-import RequestReport from '../components/pages/RequestReport';
-import FrankForm from '../components/pages/FrankForm';
 
 
 
@@ -155,11 +153,6 @@ export default function Tables() {
   const [showFormModal, setShowFormModal] = useState(false);
   const [details, setDetails] = useState([]);
   const [selectedRecord, setSelectedRecord] = useState([]);
-  const [fessModal, setFessModal] = useState(false);
-  const [secModal, setSecModal] = useState(false);
-  const [acceptClicked, setAcceptClicked] = useState(false);
-  const [revModal, setRevModal] = useState(false);
-  const [passModal, setPassModal] = useState(false);
 
   var InitiatedRequest = 7786790;
   var CompletedRequest = 7786790;
@@ -167,7 +160,7 @@ export default function Tables() {
   var officerName = "John Hancock"
   var officerPost = "HOS"
   var date = '08.08.08'
-  var title = 'i can still recall our last summer'
+  var title = 'i can still recall our last summers'
   var post = 'officer 1'
   var ministry = 'ministry of Education'
   var numb = 78943
@@ -200,36 +193,6 @@ export default function Tables() {
     fetchData()
 
   }, [])
-
-  const handleAccept = () => {
-    isRequest ? setSecModal(true) : setPassModal(true);
-  }
-
-  const openFessModal = () => {
-    setFessModal(true);
-  }
-
-  const closeFessModal = () => {
-    setFessModal(false);
-  }
-
-  const openRevModal = () => {
-    setRevModal(true);
-  }
-
-  const closeRevModal = () => {
-    setRevModal(false);
-  }
-
-  const closeSecModal = () => {
-    setSecModal(false);
-  }
-
-  const closePassModal = () => {
-    setSecModal(false);
-  }
-
-
 
 
 
@@ -301,10 +264,7 @@ export default function Tables() {
   }
 
 
-  const sendRequestId = (e) => {
-    const req = e.currentTarget.getAttribute('data-item')
-    console.log(req)
-  }
+
 
 
 
@@ -330,14 +290,12 @@ export default function Tables() {
 
 
 
-
   if (isRequest) {
     return (
       <div style={{ width: '100%' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>
-            <RequestReport show={secModal} handleClose={closeSecModal} />
-            <ViewMemoForm show={fessModal} handleClose={closeFessModal} />
+
             <div>Good Morning</div>
             <div style={{ fontSize: '23px' }}>Osagie Osaigbovo; #{numb}</div>
 
@@ -352,8 +310,9 @@ export default function Tables() {
           <SearchInput className='col-sm-3' style={{ width: '100%' }} />
         </div>
         <div style={{ display: 'flex' }} className='row'>
+          {/* <ViewMemoForm></ViewMemoForm> */}
           <Grid container justify="center">
-            <Grid item sm={11}>
+            <Grid item sm={10}>
               <TableContainer component={Paper} style={{ width: '100%' }}>
                 <div className={classes.clDiv}>
                   <div style={{ fontWeight: '900', fontFamily: 'auto' }}>
@@ -395,21 +354,19 @@ export default function Tables() {
                   </TableHead>
                   <TableBody>
                     {rows.map((row) => (
-                      <TableRow key={row.requestId} data-item={row.requestId} onClick={sendRequestId}>
-                        <StyleTableCell style={{ fontSize: '10px' }} align="left" style={{ border: '1px solid lightgrey' }}><a href='#' className='allMyLinks' onClick={openFessModal}>{row.items}</a></StyleTableCell>
+                      <TableRow key={row.requestId} >
+                        <StyleTableCell style={{ fontSize: '10px' }} align="left" style={{ border: '1px solid lightgrey' }}><a href='#'>{row.items}</a></StyleTableCell>
                         <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.requestInitiator}</StyleTableCell>
                         <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.requestType} </StyleTableCell>
                         <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.initiatedDate}</StyleTableCell>
                         <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}><div style={{ display: 'flex', flexDirection: 'row' }}><div ><LensIcon style={chkStatus(row.requestStatusId)} /></div><div>{row.reviewStatus}</div></div></StyleTableCell>
-                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}> <SplitsButton handleAccept={handleAccept} /></StyleTableCell>
+                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}> <SplitsButton /></StyleTableCell>
 
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
               </TableContainer>
-
-
             </Grid>
           </Grid>
         </div>
@@ -420,17 +377,13 @@ export default function Tables() {
     return (
       <div style={{ width: '100%' }}>
         <div style={{ marginLeft: '58%' }} className='row'>
-
-          <FrankForm  show={passModal} handleClose={closePassModal} />
-          <ViewMemoForm show={revModal} handleClose={closeRevModal} />
-
           <div style={{ margin: '7px' }}><StyledMenu className='col-sm-6' /></div>
           <SearchInput className='col-sm-3' />
         </div>
         <div style={{ display: 'flex' }} className='row'>
 
           <Grid container sm={12} justify='center' alignItems='center'>
-            <Grid item sm={11}>
+            <Grid item sm={10}>
               <TableContainer component={Paper} style={{ width: '100%' }}>
                 <div className={classes.clDiv}>
                   <div>
@@ -474,23 +427,23 @@ export default function Tables() {
                   </TableHead>
                   <TableBody>
                     {rowsReviewed.map((row1) => (
-                      <TableRow key={row1.requestId} data-item={row1.requestId} onClick={sendRequestId}>
-                        <StyleTableCell align='left' component="th" scope="row"  ><a href='#' className='allMyLinks' onClick={openRevModal}>{row1.items}</a></StyleTableCell>
+                      <TableRow key={row1.requestId}>
+                        <StyleTableCell align='left' component="th" scope="row"  ><a href='#'>{row1.items}</a></StyleTableCell>
                         <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.requestType}</StyleTableCell>
                         <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.cost} </StyleTableCell>
                         <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.evaluation}</StyleTableCell>
                         <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.officerName}</StyleTableCell>
-                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}><LensIcon style={chkStatus(row1.reviewStatusId)} />{row1.reviewStatus}</StyleTableCell>
-                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}><SplitsButton handleAccept={handleAccept} /></StyleTableCell>
+                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}><LensIcon style={chkStatus(row1.reviewStatusId)}/>{row1.reviewStatus}</StyleTableCell>
+                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}><SplitsButton /></StyleTableCell>
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
               </TableContainer>
             </Grid>
-          </Grid>
-        </div>
-      </div >
+          </Grid> 
+        </div>     
+        </div >
     )
 
   }

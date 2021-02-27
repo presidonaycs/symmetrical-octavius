@@ -85,11 +85,15 @@ const TextArea = withStyles({
 })(TextField)
 
 
-const MainMemo = ({ history }) => {
+const MainMemo = ({ history, onChangeSubject, onChangeDetails }) => {
     useEffect(() => {
         window.scrollTo(0, 0);
         document.title = 'EDSG - Employee Details';
     }, []);
+
+    const handleSubmit=()=>{
+        
+    }
 
     return (
         <Box flexDirection='column' style={{ maxWidth: '100%' }, { padding: '20px', border:'1px  red',  }} fontSize='62.5%' >
@@ -107,6 +111,8 @@ const MainMemo = ({ history }) => {
                         }}
                         style={{ width: '100%' }, { backgroundColor: 'white' }, { margin: '0px' }}
                         fullWidth
+                        onChange={onChangeSubject}
+                        value={onChangeSubject}
 
 
                     />
@@ -126,7 +132,8 @@ const MainMemo = ({ history }) => {
                         }}
                         InputProps={{ disableUnderline: true }}
                         fullWidth
-
+                        onChange={onChangeDetails}
+                        value={onChangeDetails}
                     />
                 </Box>
                 <Divider />
@@ -148,8 +155,8 @@ const MainMemo = ({ history }) => {
                     Save Request
                 </BooButton>
             </Box>
-            <Box  style={{justifyContent:'flex-end'}}>
-                <BooButton className='btn-block' style={{marginLeft:'0px', maxWidth:'100%', marginRight:'0px'}} >
+            <Box style={{justifyContent:'flex-end'}}>
+                <BooButton className='btn-block' style={{marginLeft:'0px', maxWidth:'100%', marginRight:'0px'}}  onClick={handleSubmit}>
                     Submit Request
                 </BooButton>
             </Box>

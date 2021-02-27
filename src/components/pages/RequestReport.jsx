@@ -5,6 +5,8 @@ import { ReactComponent as Logo } from "./../iconComponent/upload.svg"
 import LensIcon from '@material-ui/icons/Lens';
 import Brightness1Icon from '@material-ui/icons/Brightness1';
 import { TextareaAutosize } from '@material-ui/core';
+import { IoMdClose } from 'react-icons/io';
+
 import imaee from './../../images/WIN_20190309_20_47_24_Pro.jpg'
 import imaef from './../../images/WIN_20190309_20_48_16_Pro.jpg'
 import imaeg from './../../images/WIN_20190309_20_48_22_Pro.jpg'
@@ -144,7 +146,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const RequestReport = () => {
+const RequestReport = (props) => {
   const classes = useStyles();
 
   const [requestType, setRequestType] = React.useState('');
@@ -167,7 +169,7 @@ const RequestReport = () => {
   const position = {};
   const LastDate = 'Wednesday August 12 2020';
   const [upload, setUpload] = useState(null);
-  const [images, setImages] = useState(List)
+  const [images, setImages] = useState(List);
 
   
 
@@ -179,110 +181,123 @@ console.log(upload)
 
 
 
-
+if(props.show){
   return (
 
-
+    <div className="overlay">
+    <IoMdClose className="close-btn pointer" onClick={props.handleClose} />
+    <div className="modal-box" style={{ width: '80vw', fontFamily: 'auto', backgroundColor: 'transparent', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
     <Grid container style={{ display: 'flex' }} alignItems='center' justify='center'  >
 
-      <Grid item sm={7} >
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <div >
-            <Paper style={{ marginTop: '147px' }, { padding: '20px' }}>
-              <div style={{ width: '100%' }}>
-                <TextField
-                  id="outlined-details-static"
-                  label="Subject:"
-                  multiline
-                  InputProps={{ disableUnderline: true }}
-                  rows={2}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  style={{ width: '100%' }, { backgroundColor: 'white' }, { margin: '0px' }}
-                  fullWidth
+<Grid item sm={7} >
+  <div style={{ display: 'flex', flexDirection: 'column' }}>
+    <div >
+      <Paper style={{ marginTop: '147px' }, { padding: '20px' }}>
+        <div style={{ width: '100%' }}>
+          <TextField
+            id="outlined-details-static"
+            label="Subject:"
+            multiline
+            InputProps={{ disableUnderline: true }}
+            rows={2}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            style={{ width: '100%' }, { backgroundColor: 'white' }, { margin: '0px' }}
+            fullWidth
 
 
-                />
-              </div>
-              <Divider />
-
-              <div>
-                <TextField
-                  id="outlined-details-stati"
-                  label="Details:"
-                  multiline
-                  cols={190}
-                  rows={20}
-                  style={{ width: '100%' }, { backgroundColor: 'white' }}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  InputProps={{ disableUnderline: true }}
-                  fullWidth
-
-                />
-              </div>
-                          Last Maintenance Date: {LastDate}
-              <Divider />
-
-              <Container style={{ margin: '16px 0px 16px 0px' }}>
-                {upload.map((item) => (
-                  <div style={{ margin: '16px 0px 16px 0px' }}>
-                    <div>{item.fileName}</div>
-                    <div><img src={item.filePath} alt="John" style={{ width: '100%' }}></img></div>
-                  </div>
-                ))}
-              </Container>
-
-            </Paper>
-
-          </div>
-
+          />
         </div>
-        <div style={{ backgroundColor: 'lightgreen', padding: '12px', fontWeight: 'bold', fontFamily: 'auto' }}>
-          Add notes
-        </div>
-        <Paper>
-        <TextField
-          id="outlined-details-stati"
-          multiline
-          cols={30}
-          rows={10}
-          style={{ width: '100%', fontSize: '5px' }, { backgroundColor: 'white', padding: '12px' }}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          InputProps={{ disableUnderline: true }}
-          fullWidth
+        <Divider />
 
-        />
-        <Divider variant='middle' />
-        <div style={{display:'flex',justifyContent:'space-between'}}>
-          <div>
-          <BootstrapButton
-            type='file'
-            variant='contained'
-            component='label'
-            startIcon={<SvgIcon style={{ marginTop: '9px' }}>
-              <Logo />
-            </SvgIcon>}
-          >
-            Upload Supporting Documents
-              <input type='file' accept="image/*" hidden onChange={handleOnUpload}></input>
-          </BootstrapButton>
-          </div>
-          <div>
-          <BooButton >Submit</BooButton>
-          <BooButton style={{backgroundColor:'grey'}}>Clear Entry</BooButton>
-          <BooButton style={{backgroundColor:'silver', color:'black'}}>Close</BooButton>
-          </div>
+        <div>
+          <TextField
+            id="outlined-details-stati"
+            label="Details:"
+            multiline
+            cols={190}
+            rows={20}
+            style={{ width: '100%' }, { backgroundColor: 'white' }}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            InputProps={{ disableUnderline: true }}
+            fullWidth
+
+          />
         </div>
-        </Paper>
-      </Grid>
-    </Grid>
+                    Last Maintenance Date: {LastDate}
+        <Divider />
+
+        <Container style={{ margin: '16px 0px 16px 0px' }}>
+          {List.map((item) => (
+            <div style={{ margin: '16px 0px 16px 0px' }}>
+              <div>{item.fileName}</div>
+              <div><img src={item.filePath} alt="John" style={{ width: '100%' }}></img></div>
+            </div>
+          ))}
+        </Container>
+
+      </Paper>
+
+    </div>
+
+  </div>
+  <div style={{ backgroundColor: 'lightgreen', padding: '12px', fontWeight: 'bold', fontFamily: 'auto' }}>
+    Add notes
+  </div>
+  <Paper>
+  <TextField
+    id="outlined-details-stati"
+    multiline
+    cols={30}
+    rows={10}
+    style={{ width: '100%', fontSize: '5px' }, { backgroundColor: 'white', padding: '12px' }}
+    InputLabelProps={{
+      shrink: true,
+    }}
+    InputProps={{ disableUnderline: true }}
+    fullWidth
+
+  />
+  <Divider variant='middle' />
+  <div style={{display:'flex',justifyContent:'space-between'}}>
+    <div>
+    <BootstrapButton
+      type='file'
+      variant='contained'
+      component='label'
+      startIcon={<SvgIcon style={{ marginTop: '9px' }}>
+        <Logo />
+      </SvgIcon>}
+    >
+      Upload Supporting Documents
+        <input type='file' accept="image/*" hidden onChange={handleOnUpload}></input>
+    </BootstrapButton>
+    </div>
+    <div>
+    <BooButton >Submit</BooButton>
+    <BooButton style={{backgroundColor:'grey'}}>Clear Entry</BooButton>
+    <BooButton style={{backgroundColor:'silver', color:'black'}}>Close</BooButton>
+    </div>
+  </div>
+  </Paper>
+</Grid>
+</Grid>
+    </div>
+
+  </div>
+
+
+
+    
+    
 
   );
+}
+else 
+  return "";
 };
 
 export default RequestReport;
