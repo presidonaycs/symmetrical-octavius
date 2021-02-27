@@ -4,6 +4,7 @@
   box-sizing: border-box;
 }
 
+
 body {
   margin: 0;
   font-size: 0.9rem;
@@ -216,6 +217,10 @@ footer {
   height: 58px;
 }
 
+.frank .ant-form-item{
+  margin:0;
+}
+
 div.banner {
   width: 100%;
   padding: 130px 0 100px;
@@ -394,4 +399,8 @@ div.bottom ul {
 
 .MuiButton-containedPrimary{
   margin-right: 6px;
+}
+
+.col-sm-3{
+  width: 2px;
 }

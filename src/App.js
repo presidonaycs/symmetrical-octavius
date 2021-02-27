@@ -1,19 +1,41 @@
 import React from 'react';
-import logo from './logo.svg';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
+
+import ReactNotifications from 'react-notifications-component';
+
+import Homepage from './components/home';
+import ProtectedRoute from './routes/ProtectedRoute';
+import UserPortal from './components/UserPortal';
+
 import './App.css';
-import RequestMaintenance from './pages/RequestMaintenance';
-import Tables from './components/Tables';
-import MaintenanceRequestManagement from './pages/MaintenanceRequestManagement';
-import Header1 from './components/Header1';
+
+
+
+
+
+
+
 
 
 
 function App() {
-  return (
+
+const history = createBrowserHistory();
+return (
+  <Router history={history}>
     <div>
-      <RequestMaintenance />
+      <ReactNotifications />
+      <Switch>
+        <Route path="/" exact component={Homepage} />
+
+        <ProtectedRoute path="/facility-portal/" component={UserPortal} />
+        <Route render={() => <h1>Error 404. Page not found.</h1>} />
+      </Switch>
     </div>
-  );
+  </Router>
+);
 }
+
 
 export default App;
