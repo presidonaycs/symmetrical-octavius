@@ -20,6 +20,13 @@ div, header, section {
   margin: 0;
 }
 
+.ant-table .ant-table-thead>tr>th {
+  background-color: #43425D;
+  color:white
+}
+.ant-input-affix-wrapper>input[type=text] {
+  background-color: #D5FFD5;
+}
 button, input {
   border: none;
   outline: none;
