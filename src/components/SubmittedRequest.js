@@ -17,31 +17,31 @@ export default function SubmittedRequest(props) {
    
 
     
-        if(props.status === 1){
+        if(props.status === 'pending'){
             col = "yellow"
             message = "currently with"
     }
             
-        else if(props.status === 2){
+        else if(props.status === 'Approved'){
              col = "red"
              message = "Rejected by"
             }
            
         else{ 
-            col = "green"
-            message = "Approved"
+            col = "#FDCC29"
+            message = "Currently with"
         }
     
 
 
     return (
-        <div style={{display:'flex', justifyContent:'space-between', backgroundColor:'white', alignItems:'center', margin:"13px 0 13px 0", minHeight:'54px'}}>
-            <div style={{ width:'600px',display:'flex', wordBreak:'break-word', fontSize:'15px', marginLeft:'16px'} }>
-                {props.title}
+        <div style={{display:'flex', justifyContent:'space-between', backgroundColor:'white', alignItems:'center', minHeight:'54px'}}>
+            <div style={{ minWidth:'600px',display:'flex', wordBreak:'break-word', fontSize:'15px', marginLeft:'16px'} }>
+                <a onClick={props.handlePop}> {props.title} </a>
             </div>
-            <div style={{display:'flex', justifyContent:'flex-end'}}>
+            <div style={{display:'flex', justifyContent:'space-between'}}>
                 <div style={{marginRight:"24px"}}>
-                    <span><LensIcon style={{color:col, fontSize:'14px'}}/></span> {message} <span style={{fontWeight:'bolder'}}>{props.officerName}</span> ({props.officerPost})
+                    <span><LensIcon style={{color:col, font:"normal normal normal 17px/25px Avenir"}}/></span> {message} <span style={{fontWeight:'bolder'}}>{props.officerName}</span>
                 </div>
                 <Divider orientation='vertical' flexItem style={{marginLeft:"15"}}/>
                 <div >

@@ -24,7 +24,7 @@ function FrankForm(props) {
       <IoMdClose className="close-btn pointer" onClick={props.handleClose} />
       <div className="modal-box" style={{ width: '100%', fontFamily: 'auto', backgroundColor: 'transparent', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         return(
-       <div className="frank">
+       <div className="frank" style={{width:"100%"}}>
           <Form
             style={{ backgroundColor: "hsla(120,100%,50%,0)", width: "100%", margin: "0 auto" }}
             name="basic"
@@ -64,7 +64,7 @@ function FrankForm(props) {
               </div>
              
               <div style={{ margin: "10px", marginLeft: "auto", marginTop:"0" }}>
-                <CloseOutlined style={{ color: "white", backgroundColor: "red", fontSize: "26px", }} />
+                <CloseOutlined style={{ color: "white", backgroundColor: "red", fontSize: "26px", }} onClick={props.handleClosed}/>
               </div>
             </div>
 

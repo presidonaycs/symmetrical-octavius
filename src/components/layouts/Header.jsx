@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 // import { Link } from 'react-router-dom';
 import { MdNotifications } from 'react-icons/md';
 import { TiArrowSortedDown } from 'react-icons/ti';
-
 import UserAvater from '../../assets/images/user-avater.png';
+import { formatFileUrl } from '../../utility/general';
 import HeaderSearch from '../inputs/HeaderSearch';
 
-import { formatFileUrl } from '../../utility/general';
+
 
 const Header = ({ history, details = {}, navList = [] }) => {
   const [userPix, setUserPix] = useState('');

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import dom from 'react-dom';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
@@ -17,6 +16,9 @@ import SearchInput from '../inputs/SearchInput';
 import SplitButton from '../../input/SplitButton';
 import Page10 from './Page10';
 import ViewMemoForm from './ViewMemoForm'
+import { Table } from 'antd';
+import Page10Final from './../Page10Final'
+
 
 
 
@@ -146,11 +148,18 @@ const FacMaintenance7 = () => {
   let [isCount, setIsCount] = React.useState('')
   const [showFormModal, setShowFormModal] = useState(false);
   const [details, setDetails] = useState([]);
+  var useStateRef=require('react-usestateref')
   const [selectedRecord, setSelectedRecord] = useState([]);
   const [rows, setRows] = useState([]);
   let [requestID, setRequestID] = React.useState(null);
   var [formState, setFormState] = useState(false);
   var [memoState, setMemoState] = useState(false);
+  var [rows1, setRow1, ref1] = useStateRef([]);
+  let [show, setShow] = useState(false);
+  var [clickedRequestId, setClickedRequestId, ref] = useStateRef(0);
+  let [showModal, setShowModal, reff] = useStateRef(false)
+
+  let [rowValues, setRowValues, recRef] = useStateRef({})
 
 
   var InitiatedRequest = 7786790;
@@ -166,18 +175,84 @@ const FacMaintenance7 = () => {
   var grade = 'Grade level 8'
   var descriptions = 'sorry its ovaaaaaaaaaaaaaaaaaa'
 
-  let sendRequestId=(e)=>{
-    const req = e.currentTarget.getAttribute('data-item')
-    setRequestID(req);
-    setFormState(true)
-    
-    console.log(requestID);
 
+
+
+
+  let [responseData, setResponseData] = useState({data: {
+    requestId:  0,
+    memoInitiationDate: "",
+    memoInitiator: "",
+    costImplication: 0,
+    status: "",
+    currentApprovalStage: 0,
+    subject: "",
+    details: "",
+    lastMaintainanceDate: "",
+    approvalJourneyResponse: [
+     
+    ],
+    uploadedDocuments: [
+    
+    ]
+  }
+  })
+  
+
+  
+  
+
+  const fetchDatas = async () => {
+    let url = 'View-Memo-Details' // 'Director-ReviewedApprovals';
+    console.log('hey')
+    console.log(url)
+    console.log(recRef.current)
+    if(recRef.current===undefined)
+    {
+      console.log('hey again')
+    }
+    else{
+      console.log('hey again')
+      http.get(url, {
+        params: {
+         
+          requestID:recRef.current
+        }
+      })
+        .then((response) => {
+          console.log('server')
+          console.log(response.data)
+        //  setError(response.data.code)
+          if(response.data.data === null){
+            console.log('la la la')
+          }
+          else{
+            setResponseData(response.data.data)
+            
+
+          }
+
+ 
+        })
+  
+  
+    }
+     }
+  useEffect(() => {
+     fetchDatas()
+
+   }, [])
+
+  
+
+  let handleClose = () =>{
+    setShow(false);
   }
 
-  let raiseMemo =(e)=>{
-    const req = e.currentTarget.getAttribute('data-item')
-    setRequestID(req);
+  let raiseMemo =()=>{
+    console.log(responseData)
+    console.log(recRef)
+
     setMemoState(true)
     
     console.log(requestID);
@@ -190,12 +265,16 @@ const FacMaintenance7 = () => {
   let closeMemo = () =>{
     setMemoState(false);
   }
+let sendRequestId=(e)=>{
+    setShow(true)
+   
+  }
 
   const fetchData = async () => {
     let url = 'Technical-Review' 
   
     console.log(url)
-    http.get(url)
+   await http.get(url)
       .then((response) => {
         console.log('server')
         console.log(response.data)
@@ -212,14 +291,92 @@ const FacMaintenance7 = () => {
     fetchData()
   
   }, [])
+
+  const column = [
+    {
+      title: 'Items',
+      dataIndex: 'items',
+      render: text => <a onClick={raiseMemo}>{text}</a>,
+    },
+    {
+      title: 'Request Initiator',
+      className: 'column-money',
+      dataIndex: 'requestInitiator',
+    },
+    
+    {
+      title: 'Agency',
+      dataIndex: 'agency',
+    },
+    {
+      title: 'Amount',
+      className: 'column-money',
+      dataIndex: 'amount',
+    },
+    {
+      title: 'Subject',
+      className: 'ant-design-column-id',
+      dataIndex: 'subject',
+      visible: 'false'
+      
+    },
+    {
+      title: 'Details',
+      className: 'ant-design-column-id',
+      dataIndex: 'details',
+      visible: 'false'
+      
+    },
+    {
+      title: 'Request Id',
+      className: 'ant-design-column-id',
+      dataIndex: 'requestId',
+      visible: 'false'
+      
+    },
+
+    {
+      title: 'Payment Status',
+      dataIndex: 'paymentStatus',
+    },
+    {
+      title: 'Date Received',
+      dataIndex: 'dateReceived',
+    },
+    {
+      title: 'Action',
+      dataIndex: 'action',
+      render:(text,record,index) => <BootstrapButton onClick={(e)=>{ setShow(true)
+        
+        }}  >{text}</BootstrapButton>,
+    }
+  ];
+
+  let data = rows.map((it) => (
+    {
+      key: it.requestId,
+      items: it.items,
+      requestInitiator: it.requestInitiator,
+      agency: it.agency,
+      amount: it.amount,
+      subject: it.subject,
+      details: it.details,
+      requestID: it.requestId,
+      paymentStatus: it.paymentStatus,
+      dateReceived: it.dateReceived,
+      action: 'Review'
+
+    }
+  ))
   
 
 
   return (
     
   
-
+    
     <div style={{ width: '100%' }}>
+      
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <div>
 
@@ -247,41 +404,29 @@ const FacMaintenance7 = () => {
                 </div>
               </Badge>
             </div>
-            <Table className={classes.table} aria-label="simple table" size='small'>
-              <TableHead>
+            <Table onRow={(record, rowIndex) => {
+                  console.log(record.key)
+                  console.log(record)
 
-                <TableRow>
-                  <StyldTableCell align="left" colSpan={5} style={{ border: '1px solid #b8b1b7' }}>Items</StyldTableCell>
-                  <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Request Initiator</StyldTableCell>
-                  <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Agency </StyldTableCell>
-                  <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Amount </StyldTableCell>
-                  <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Payment Status</StyldTableCell>
-                  <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Date Recieved</StyldTableCell>
-                  <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Action</StyldTableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.map((row) => (
-                  <TableRow key={row.requestId} data-item ={row.requestId}>
-                    <TableCell align='left' component="th" scope="row" colSpan={5} style={{textDecoration:'underline'}} onClick={raiseMemo}>
-                      {row.items}
-                    </TableCell>
-                    <TableCell align="left" style={{ border: '1px solid lightgrey' }} >{row.requestInitiator}</TableCell>
-                    <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.agency} </TableCell>
-                    <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.amount}</TableCell>
-                    <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.paymentStatus}</TableCell>
-                    <TableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.dateReceived}</TableCell>
-                    <TableCell align="left" style={{ border: '1px solid lightgrey', padding:'2px' }}><BootstrapButton onClick={sendRequestId}>Review</BootstrapButton></TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                  return {
+                      onClick: event => setRowValues(record),
+                      
+                     
+                  };
+                  
+                }}
+            
+                    columns = { column }
+                    dataSource = { data }
+                    bordered
+                    
+                  />
           </TableContainer>
         </Grid>
       </Grid>
-        <ViewMemoForm showMemoModal = {memoState} handleCloseMemo = {closeMemo}/>
-        <Page10 showFormModal = {formState} handleClose= {closeModal}/>
-    </div>
+        <ViewMemoForm show = {memoState} handleClose = {closeMemo} row={rowValues}/>
+        <Page10Final show={show} handleClose={handleClose} row={rowValues} />    
+        </div>
   
   );
 };

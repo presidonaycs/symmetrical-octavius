@@ -204,6 +204,7 @@ body.mobile .page-sidebar .sidebar-menu .menu-items li.open>a {
 .page-sidebar .sidebar-menu .menu-items>li .icon {
   width: 20px;
   height: auto;
+  color:#C1C8D8;
 }
 .page-sidebar .sidebar-menu .menu-items>li>a {
   font-family: Arial, sans-serif;

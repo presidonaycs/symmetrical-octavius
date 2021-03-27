@@ -2,7 +2,10 @@
 import React, { Component } from 'react';
 import coatOfArm from '../../assets/images/coat-of-arm.png';
 import Footer from '../layouts/Footer';
-import http from './../../httpCommon'
+import http from "./../../httpAuth"
+import Cookies from "universal-cookie"
+
+
 
 class Home extends Component {
   constructor(props) {
@@ -12,40 +15,62 @@ class Home extends Component {
       password:'',
     };
   }
-
+ 
+  handle=()=>{
   
+  }
+
   handleOnPassChange = () =>{
 
   }
 
-handleOnChange = () => {
-
+handleOnChange = (e) => {
+    this.setState({email:e.target.value})
   }
 
-
-  handleSignin = () => {
+  handleSignin = async () => {
     const { history } = this.props;
-          let url = 'http://devsvr.edogoverp.com/facility/api/facilityrequest/'
+    history.push('/adminstore-portal')
+    const cookies = new Cookies();
+          let url = "get-current-User"
+
       console.log(url)
       
         console.log('wait')
-        http.post(url, {
-          
+       await http.get(url, {
+          params:{
+            email:this.state.email
+          }
 
         })
           .then((response) => {
             console.log('server')
             console.log(response.data)
             console.log("yess")
+            cookies.set("mda", response.data.data?.mda===undefined?'':response.data.data?.mda, {path:"/"})
+            cookies.set("firstName", response.data.data?.firstName===undefined?'':response.data.data?.firstName, {path:"/"})
+            cookies.set("lastName", response.data.data?.lastName===undefined?'':response.data.data?.lastName, {path:"/"})
+            cookies.set("token", response.data?.token===undefined?'':response.data.data?.token, {path:"/"})
+            cookies.set("staffNumber", response.data.data?.staffNumber===undefined?'':response.data.data?.staffNumber, {path:"/"})
+            cookies.set("lastLoginTime", response.data.data?.lastLoginTime===undefined?'':response.data.data?.lastLoginTime, {path:"/"})
+            history.push('/adminstore-portal')
+
+
+
+
+
+
+
+
+
     
           })
     
       
-      
-    
+      console.log(cookies.get("lastName"))
+      console.log(cookies.get("token"))
    
-
-    history.push('/facility-portal');
+      
   }
 
  

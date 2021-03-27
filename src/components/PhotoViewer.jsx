@@ -4,11 +4,18 @@ import Photo from './../components/Photo'
 
 const PhotoViewer = props => {
 
+    console.log(props.docs +"docs")
     const displayPhotos = () => {
-        return props.docs.map(photo => {
-            
-            return <Photo path={photo.filePath} key={photo.id}/>;
-        })
+        if (props.docs===undefined||props.docs===null)
+        {
+           return "";
+        }
+else{
+    return props.docs.map(photo => {
+        return <Photo path={photo.filePath} key={photo.id}/>
+    })
+}
+       
 
     }
     return (

@@ -6,10 +6,10 @@ import LensIcon from '@material-ui/icons/Lens';
 import Brightness1Icon from '@material-ui/icons/Brightness1';
 import { TextareaAutosize } from '@material-ui/core';
 import { IoMdClose } from 'react-icons/io';
-
 import imaee from './../../images/WIN_20190309_20_47_24_Pro.jpg'
 import imaef from './../../images/WIN_20190309_20_48_16_Pro.jpg'
 import imaeg from './../../images/WIN_20190309_20_48_22_Pro.jpg'
+import httpCommon from '../../httpCommon';
 
 
 
@@ -151,9 +151,7 @@ const RequestReport = (props) => {
 
   const [requestType, setRequestType] = React.useState('');
 
-  const handleChange = (event) => {
-    setRequestType(event.target.value);
-  };
+  
 
        var List = [{ fileName: "Picture of Directors office AC", filePath: imaee },
       { fileName: "Picture of reception/Waiting area", filePath: imaef },
@@ -169,15 +167,25 @@ const RequestReport = (props) => {
   const position = {};
   const LastDate = 'Wednesday August 12 2020';
   const [upload, setUpload] = useState(null);
-  const [images, setImages] = useState(List);
+  var [images, setImages] = useState(null);
+  var [comments, setComments] = useState("");
 
-  
 
-var handleOnUpload = event =>{
-  setUpload(event.target.files[0])
-  List.push({fileName:upload.name, filePath:upload.size})
-} 
-console.log(upload)
+    console.log(comments)
+    
+    const fileHandler = (e) => {
+        setImages(e.target.files[0])
+    }
+
+const onSubmit =()=>{
+  console.log(props.id)
+  httpCommon.post("ApproveRequest" , {
+      requestid:props.id.current,
+      addtionalcomment:comments
+    
+  })
+  .then((res)=>(console.log(res)))
+}
 
 
 
@@ -205,7 +213,8 @@ if(props.show){
             }}
             style={{ width: '100%' }, { backgroundColor: 'white' }, { margin: '0px' }}
             fullWidth
-
+            disabled
+            value={props.row.subject}
 
           />
         </div>
@@ -224,7 +233,8 @@ if(props.show){
             }}
             InputProps={{ disableUnderline: true }}
             fullWidth
-
+            disabled
+            value={props.row.details}
           />
         </div>
                     Last Maintenance Date: {LastDate}
@@ -232,7 +242,7 @@ if(props.show){
 
         <Container style={{ margin: '16px 0px 16px 0px' }}>
           {List.map((item) => (
-            <div style={{ margin: '16px 0px 16px 0px' }}>
+            <div key={item.name} style={{ margin: '16px 0px 16px 0px' }}>
               <div>{item.fileName}</div>
               <div><img src={item.filePath} alt="John" style={{ width: '100%' }}></img></div>
             </div>
@@ -244,7 +254,7 @@ if(props.show){
     </div>
 
   </div>
-  <div style={{ backgroundColor: 'lightgreen', padding: '12px', fontWeight: 'bold', fontFamily: 'auto' }}>
+  <div style={{ backgroundColor: 'lightgreen', padding: '12px', fontWeight: 'bold' }}>
     Add notes
   </div>
   <Paper>
@@ -259,6 +269,10 @@ if(props.show){
     }}
     InputProps={{ disableUnderline: true }}
     fullWidth
+    value = {comments}
+    onChange={e => {
+      setComments(e.target.value);
+    }}
 
   />
   <Divider variant='middle' />
@@ -273,14 +287,19 @@ if(props.show){
       </SvgIcon>}
     >
       Upload Supporting Documents
-        <input type='file' accept="image/*" hidden onChange={handleOnUpload}></input>
+        <input type='file' accept="image/*" onChange={fileHandler} hidden></input>
     </BootstrapButton>
     </div>
     <div>
-    <BooButton >Submit</BooButton>
+    <BooButton onClick={onSubmit} >Submit</BooButton>
     <BooButton style={{backgroundColor:'grey'}}>Clear Entry</BooButton>
-    <BooButton style={{backgroundColor:'silver', color:'black'}}>Close</BooButton>
+    <BooButton style={{backgroundColor:'silver', color:'black'}} onClick={props.handleClose} >Close</BooButton>
     </div>
+  </div>
+  <div>
+    {
+      <img src={images? URL.createObjectURL(images) : null} alt={images? images.name : null} style={{width:'100%', }}/>   
+        }
   </div>
   </Paper>
 </Grid>
@@ -298,6 +317,8 @@ if(props.show){
 }
 else 
   return "";
-};
+
+}
+
 
 export default RequestReport;

@@ -88,6 +88,8 @@ const TextArea = withStyles({
 
 
 const MainMemo1 = (props) => {
+    console.log('main memo called')
+    console.log(props.rows1)
     useEffect(() => {
         window.scrollTo(0, 0);
         document.title = 'EDSG - Employee Details';
@@ -109,8 +111,8 @@ const MainMemo1 = (props) => {
                                 }}
                                 style={{ width: '100%' }, { backgroundColor: 'white' }, { margin: '0px' }}
                                 fullWidth
-                                value={props.rows1.subject}
-
+                                value={props.rows1===null?'':props.rows1.subject}
+                                disabled
 
                             />
                         </Box>
@@ -120,7 +122,7 @@ const MainMemo1 = (props) => {
                             <TextField
                                 id="outlined-details-stati"
                                 label="Details:"
-                                
+                                disabled
                                 multiline
                                 cols={200}
                                 rows={20}
@@ -130,20 +132,14 @@ const MainMemo1 = (props) => {
                                 }}
                                 InputProps={{ disableUnderline: true }}
                                 fullWidth
-                                value={props.rows1.details==null?'':props.rows1.details }
+                                value={props.rows1===null?'':props.rows1.details}
 
                             />
                         </Box>
                         <Divider />
 
                         <Box>
-                            {/* {props.docs.map(file=>
-                                (
-                                <div key={file.id}>
-                                
-                                <img src={file.filePath} alt="Memo Images" width='100%' height='100%' />
-                                 </div>
-                            ))} */}
+                            
                             <PhotoViewer docs={props.docs}/>
                         </Box>
                     </Paper>

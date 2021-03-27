@@ -1,34 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import dom from 'react-dom';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import { Table } from 'antd';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import LensIcon from '@material-ui/icons/Lens'
 import StyledMenu from "../components/MenuButton";
-import ActionButton from '../input/SplitButton'
 import SearchInput from '../input/SearchInput'
 import http from '../httpCommon.js'
 import TechnicalReview24 from './../components/pages/TechnicalReview24'
-import SelectInput from '../input/SelectInput'
-import TextInput from '../input/TextInput'
 import { Badge, Button, InputAdornment, MenuItem, Select, TextField } from '@material-ui/core';
-import { SearchOutlined } from '@material-ui/icons';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import LocationDetails from '../components/LocationDetails';
 import SplitButton from '../input/SplitButton';
-import CustomizedMenus from '../input/SplitsButton';
 import SplitsButton from '../input/SplitsButton';
 
 
 import ViewMemoForm from '../components/pages/ViewMemoForm';
 import IoMdClose from 'react-icons/io';
 import TechnicalReview16 from './TechnicalReview16';
+import TablesViewMemo from '../components/pages/TablesViewMemo';
 
 
 
@@ -123,10 +113,7 @@ const useStyles = makeStyles({
 
 
 
-function createData(items,RequestType, Cost, InitiatorsName, Agency, DateReceived, Action) {
 
-  return { items, RequestType, Cost, InitiatorsName , Agency, DateReceived, Action };
-}
 
 const chkStatus = (status) => {
   if (status === 1)
@@ -154,8 +141,10 @@ export default function Tables() {
   let [isCount, setIsCount] = React.useState('')
   const [showFormModal, setShowFormModal] = useState(false);
   const [details, setDetails] = useState([]);
+  var useStateRef = require('react-usestateref')
   const [selectedRecord, setSelectedRecord] = useState([]);
   let [requestID, setRequestID] = React.useState(null);
+  let [rowValues, setRowValues, recRef] = useStateRef(0)
   let [showModal16, setShowModal16] = React.useState(false);
   let [show19, setShow19] = React.useState(false);
 
@@ -173,38 +162,112 @@ export default function Tables() {
   var grade = 'Grade level 8'
   var descriptions = 'sorry its ovaaaaaaaaaaaaaaaaaa'
 
-  const sendRequestId=(e)=>{
+
+
+
+
+  let [responseData, setResponseData] = useState({
+    data: {
+      requestId: 0,
+      memoInitiationDate: "",
+      memoInitiator: "",
+      costImplication: 0,
+      status: "",
+      currentApprovalStage: 0,
+      subject: "",
+      details: "",
+      lastMaintainanceDate: "",
+      approvalJourneyResponse: [
+
+      ],
+      uploadedDocuments: [
+
+      ]
+    }
+  })
+
+
+
+  const fetchData = async () => {
+    let url = 'View-Memo-Details' 
+    console.log('hey')
+    console.log(url)
+    console.log(recRef.current)
+    await http.get(url, {
+      params: {
+
+        requestId: recRef.current
+      }
+    })
+    if (recRef.current === undefined) {
+      console.log('hey again')
+    }
+    else {
+      console.log('hey again')
+      let datss = await http.get(url, {
+        params: {
+
+          requestId: recRef.current
+        }
+      })
+        .then((response) => {
+          console.log('server')
+          console.log(response.data)
+          setResponseData(response.data.data)
+          //  setError(response.data.code)
+          if (response.data.data === null) {
+            console.log('la la la')
+          }
+          else {
+            setResponseData(response.data.data)
+
+
+          }
+
+        })
+
+        console.log("see me now")
+
+        console.log(datss)
+
+    }
+  }
+
+  const sendRequestId = (e) => {
     const req = e.currentTarget.getAttribute('data-item')
     setRequestID(req);
     console.log(requestID);
 
   }
-  const closeModal=()=>{
+  const closeModal = () => {
     setShowFormModal(false);
   }
 
 
-  const handleAccept = () =>{
+  const handleAccept = () => {
     setShowFormModal(true);
   }
 
-  const handleCancel = () =>{
+
+
+  const goLink = () => {
+    setShowModal16(true);
+  
     
   }
 
-  const goLink = () =>{
-    setShowModal16(true);
-  }
-
-  const goLinkNot = () =>{
+  const goLinkNot = () => {
     setShowModal16(false);
   }
 
-  const doShow19 = () =>{
-    setShow19(true)
+  const doShow19 = () => {
+    if(recRef.current > 0){
+      fetchData();
+      setShow19(true)
+    }
   }
 
-  const unShow19 = () =>{
+  const unShow19 = () => {
     setShow19(false);
   }
 
@@ -212,32 +275,7 @@ export default function Tables() {
 
 
 
-  const fetchData = async () => {
-    let url = 'FinalApproval' // 'Director-ReviewedApprovals';
-
-    console.log(url)
-    http.get(url)
-      .then((response) => {
-        console.log('server')
-        console.log(response.data)
-        setError(response.data.code)
-        setRow(response.data.data)
-
-
-        setIsCount((response.data.count).toString())
-
-
-
-      })
-
-  }
-  useEffect(() => {
-    fetchData()
-
-  }, [])
-
-
-
+  
 
   const fetchReviewedData = async () => {
     let url = 'FinalApprovalReview';
@@ -263,31 +301,6 @@ export default function Tables() {
 
 
 
-  // http.get('http://devsvr.edogoverp.com/facility/api/facilityrequest/Director-PendingApprovals')
-  // .then((response) => {
-  //   console.log('server')
-  //   console.log(response.data)
-  //   setError(response.data.code)
-  //   setRow(response.data.data)
-
-
-  //     if (!response.ok) {
-  //         console.log(`Did not get an ok. got: ${response.statusText}`);
-
-  //     }
-
-
-  // })
-
-
-
-
-
-  //   async function axiosTest() {
-  //     const response = await http.get('Director-PendingApprovals')
-  //     return response.data
-  // }
-
 
 
   const chkStatus = (status) => {
@@ -301,29 +314,24 @@ export default function Tables() {
 
   const handleClick = (e) => {
     console.log(e);
-
-
   }
 
- 
 
 
-  
-  
+
+
+
 
 
 
 
   const handleIsRequest = () => {
-
     isRequest = true;
-
     fetchData()
     setIsRequest(isRequest)
   }
 
   const handleIsReviewedRequest = () => {
-
     isRequest = false;
     fetchReviewedData()
     setIsRequest(isRequest)
@@ -333,119 +341,196 @@ export default function Tables() {
   const isWhite = { backgroundColor: 'white', borderRadius: '40px' }
 
   if (isRequest) {
+    const column = [
+      {
+        title: 'Items',
+        dataIndex: 'items',
+        render: text => <a onClick={goLink}>{text}</a>,
+      },
+      {
+        title: 'Request Type',
+        className: 'column-money',
+        dataIndex: 'requestType',
+      },
+
+      {
+        title: 'Cost',
+        dataIndex: 'cost',
+      },
+      {
+        title: 'Initiator\'s Name',
+        className: 'column-money',
+        dataIndex: 'initiatorsName',
+      },
+      {
+        title: 'Agency',
+        dataIndex: 'agency',
+      },
+      {
+        title: 'Date Received',
+        dataIndex: 'dateReceived',
+      },
+      {
+        title: 'Action',
+        dataIndex: 'action',
+        render: text => <SplitsButton onClick={handleAccept}>{text}</SplitsButton>
+
+      }
+    ];
+
+    let data = rows.map((it) => (
+      {
+        key: it.requestId,
+        items: it.items,
+        requestType: it.requestType,
+        cost: it.cost,
+        initiatorsName: it.initiatorsName,
+        agency: it.agency,
+        dateReceived: it.dateReceived,
+        action: ""
+      }
+    ))
+
     return (
-      <div style={{width:'100%'}}>
+      <div style={{ width: '100%' }}>
         <TechnicalReview24 show={showFormModal} handleClose={closeModal} />
         <TechnicalReview16 show16={showModal16} handleClose16={goLinkNot} />
-         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <div>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div>
 
-          <div>Good Morning</div>
-          <div style={{ fontSize: '23px'}}>Osagie Osaigbovo; #{numb}</div>
+            <div>Good Morning</div>
+            <div style={{ fontSize: '23px' }}>Osagie Osaigbovo; #{numb}</div>
 
-          <div>{post} {ministry} | {grade}</div>
+            <div>{post} {ministry} | {grade}</div>
+          </div>
+          <div>
+            <LocationDetails />
+          </div>
         </div>
-        <div>
-          <LocationDetails />
-        </div>
-      </div>
-      <div style={{ width: '100%' }}>
-        
-        <div style={{ marginLeft: '46%', marginBottom: '1%' }} className='row'>
-          <div style={{ marginRight: '107px', width: '150px' }}><SplitButton /></div>
-          <SearchInput className='col-sm-3' style={{ width: '100%' }} />
-        </div>
-        <div style={{ display: 'flex' }} className='row'>
-          <Grid container justify="center">
-            <Grid item sm={11}>
-              <TableContainer component={Paper} style={{ width: '100%' }}>
-                <div className={classes.clDiv}>
-                  <div style={{ fontWeight: '900', fontFamily: 'auto' }}>
-                    Maintenance Request Management
+        <div style={{ width: '100%' }}>
+
+          <div style={{ marginLeft: '46%', marginBottom: '1%' }} className='row'>
+            <div style={{ marginRight: '107px', width: '150px' }}><SplitButton /></div>
+            <SearchInput className='col-sm-3' style={{ width: '100%' }} />
+          </div>
+          <div style={{ display: 'flex' }} className='row'>
+            <Grid container justify="center">
+              <Grid item sm={11}>
+                <TableContainer component={Paper} style={{ width: '100%' }}>
+                  <div className={classes.clDiv}>
+                    <div style={{ fontWeight: '900', fontFamily: 'auto' }}>
+                      Maintenance Request Management
                   </div>
-                  <div style={{ display: 'flex' }}>
-                    <div>
-                      <Badge badgeContent={isCount} showZero
-                        anchorOrigin={{
-                          vertical: 'top',
-                          horizontal: 'left',
+                    <div style={{ display: 'flex' }}>
+                      <div>
+                        <Badge badgeContent={isCount} showZero
+                          anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'left',
 
-                        }} color='error'>
-                        <BootstrapButton size='small' disableRipple disableFocusRipple style={isRequest ? isWhite : isGreen}>
-                          Request
+                          }} color='error'>
+                          <BootstrapButton size='small' disableRipple disableFocusRipple style={isRequest ? isWhite : isGreen}>
+                            Request
                       </BootstrapButton>
-                      </Badge>
-                    </div>
-                    <div>
-                      <Badge>
-                        <BootstrapButton size='small' style={{ borderRadius: '40px' }} onClick={handleIsReviewedRequest}>
-                          Review
+                        </Badge>
+                      </div>
+                      <div>
+                        <Badge>
+                          <BootstrapButton size='small' style={{ borderRadius: '40px', }} onClick={handleIsReviewedRequest}>
+                            Review
                       </BootstrapButton>
-                      </Badge>
+                        </Badge>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <Table className={classes.table} aria-label="simple table" size='small'>
-                  <TableHead>
+                  <Table
+                    columns={column}
+                    dataSource={data}
+                    bordered
 
-                    <TableRow>
-                      <StyldTableCell align="left" style={{ border: '1px solid red' }}>Items</StyldTableCell>
-                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Request Type</StyldTableCell>
-                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Cost</StyldTableCell>
-                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Initiators Name</StyldTableCell>
-                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Agency</StyldTableCell>
-                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Date Received</StyldTableCell>
-                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Action</StyldTableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {rows.map((row) => (
-                      <TableRow key={row.requestId} data-item ={row.requestId} onClick={sendRequestId} >
-                        <StyleTableCell style={{ fontSize: '10px' }} align="left" style={{ border: '1px solid lightgrey' }}><a href='#' onClick={goLink}>{row.items}</a></StyleTableCell>
-                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.requestType}</StyleTableCell>
-                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.cost} </StyleTableCell>
-                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.initiatorsName}</StyleTableCell>
-                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.agency}</StyleTableCell>
-                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row.dateReceived}</StyleTableCell>
-                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{<SplitsButton handleAccept={handleAccept} handleCancel={handleCancel} />}</StyleTableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+                  />
+                </TableContainer>
+              </Grid>
             </Grid>
-          </Grid>
+          </div>
         </div>
-      </div>
       </div>
     );
   }
   else {
+    let columned = [
+      {
+        title: 'Items',
+        dataIndex: 'items',
+        render: text => <a onClick={doShow19}>{text}</a>,
+      },
+      {
+        title: 'Request Type',
+        className: 'column-money',
+        dataIndex: 'requestType',
+
+      },
+      {
+        title: 'Cost',
+        dataIndex: 'cost',
+      },
+      {
+        title: 'Initiator\'s Name',
+        dataIndex: 'initiatorsName',
+      },
+      {
+        title: 'Agency',
+        dataIndex: 'agency',
+      },
+      {
+        title: 'Approval Type',
+        dataIndex: 'approvalType',
+      },
+      {
+        title: 'Date Treated',
+        dataIndex: 'dateTreated',
+      },
+
+    ];
+
+    let datast = rowsReviewed.map((it) => (
+      {
+        key: it.requestId,
+        items: it.items,
+        requestType: it.requestType,
+        cost: it.cost,
+        initiatorsName: it.initiatorsName,
+        agency: it.agency,
+        approvalType: it.approvalType,
+        dateTreated: it.dateTreated,
+
+      }
+    ))
     return (
       <div style={{ width: '100%' }}>
-         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <div>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div>
 
-          <div>Good Morning</div>
-          <div style={{ fontSize: '23px' }}>Osagie Osaigbovo; #{numb}</div>
+            <div>Good Morning</div>
+            <div style={{ fontSize: '23px' }}>Osagie Osaigbovo; #{numb}</div>
 
-          <div>{post} {ministry} | {grade}</div>
+            <div>{post} {ministry} | {grade}</div>
+          </div>
+          <div>
+            <LocationDetails />
+          </div>
         </div>
-        <div>
-          <LocationDetails />
-        </div>
-      </div>
         <div style={{ marginLeft: '58%' }} className='row'>
           <div style={{ margin: '7px' }}><StyledMenu className='col-sm-6' /></div>
           <SearchInput className='col-sm-3' />
         </div>
         <div style={{ display: 'flex' }} className='row'>
+          <TablesViewMemo show={show19} handleClose={unShow19} row={responseData} docs={responseData.uploadedDocuments ?? []} journey={responseData.approvalJourneyResponse ?? []} />
 
           <Grid container sm={12} justify='center' alignItems='center'>
             <Grid item sm={11}>
               <TableContainer component={Paper} style={{ width: '100%' }}>
                 <div className={classes.clDiv}>
-                  <ViewMemoForm show={show19} handleClose={unShow19}/>
                   <div>
                     Maintenance Request Management
                 </div>
@@ -472,38 +557,24 @@ export default function Tables() {
                   </div>
                 </div>
 
-                <Table className={classes.table} aria-label="simple table" size='small'  >
-                  <TableHead>
+                <Table
+                  onRow={(record, rowIndex) => {
+                    return {
+                      onClick: event => setRowValues(record.key)
+                      
+                    };
+                  }}
 
-                    <TableRow>
-                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Items</StyldTableCell>
-                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Request Type</StyldTableCell>
-                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Cost</StyldTableCell>
-                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Evaluation</StyldTableCell>
-                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Officer's Name</StyldTableCell>
-                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Review Status</StyldTableCell>
-                      <StyldTableCell align="left" style={{ border: '1px solid #b8b1b7' }}>Action</StyldTableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {rowsReviewed.map((row1) => (
-                      <TableRow key={row1.requestId} data-item ={row1.requestId} onClick={sendRequestId}>
-                        <StyleTableCell align='left' component="th" scope="row"  ><a href='#' onClick={doShow19}>{row1.items}</a></StyleTableCell>
-                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.requestType}</StyleTableCell>
-                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.cost} </StyleTableCell>
-                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.initiatorsName}</StyleTableCell>
-                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.agency}</StyleTableCell>
-                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}>{row1.approvalType}</StyleTableCell>
-                        <StyleTableCell align="left" style={{ border: '1px solid lightgrey' }}><row1.dateTreated /></StyleTableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                  columns={columned}
+                  dataSource={datast}
+                  bordered
+
+                />
               </TableContainer>
             </Grid>
-          </Grid> 
-        </div>     
-        </div >
+          </Grid>
+        </div>
+      </div >
     )
 
   }

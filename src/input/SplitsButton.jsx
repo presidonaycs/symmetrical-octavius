@@ -16,7 +16,7 @@ const options = ['Accept', 'Cancel'];
 const Bbutton = withStyles({
     root:{
         textTransform:'none',
-        width: '70px',
+        width: '60px',
         height: '25px',
         borderRadius: '0'
     }
@@ -27,9 +27,9 @@ export default function SplitsButton(props) {
   const anchorRef = React.useRef(null);
   const [selectedIndex, setSelectedIndex] = React.useState(1);
 
-  const handleClick = () => {
-    console.info(`You clicked ${options[selectedIndex]}`);
-  };
+  // const handleClick = () => {
+  //   console.info(`You clicked ${options[selectedIndex]}`);
+  // };
 
   const handleMenuItemClick = (event, index) => {
     setSelectedIndex(index);

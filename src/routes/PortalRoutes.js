@@ -1,85 +1,99 @@
-import React from 'react';
-import { Switch, Route } from 'react-router';
+import React, { lazy, Suspense } from 'react';
+import { Route, Switch } from 'react-router';
 import { pure } from 'recompose';
-
 import ProtectedRoute from './ProtectedRoute';
+//import Dashboard1 from '../components/Dashboard1'
+import Dash from './../Dash'
+import Page5 from '../components/Page5'
+import Page6 from '../components/Page6'
+import Page7 from '../components/Page7'
+import Page8 from '../components/Page8'
+import Page9 from '../components/Page9'
+import Page19 from '../components/Page19'
+import Page10 from '../components/Page10'
+import Page11 from '../components/Page11'
+import Page12 from '../components/Page12'
+import Page41 from '../components/Page41';
 
-import Dashboard from '../components/pages/Dashboard';
-import MdaSetup from '../components/pages/MdaSetup';
-import RolesSetup from '../components/pages/RolesSetup';
-import EmployeeProfile from '../components/pages/EmployeeProfile';
-import EmployeeDetails from '../components/pages/EmployeeDetails';
-import SupervisorOrganogram from '../components/pages/SupervisorOrganogram';
-import RequestMaintenance from '../pages/RequestMaintenance';
-import ReviewRequest from '../pages/MaintenanceRequestManagement';
-import Dashboard1 from '../components/Dashboard1';
-import Request from '../components/RequestForm';
-import Mainmemo from '../components/MainMemo';
-import RequestForm from '../components/RequestForm';
-import RequestReport from '../components/pages/RequestReport'
-import MainMemo1 from '../components/MainMemo1';
-import ViewMemoForm from '../components/pages/ViewMemoForm';
-import FacilitySettings6 from '../components/pages/FacilitySettings6';
-import TechnicalReviewModal21 from '../components/pages/TechnicalReviewModal21';
-import TechnicalReview24 from '../components/pages/TechnicalReview24';
-import Page10 from '../components/pages/Page10';
-import Test from '../pages/Test'
-import FacMaintenance7 from '../components/pages/FacMaintenance7';
-import TimeOut from '../components/pages/TimeOut';
-import DirectorsView16 from '../pages/DirectorsView16';
-import RequestManagement8 from './../pages/RequestManagement8'
-import Page14 from '../components/Page14'
+
+
+
+// const Dashboard1 = lazy(() => import('../components/Dashboard1'))
+// const RequestForm = lazy(() => import('../components/RequestForm'))
+// const RequestReport = lazy(() => import('./../components/pages/RequestReport'))
+// const ViewMemoForm = lazy(() => import('../components/pages/ViewMemoForm'))
+// const RequestManagement8 = lazy(() => import('./../pages/RequestManagement8'))
+// const  ReviewRequest = lazy(() => import('./../components/MaintenanceRequestManagement'))
+// const Page6Final = lazy(() => import('./../components/Page6Final'))
+// const  IsLoading = lazy(() => import('../assets/IsLoading'))
+// const  FacMaintenance7 = lazy(() => import('./../components/pages/FacMaintenance7'))
+
+
+const approvalSequence =3;
+
+
 
 
 
 export default pure(() => (
   <Switch>
-    <ProtectedRoute
-      path="/facility-portal/"
-      exact
-      component={Dashboard1}
-    />  
-    <ProtectedRoute
-      path="/facility-portal/request-maintainance"
+     <ProtectedRoute
+      path='/adminstore-portal/inventory-manager/requisition'
       exact
     //  component={RequestMaintenance}
-    component={RequestForm}
+    component={Page5}
+    />
+
+    <ProtectedRoute
+      path='/adminstore-portal/inventory-manager/review-request'
+      exact
+      component={Page6}
+    />      
+    <ProtectedRoute
+      path='/adminstore-portal/inventory-manager/inventory'
+      exact
+    //  component={RequestMaintenance}
+    component={Page7}
     />
     <ProtectedRoute
       path="/facility-portal/review-request"
       exact
-      component={ReviewRequest}
+      component={Page6}
     />
     <ProtectedRoute
-      path="/facility-portal/manage-request"
+      path="/adminstore-portal/warehouse-manager/requisition"
       exact
-      component={RequestManagement8}
+      component={Page9}
 
     />
     <ProtectedRoute
-       path="/facility-portal/request-report"
+       path="/adminstore-portal/warehouse-manager/review-request"
        exact
-       component={DirectorsView16}
+       component={Page10}
     />
     <ProtectedRoute
-      path="/facility-portal/facility-settings"
+      path="/adminstore-portal/request-report"
       exact
-      component={Page14}
+      component={Page12}
     />
     <ProtectedRoute
-      path="/facility-portal/facility-pop-menu"
+      path="/adminstore-portal/facility-settings"
       exact
-      component={RequestManagement8}
+      component={Page8}
     />
 
-<ProtectedRoute
+    <ProtectedRoute
       path="/facility-portal/view-memo-form"
       exact
-      component={ViewMemoForm}
+      component={Dash}
     />
-
-
+    <ProtectedRoute
+      path="/facility-portal/Page41"
+      exact
+      component={Page41}
+    />
     
-    <Route render={() => <h1>Error 404. Page not found.</h1>} />
+      <Route render={() => <h1>Error 404. Page not founding.</h1>} />
+    
   </Switch>
 ));

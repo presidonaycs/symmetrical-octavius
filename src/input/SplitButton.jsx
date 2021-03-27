@@ -9,10 +9,9 @@ import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
-import { green } from '@material-ui/core/colors';
 import { withStyles } from '@material-ui/core';
 
-const options = ['Filter By', 'Squash and merge'];
+const options = ['Filter By', 'MDA','Request Type'];
 const Bbutton = withStyles({
     root:{
         textTransform:'none',
@@ -81,7 +80,6 @@ export default function SplitButton() {
                     {options.map((option, index) => (
                       <MenuItem
                         key={option}
-                        disabled={index === 2}
                         selected={index === selectedIndex}
                         onClick={(event) => handleMenuItemClick(event, index)}
                       >

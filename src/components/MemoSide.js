@@ -9,6 +9,7 @@ import Greeting from '../components/Greeting';
 import Link from '@material-ui/core/Link';
 import { ReactComponent as Circle } from "./../components/iconComponent/circle-fill.svg"
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
+import Stepz  from './Steps';
 
 
 
@@ -39,7 +40,7 @@ const useStyles = makeStyles({
 
 })
 
-export default function MemoSide({onChange}) {
+export default function MemoSide({onChange}, props) {
 
     const classes = useStyles();
     const initiationDate = 'January 19, 2020';
@@ -50,6 +51,9 @@ export default function MemoSide({onChange}) {
     const approval = [];
     const position = {};
 
+    if(status==='pending'){
+        
+    }
     
 
 
@@ -69,12 +73,13 @@ export default function MemoSide({onChange}) {
                                     <Select
                                         labelId="demo-simple-select-placeholder-label-label"
                                         id="demo-simple-select-placeholder-label"
-                                        
+                                        // value={props.rows1.requestCategoryId}
                                         onSelect={onChange}
                                         displayEmpty
                                         disableUnderline
                                         style={{ width: '20vw' }}
                                         className={classes.selectEmpty}
+                                        disabled
                                     >
                                         <MenuItem value={'Facility Maintenance'} >
                                             <span style={{ fontSize: '16px' }}>Facility Maintenance</span>
@@ -88,9 +93,9 @@ export default function MemoSide({onChange}) {
                             </Box>
 
                             <Divider style={{ margin: '0px 0px 0px 0px' }} />
-                            <Box className={classes.myDivs} fontSize='12px'><span style={{ fontWeight: 'bolder', size: '18vw',  margin: '10px 0px 10px 0px' }}> Memo initiation date: </span> {initiationDate}</Box>
-                            <Box className={classes.myDivs}> <span style={{ fontWeight: 'bolder', size: '18vw',fontSize:'12px', margin: '10px 0px 10px 0px' }}>Memo initiator:</span> {initiator}</Box>
-                            <Box className={classes.myDivs}> <span style={{ fontWeight: 'bolder', size: '18vw',fontSize:'12px', margin: '10px 10px 20px 0px' }}>View Memo:</span> {viewMemo}</Box>
+                            <Box className={classes.myDivs} fontSize='12px'><span style={{ fontWeight: 'bolder', size: '18vw',  margin: '10px 0px 10px 0px' }}> Memo initiation date: </span> {props.initiationDate}</Box>
+                            <Box className={classes.myDivs}> <span style={{ fontWeight: 'bolder', size: '18vw',fontSize:'12px', margin: '10px 0px 10px 0px' }}>Memo initiator:</span> {props.memoInitiator}</Box>
+                            <Box className={classes.myDivs}> <span style={{ fontWeight: 'bolder', size: '18vw',fontSize:'12px', margin: '10px 10px 20px 0px' }}>View Memo:</span> </Box>
                         </Box>
                     </Card>
                     <Card style={{ marginBottom: '1vw' }}>
@@ -102,7 +107,7 @@ export default function MemoSide({onChange}) {
                             </div>
                             <Divider style={{ margin: '0px 0px 0px 0px' }} />
                             <Box className={classes.innerDiv} style={{ justifyContent: 'space-between', alignItems:'left' }}>
-                                <Box style={{ margin: '8px',justifyContent: 'space-evenly', alignItems:'left' }}>{cost}</Box>
+                                <Box style={{ margin: '8px',justifyContent: 'space-evenly', alignItems:'left' }}>{props.costImplication}</Box>
                                 <a href='#' style={{ fontSize: '17px' }}>payment Approval <SaveAltIcon size="small" style={{ fontSize: '16px' }} /></a>
                             </Box>
                         </div>
@@ -112,28 +117,12 @@ export default function MemoSide({onChange}) {
                             <Box style={{ display: 'flex', alignItems: 'center',paddingLeft:'1vw' }}>
                                 <Box style={{ fontWeight: 'bolder'}, { paddingRight: '13px' }, { fontSize: '16px' }}>Status:
                                  </Box> 
-                                  <Box style={{ paddingLeft: '1vw' }}><SvgIcon style={{ marginTop: '13px', fontSize: '20px' }}><Circle /></SvgIcon>
+                                  <Box style={{ paddingLeft: '1vw' }}><SvgIcon style={{ marginTop: '16px', fontSize: '25px' }}><Circle /></SvgIcon>
                                 </Box>
                              </Box>
                        
                     </Paper>
-                    <Card style={{ justifyContent: 'space-between, space-evenly', alignItems:'flex-start', marginTop:'1vw' }}>
-                        <Box style={{ display: 'flex', alignItems: 'center',padding:'1vw' }} >
-EhigiaMouse Emmanuel, DOAS
-                        </Box>
-                        <Box style={{ display: 'flex', alignItems: 'center',padding:'1vw' }} >
-EhigiaMouse Emmanuel
-                        </Box>
-                        <Box style={{ display: 'flex', alignItems: 'center',padding:'1vw' }} >
-EhigiaMouse Emmanuel
-                        </Box>
-                        <Box style={{ display: 'flex', alignItems: 'center',padding:'1vw' }} >
-EhigiaMouse Emmanuel
-                        </Box>
-                        <Box style={{ display: 'flex', alignItems: 'center',padding:'1vw' }} >
-EhigiaMouse Emmanuel
-                        </Box>
-                    </Card>
+                    <Stepz />
 
                 </div>
 
