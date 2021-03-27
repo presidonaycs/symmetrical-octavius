@@ -1,25 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import { Badge, Button } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import StyledMenu from "./MenuButton";
-import SearchInput from '../input/SearchInput'
-import http from '../httpCommon.js'
-import { Badge, Button, InputAdornment, MenuItem, Select, TextField } from '@material-ui/core';
-import LocationDetails from './LocationDetails';
-import SplitButton from '../input/SplitButton';
-import SplitsButton from '../input/SplitsButton';
 import { Table } from 'antd';
-import isLoading from './../assets/IsLoading'
-
-
-import ViewMemoForm from './pages/ViewMemoForm';
-import IoMdClose from 'react-icons/io';
-import RequestReport from './pages/RequestReport';
+import React, { useEffect, useState } from 'react';
+import http from '../httpCommon.js';
+import SearchInput from '../input/SearchInput';
+import SplittedButton from '../input/SplitButton';
+import SplitsButton from '../input/SplitsButton';
+import LocationDetails from './LocationDetails';
+import StyledMenu from "./MenuButton";
 import FrankForm from './pages/FrankForm';
+import RequestReport from './pages/RequestReport';
 import TablesViewMemo from './pages/TablesViewMemo';
+import Cookies from "universal-cookie";
+import IsLoading from '../assets/IsLoading.jsx';
+import TechnicalReviewModal21 from './pages/TechnicalReviewModal21'
+import CancelRequest from "./pages/CancelRequest"
+import SuccessModal from "./../assets/SuccessModal"
+import { Lens } from '@material-ui/icons';
+import AreYouSure from '../assets/AreYouSure.jsx';
+import LensIcon from '@material-ui/icons/Lens';
+import linq from 'linq';
+
+
+
+
 
 
 
@@ -60,6 +68,10 @@ const BootstrapButton = withStyles({
 
   },
 })(Button);
+
+
+
+
 
 const StyleTableCell = withStyles({
   root: {
@@ -114,19 +126,9 @@ const useStyles = makeStyles({
 
 
 
-function createData(items, requestInitiator, RequestType, InitiatedDate, ReviewStatus, Action) {
 
-  return { items, requestInitiator, RequestType, InitiatedDate, ReviewStatus, Action };
-}
 
-const chkStatus = (status) => {
-  if (status === 1)
-    return { color: 'yellow', margin: '2px', fontSize: '12px' }
-  else if (status === 2)
-    return { color: 'red', margin: '2px', fontSize: '10px' }
-  else
-    return { color: 'green', margin: '2px', fontSize: '10px' }
-}
+
 
 
 
@@ -142,23 +144,32 @@ export default function Tables() {
   let [error, setError] = React.useState(null)
   let [rows, setRow] = React.useState([])
   let [rowsReviewed, setReviewedRow] = React.useState([])
+  let [rowsReviewed2, setReviewedRow2] = React.useState([])
+  let [success, setSuccess] = useState(false);
   let [isCount, setIsCount] = React.useState('')
   const [showFormModal, setShowFormModal] = useState(false);
   const [fessModal, setFessModal] = useState(false);
-  var useStateRef=require('react-usestateref');
+  var useStateRef=require('react-usestateref')
   const [secModal, setSecModal] = useState(false);
   const [revModal, setRevModal] = useState(false);
   var [passModal, setPassModal] = useState(false);
   const [requestId, setRequestId] = useState(0)
   var [rows1, setRow1, ref1] = useStateRef([]);
-  let [docs, setDocs, docref] = useStateRef([]);
-  let [rowValues, setRowValues, recRef] = useStateRef(0);
-  let [rowValues2, setRowValues2, recRef2] = useStateRef(0);
-  let [isLoading, setIsLoading] = useState(false);
-
+  let [docs, setDocs, docref] = useStateRef([])
+  let [rowValues, setRowValues, recRef] = useStateRef(0)
+  let [rowValues2, setRowValues2, recRef2] = useStateRef(0)
+  let [isLoading, setIsLoading] = useState(false)
+  let [refreysh, setRefreysh] = useState(false);
+  let [costModal, setCostModal] = useState(false);
+  let [canModal, setCanModal] = useState(false);
+  let [done, setDone] = useState(false);
+  let [rowd, setRowd] = useState({})
+  let [areYouSure, setAreYouSure] = useState(false)
+  let [suppArray, setSuppArray] = useState([])
   let [sub, setSub]=useState("");
-  let [det, setDet]=useState("");
-
+  let [det, setDet]=useState([]);
+  let [filParam, setFilParam] = useState('Filter By')
+  let [typedValue, setTypedValue] = useState('')
   let [responseData, setResponseData] = useState({data: {
     requestId:  0,
     memoInitiationDate: "",
@@ -169,6 +180,7 @@ export default function Tables() {
     subject: "",
     details: "",
     lastMaintainanceDate: "",
+    approvalSequence:[],
     approvalJourneyResponse: [
      
     ],
@@ -188,6 +200,7 @@ export default function Tables() {
     subject: "",
     details: "",
     lastMaintainanceDate: "",
+    approvalSequence:[],
     approvalJourneyResponse: [
      
     ],
@@ -199,7 +212,7 @@ export default function Tables() {
   
   
 
-
+  const cookies = new Cookies();
 
 
   var InitiatedRequest = 7786790;
@@ -214,6 +227,7 @@ export default function Tables() {
   var numb = 78943
   var grade = 'Grade level 8'
   var descriptions = 'sorry its ovaaaaaaaaaaaaaaaaaa'
+  let today = new Date();
 
   
     const fetchDatas = async () => {
@@ -252,7 +266,7 @@ export default function Tables() {
     fetchDatas()
 
   }, [])
-
+console.log(typedValue);
    const fetchDatas2 = async () => {
     setIsLoading(true)
     let url = 'View-Memo-Details' // 'Director-ReviewedApprovals';
@@ -301,12 +315,73 @@ export default function Tables() {
 
    }, [])
 
+   const fetchDatad = async () => {
+    setIsLoading(true)
+    let url = 'View-TechReviewDetails' 
+    console.log('hey')
+    console.log(url)
+    console.log(recRef2.current)
+    if(recRef2.current===undefined || recRef2.current===0)
+    {
+      console.log('hey again')
+    }
+    else{
+      console.log('hey again')
+      http.get(url, {
+        params: {
+         
+          requestId:recRef2.current
+        }
+      })
+        .then((response) => {
+          console.log('server')
+          console.log(response.data)
+        //  setError(response.data.code)
+          setRowd(response.data.data)
+          if(response.data.data === null){
+          
+          }
+          else{
+            setRowd(response.data.data)
+            
+
+          }
+
+         
+          setIsLoading(false)
+        //  setDocs(response.data.data.uploadedDocuments)
+  
+  
+  
+        })
+  
+  
+    }
+     }
+  useEffect(() => {
+     fetchDatas2()
+
+   }, [])
 
 
+   const doAccept =()=>{
+     console.log('lllkklklklkl')
+    http.post("ApproveRequest" , {
+        requestId:recRef2.current,
+      
+    })
+    .then((res)=>console.log(res))
+    
+  }
+  
+  const doSuccess =()=>{
+    setSuccess(true);
+  }
 
-
-
-   useEffect(() => {
+ const undoSuccess =()=>{
+  setSuccess(false);
+  }
+   
   const fetchData = async () => {
     setIsLoading(true)
     let url = 'Director-PendingApprovals' // 'Director-ReviewedApprovals';
@@ -318,19 +393,25 @@ export default function Tables() {
         console.log(response.data)
         setError(response.data.code)
         setRow(response.data.data)
+        setSuppArray(response.data.data)
+        if(response.data.data === undefined|| response.data.data===null){
 
+        }
+        else{
+          setIsCount((response.data.count).toString()?? "")
+      }
+        
 
-        setIsCount((response.data.count).toString())
-
-
+        setIsLoading(false)
 
       })
-setIsLoading(false)
+
   }
+  useEffect(() => {
   
     fetchData()
 
-  }, [])
+  }, [refreysh])
 
   const onClick =(e)=>{
     console.log('working')
@@ -340,23 +421,48 @@ setIsLoading(false)
   setPassModal(true);
   console.log('working')  }
 
-  const openFessModal = () =>{
+  const openFessModal = (e) =>{
+    console.log(e)
     if(recRef.current>0){
       fetchDatas();
+      console.log("fessmodalting")
       setFessModal(true);
     }
     
     
+
+
   }
+
 
   const openSecModal= () => {
     fetchDatas();
     setSecModal(true);
     console.log('working')  }
 
+    const openCanModal= () => {
+      fetchDatas();
+      setCanModal(true);
+      console.log('working')  }
+
+
   const closeFessModal = () => {
     setFessModal(false);
     console.log('working')  }
+
+    const showModal21=()=>{
+      fetchDatad();
+      setCostModal(true);
+    }
+
+    const closeCostModal=()=>{
+      setCostModal(false);
+
+    }
+
+    const rem = () => {
+      setRefreysh(!refreysh);
+      console.log('wahala')  }
 
   const openRevModal = () => {
     if(recRef2.current>0){
@@ -375,6 +481,11 @@ setIsLoading(false)
 
   const closeSecModal = () => {
     setSecModal(false);
+    console.log('working')
+  }
+
+  const closeCanModal = () => {
+    setCanModal(false);
     console.log('working')
   }
 
@@ -400,29 +511,50 @@ setIsLoading(false)
         console.log(response.data.data)
         setError(response.data.code)
         setReviewedRow(response.data.data)
+        // setSuppArray(response.data.data)
 
-
+        setIsLoading(false)
 
 
       })
-setIsLoading(false)
+
   }
   useEffect(() => {
     fetchReviewedData()
 
   }, [])
 
+const setToMDA=()=>{
+  setFilParam('MDA')
+}
+
+const setToFilterType=()=>{
+  setFilParam('Request Type')
+}
+
+
+console.log(suppArray)
 
 
 
   const chkStatus = (status) => {
-    if (status === 3)
-      return { color: 'green', margin: '2px', fontSize: '14px' }
-    else if (status === 2)
-      return { color: 'red', margin: '2px', fontSize: '14px' }
-    else
-      return { color: 'yellow', margin: '2px', fontSize: '14px' }
+    if (status === 'Approved')
+      return { color: '#0DAC26', margin: '2px', font:"normal normal normal 17px/25px Avenir" }
+    else if (status === "Rejected")
+      return { color: '#EF0621', margin: '2px', font:"normal normal normal 17px/25px Avenir" }
+    else if (status === "Pending")
+      return { color: '#FDCC29', margin: '2px', font:"normal normal normal 17px/25px Avenir"}
   }
+
+
+  const statusText =(status)=>{
+    if(status === 'Approved')
+      return "Approved"
+    else if(status === "Pending")
+      return "Pending"
+    else if(status === "Rejected")
+      return "Rejected"
+    }
 
   const handleClick = (e) => {
     console.log(e);
@@ -430,6 +562,10 @@ setIsLoading(false)
 
   }
 
+  const reload =()=>{
+    setDone(true);
+    console.log('jumble')
+  }
 
   const sendRequestId = (e) => {
     const req = e.currentTarget.getAttribute('data-item')
@@ -454,28 +590,45 @@ setIsLoading(false)
     setIsRequest(isRequest)
   }
 
-  const isGreen = { backgroundColor: 'light-green', borderRadius: '40px' }
-  const isWhite = { backgroundColor: 'white', borderRadius: '40px' }
-
+  const isGreen = { backgroundColor: 'light-green', borderRadius: '40px', border:"1px solid #707070" }
+  const isWhite = { backgroundColor: 'white', borderRadius: '40px', border:"1px solid #707070" }
+  useEffect(()=>{
+    
+          suppArray.filter(value => {
+            if(typedValue===null || typedValue===undefined){
+           return   console.log('here')
+            }
+            else{const searchStr = typedValue?.toLowerCase();
+          return  setSuppArray(value.requestType?.toLowerCase().includes(searchStr));
+           }
+             });
+          console.log(suppArray);
   
-
+    
+  }, [typedValue])
+  
   
 
 
 
 
 if(isLoading){
-  return <isLoading/>
+  return <IsLoading/>
 }
 
 
  else if (isRequest && !isLoading) {
 
+ if(done===true){
+   setDone(false);
+   fetchData();
+ }
+
     const columns = [
       {
         title: 'Items',
         dataIndex: 'items',
-        render: text => <a onClick={ openFessModal} >{text}</a>,
+        render: (text,record) => <a onClick={ () => openFessModal(record.requestId)} >{text}</a>,
       },
       {
         title: 'Request Initiator',
@@ -494,18 +647,20 @@ if(isLoading){
       {
         title: 'Review Status',
         dataIndex: 'reviewStatus',
+        render:(text,record,index) => <div style={{display:'flex'}}><span style={{margin:'8px'}}><LensIcon style={{color:'#FDCC29',font:"normal normal normal 17px/25px Avenir"}}/></span> <span >{record.reviewStatus}</span></div>
+
       },
       {
         title: 'Action',
         dataIndex: 'action',
         render:(text,record,index) => <SplitsButton onClick={(e)=>{
-          console.log(record[index].key)
-          }} handleAccept={openSecModal} handleClose={closeSecModal}>{text}</SplitsButton>
+        
+          }} handleAccept={openSecModal} handleClose={closeSecModal} handleCancel={openCanModal} handleCanClose={closeCanModal}> {text}</SplitsButton>
       }
       
     ];
   
-    var data = rows.map((it) => (
+    var data = suppArray?.map((it) => (
       {
         
         key: it.requestId,
@@ -514,6 +669,7 @@ if(isLoading){
         requestType: it.requestType,
         initiatedDate: it.initiatedDate,
         reviewStatus: it.reviewStatus,
+        approvalStatusId: it.approvalStatusId,
         action: <SplitsButton onClick={setFessModal}/>
       
       }
@@ -522,30 +678,36 @@ if(isLoading){
     
     return (
       <div style={{ width: '100%' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <div>
-            
-            
-            <TablesViewMemo show={fessModal} handleClose={closeFessModal} row={responseData} docs={responseData.uploadedDocuments??[]} journey={responseData.approvalJourneyResponse??[]}/>
-            <RequestReport show={secModal}  handleClose={closeSecModal} id={recRef} row={responseData}/>
+         <div style={{ display: 'flex', justifyContent: 'space-between'}}>
+        <div>
+
+        <TablesViewMemo show={fessModal} handleClose={closeFessModal} row={responseData} journey={responseData.approvalJourneyResponse} sequence={responseData.approvalSequence??[]}/>
+        <RequestReport show={secModal} handleClose={closeSecModal} id={recRef} row={responseData} refresh={rem} reload={reload} docs={responseData.uploadedDocuments??[]}/>
+        <CancelRequest show={canModal} handleClose={closeCanModal} id={recRef} row={responseData} refresh={rem} reload={reload} docs={responseData.uploadedDocuments??[]}/>
 
 
-            <div>Good Morning</div>
-            <div style={{ fontSize: '23px' }}>Osagie Osaigbovo; #{numb}</div>
+          <div>Good Day</div>
+          <div style={{ fontSize: '23px' }}>{cookies.get("firstName")} {cookies.get("lastName")}; #{cookies.get("staffNumber")}</div>
 
-            <div>{post} {ministry} | {grade}</div>
-          </div>
-          <div>
-            <LocationDetails />
-          </div>
+          <div>{cookies.get("role")} {cookies.get("mda")} | {grade}</div>
         </div>
-        <div style={{ marginLeft: '46%', marginBottom: '1%' }} className='row'>
-          <div style={{ marginRight: '107px', width: '150px' }}><SplitButton /></div>
-          <SearchInput className='col-sm-3' style={{ width: '100%' }} />
+        <div>
+          <LocationDetails />
+        </div>
+        {console.log('passed')}
+        
+      </div>
+    <SuccessModal show={success} closeModal={undoSuccess}/>
+        <div style={{ marginLeft: '50%', marginBottom: '1%' }} className='row'>
+          
         </div>
         <div style={{ display: 'flex' }} className='row'>
           <Grid container justify="center">
-            <Grid item sm={11}>
+            <Grid item sm={11} >
+              <div style={{display:'flex',justifyContent:'flex-end'}}>
+            <div style={{width: '250px',margin:'8px' }}><SplittedButton /></div>
+            <SearchInput style={{marginRight:'16px'}}  onChange={e=>setTypedValue(e.target.value)} value={typedValue}/>
+              </div>
               <TableContainer component={Paper} style={{ width: '100%' }}>
                 <div className={classes.clDiv}>
                   <div style={{ fontWeight: '900' }}>
@@ -584,8 +746,11 @@ if(isLoading){
                     columns = { columns }
                     dataSource = { data }
                     bordered
+
                     
-                  />
+                  >
+                    
+                  </Table>
               </TableContainer>
 
 
@@ -602,11 +767,12 @@ if(isLoading){
       {
         title: 'Items',
         dataIndex: 'items',
+        width:30,
+        
         render: text => <a onClick={openRevModal}>{text}</a>,
       },
       {
         title: 'Request Type',
-        className: 'column-money',
         dataIndex: 'requestType',
         
       },
@@ -617,6 +783,7 @@ if(isLoading){
       {
         title: 'Evaluation',
         dataIndex: 'evaluation',
+        render:(text) => <a onClick={showModal21}>{text}</a>
       },
       {
         title: 'Officer\'s Name',
@@ -625,18 +792,17 @@ if(isLoading){
       {
         title: 'Review Status',
         dataIndex: 'reviewStatus',
+        render:(text,record,index) => <div><span style={{margin:'8px'}}><LensIcon style={chkStatus(record.reviewStatus)}/></span> <span >{record.reviewStatus}</span></div>
+
       },
       {
         title: 'Action',
         dataIndex: 'action',
-        render:(text,record,index) => <SplitsButton onClick={(e)=>{
-          console.log(record[index].key)
-          }} handleAccept={handle} handleClose={closePassModal}>{text}</SplitsButton>,
+        render:(text,record,index) => <SplitsButton handleAccept={handle} handleClose={closePassModal} handleCancel={openCanModal} handleCanClose={closeCanModal}>{text}</SplitsButton>,
 
       }
     ];
-  
-    var data = rowsReviewed.map((it) => (
+    var data = rowsReviewed?.map((it) => (
       {
         key: it.requestId,
         items: it.items,
@@ -645,28 +811,54 @@ if(isLoading){
         evaluation: it.evaluation,
         officerName: it.officerName,
         reviewStatus: it.reviewStatus,
+        approvalStatusId: it.approvalStatusId
         //action:<SplitsButton onClick={handleAccept}/>
    
       }
     ))
+    
 
     return (
 
      
 
       <div style={{ width: '100%' }}>
+         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div>
+          <div>Good Day</div>
+          <div style={{ fontSize: '23px' }}>{cookies.get("firstName")} {cookies.get("lastName")}; #{cookies.get("staffNumber")}</div>
+
+          <div>{cookies.get("role")} {cookies.get("mda")} | {grade}</div>
+        </div>
+        <div>
+          <LocationDetails />
+        </div>
+        {console.log('passed')}
+        
+       
+    
+      </div>
         <div style={{ marginLeft: '58%' }} className='row'>
 
-          <FrankForm  show={passModal} handleClose={closePassModal} />
-          <TablesViewMemo show={revModal} handleClose={closeRevModal} row={responseData2} docs={responseData2.uploadedDocuments??[]} journey={responseData2.approvalJourneyResponse??[]}/>
+          <FrankForm  show={passModal} handleClose={closePassModal} accept={doAccept} setSuccesss={doSuccess}/>
+          <TablesViewMemo show={revModal} handleClose={closeRevModal} row={responseData2} docs={responseData2.uploadedDocuments??[]} journey={responseData2.approvalJourneyResponse??[]} sequence={responseData2.approvalSequence??[]}/>
+          <TechnicalReviewModal21 show={costModal} handleClose={closeCostModal} technical={rowd}/>
+          <CancelRequest show={canModal} handleClose={closeCanModal} id={recRef} row={responseData2} refresh={rem}/>
 
-          <div style={{ margin: '7px' }}><StyledMenu className='col-sm-6' /></div>
-          <SearchInput className='col-sm-3' />
+          <SuccessModal show={success} />
+          
+       
         </div>
         <div style={{ display: 'flex' }} className='row'>
-
-          <Grid container sm={12} justify='center' alignItems='center'>
+        {/* <div style={{ width: '150px',marginLeft: '50%',marginBottom:0}}><SplitButton /></div>          
+         <span style={{ marginLeft: '73.1%', marginBottom:'30px'}}> <SearchInput  /></span> */}
+          <Grid container sm={12} justify='center' alignItems='center' >
+          
             <Grid item sm={11}>
+            <div style={{display:'flex',justifyContent:'flex-end'}}>
+            <div style={{width: '250px',margin:'8px' }}><SplittedButton /></div>
+            <SearchInput style={{marginRight:'16px'}}  onChange={e=>setTypedValue(e.target.value)} value={typedValue}/>
+              </div>
               <TableContainer component={Paper} style={{ width: '100%' }}>
                 <div className={classes.clDiv}>
                   <div>
@@ -707,7 +899,7 @@ if(isLoading){
                     columns = { column }
                     dataSource = { data }
                     bordered
-                    
+                    scroll={{ x: 'max-content' }}
                   />
               </TableContainer>
             </Grid>

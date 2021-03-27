@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 // import { RiAddLine } from 'react-icons/ri';
-
 import ProfilePix from '../../assets/images/profile-pix.jpg';
 import FormSearchInput from '../inputs/FormSearchInput';
 import TextInput from '../inputs/TextInput';

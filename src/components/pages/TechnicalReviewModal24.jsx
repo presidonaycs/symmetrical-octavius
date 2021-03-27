@@ -51,41 +51,7 @@ const BootstrapButton = withStyles({
   },
 })(Button);
 
-const BooButton = withStyles({
-    root: {
-      color: 'white',
-      boxShadow: 'none',
-      textTransform: 'none',
-      width: '80px',
-      fontSize: 9,
-      padding: '2px 11px',
-      margin: '20px 5px 0px 5px',
-      lineHeight: 3,
-      borderRadius: 0,
-      backgroundColor: 'green',
-      fontFamily: [
-        '-apple-system',
-        'BlinkMacSystemFont',
-        '"Segoe UI"',
-        'Roboto',
-        '"Helvetica Neue"',
-        'Arial',
-        'sans-serif',
-        '"Apple Color Emoji"',
-        '"Segoe UI Emoji"',
-        '"Segoe UI Symbol"',
-      ].join(','),
-      '&:hover': {
-        backgroundColor: 'darkgreen',
-        boxShadow: 'none',
-      },
-      '&:active': {
-        boxShadow: 'none',
-  
-      },
-  
-    },
-  })(Button);
+
 
 
 
@@ -258,22 +224,12 @@ class Tech24 extends React.Component {
 
    
   onSubmit=()=>{
+    console.log(this.props.id.current)
             this.state.loading=true
             httpCommon.post("ApproveRequest", {
-              requestId: this.props.id.current,
+               requestId: this.props.id.current,
               addtionalcomment: this.state.review,
-              approvaljourneyimages: [
-                {
-                  id: 0,
-                  facilityApprovaljourneyId: 0,
-                  image: "string",
-                  createdAt: "",
-                  modifiedAt: "",
-                  createdBy: 0,
-                  modifiedBy: 0
-                  
-                }
-              ]
+              
             })
             .then((res)=>{
               console.log(res)
@@ -301,7 +257,9 @@ class Tech24 extends React.Component {
   }
 ))
 
-
+clear=()=>{
+  this.setState({review:""})
+}
 
     onReset = () => {
         this.formRef.current.resetFields();
@@ -429,7 +387,41 @@ class Tech24 extends React.Component {
             };
         });
 
-       
+        const BooButton = withStyles({
+          root: {
+            color: 'white',
+            boxShadow: 'none',
+            textTransform: 'none',
+            width: '80px',
+            fontSize: 9,
+            padding: '2px 11px',
+            margin: '20px 5px 0px 5px',
+            lineHeight: 3,
+            borderRadius: 0,
+            backgroundColor: 'green',
+            fontFamily: [
+              '-apple-system',
+              'BlinkMacSystemFont',
+              '"Segoe UI"',
+              'Roboto',
+              '"Helvetica Neue"',
+              'Arial',
+              'sans-serif',
+              '"Apple Color Emoji"',
+              '"Segoe UI Emoji"',
+              '"Segoe UI Symbol"',
+            ].join(','),
+            '&:hover': {
+              backgroundColor: 'darkgreen',
+              boxShadow: 'none',
+            },
+            '&:active': {
+              boxShadow: 'none',
+        
+            },
+        
+          },
+        })(Button);
 
         const { TextArea } = Input;
         const layout = {
@@ -492,8 +484,8 @@ class Tech24 extends React.Component {
 
             <div style={{width:'100%', display:'flex', justifyContent:'center'}}>
             <div style={{width:"70%"}}>
-                <div style={{ padding: "15px", backgroundColor: "#D5FFD5", boxShadow: "0 2px 6px", color: "#43425D" }}>{this.props.tech.technicalReview}</div>
-                <div><TextArea rows={8} disabled defaultValue={this.props.techMessage || "Tech message here"} placeholder="Details/Report" style={{ width: "100%" }} /></div>
+                <div style={{ padding: "15px", backgroundColor: "#D5FFD5", boxShadow: "0 2px 6px", color: "#43425D" }}>{this.props.row.subject}</div>
+                <div><TextArea rows={8} disabled defaultValue={this.props.tech.technicalReview || "Tech message here"} placeholder="Details/Report" style={{ width: "100%" }} /></div>
 
                 <div style={{ padding: "15px", textAlign: "left", backgroundColor: "#EFEFEF", boxShadow: "0 2px 6px", color: "#43425D", }}>Add Items Required</div>
 
@@ -561,7 +553,7 @@ class Tech24 extends React.Component {
                             }}
 
                         />
-                                           <Container style={{ backgroundColor: 'white' }}>
+              <Container style={{ backgroundColor: 'white' }}>
               {this.List?.map((item) => (
                 <div style={{ margin: '16px 0px 16px 0px' }}>
                   <div>{item.fileName}</div>
@@ -597,7 +589,7 @@ class Tech24 extends React.Component {
                 </div>
                 <div>
                   <BooButton onClick={this.onSubmit}>Submit</BooButton>
-                  <BooButton style={{ backgroundColor: 'grey' }} onClick={this.setState({review:""})}>Clear Entry</BooButton>
+                  <BooButton style={{ backgroundColor: 'grey' }} onClick={this.clear}>Clear Entry</BooButton>
                   <BooButton style={{ backgroundColor: 'silver', color: 'black' }} onClick={this.props.handleClose}>Close</BooButton>
                 </div>
               </div>

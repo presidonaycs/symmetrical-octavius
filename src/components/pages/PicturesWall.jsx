@@ -1,5 +1,5 @@
-import React from 'react'
-import { Upload, Modal } from 'antd';
+import { Modal, Upload } from 'antd';
+import React from 'react';
 
 function getBase64(file) {
   return new Promise((resolve, reject) => {

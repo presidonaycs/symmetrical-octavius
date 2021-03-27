@@ -12,7 +12,7 @@ const PhotoViewer = props => {
         }
 else{
     return props.docs.map(photo => {
-        return <Photo path={photo.filePath} key={photo.id}/>
+        return <img src={photo.image} key={photo.id} alt={photo.name}/>
     })
 }
        

@@ -6,20 +6,26 @@
 // import MaintenanceRequestManagement from './pages/MaintenanceRequestManagement';
 // import Header1 from './components/Header1';
 
-import React, { useContext, useState, useEffect, useRef } from 'react';
-import { Table, Input, Button, Popconfirm, Form, Space, Alert } from 'antd';
-import { Steps, Divider } from 'antd';
-import { UserOutlined, SolutionOutlined, LoadingOutlined, SmileOutlined } from '@ant-design/icons';
+import { Divider, Steps } from 'antd';
+import React, { useEffect } from 'react';
+import { RiBarChartFill, RiUserSettingsLine } from 'react-icons/ri';
+import { BiEnvelope } from 'react-icons/bi';
+import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
+import ReceiptIcon from '@material-ui/icons/Receipt';
+import SettingsIcon from '@material-ui/icons/Settings';
+import PersonIcon from '@material-ui/icons/Person';
+import LockOpenIcon from '@material-ui/icons/LockOpen';
+import profilePic from './../assets/images/user-avater.png'
 
 
-
-function Stepz(prop) {
+const baseURL = "http://devsvr.edogoverp.com"
+function Stepz(props) {
     const Array = [
         {
            
             time:"2 months",
             subtitle:"DOAS",
-            Picture:<img src=".\logo512.png" width="25" height="25" style={{border:"2px solid red", borderRadius:"50%", marginBottom:"5px"}} />,
+            Picture:<span  style={{border:"2px solid #4AD991", borderRadius:"50%", margin:"5px",width:"30", height:"30", padding:'4px 6px'}}><RiUserSettingsLine  style={{fontSize:'18px',color:'#A3A1FB'}}/></span>,
             title:"Ehigiamouse Emmanuel,",
             descriptiom:"This is not a description. This is a description."
             // statusFInish:"finish",
@@ -30,7 +36,7 @@ function Stepz(prop) {
            
           time:"3 months",
           subtitle:"DOAS",
-          Picture:<img src=".\logo512.png" width="25" height="25" style={{border:"2px solid red", borderRadius:"50%", marginBottom:"5px"}} />,
+          Picture:<span  style={{border:"2px solid #A3A1FB", borderRadius:"50%", margin:"5px",width:"30", height:"30", padding:'4px 6px'}}><ReceiptIcon  style={{fontSize:'18px', color:'#A3A1FB'}}/></span>,
           title:"Ehigiamouse Emmanuel,",
           descriptiom:"This is not a description. This is a description."
           // statusFInish:"finish",
@@ -41,7 +47,8 @@ function Stepz(prop) {
            
         time:"4 months",
         subtitle:"DOAS",
-        Picture:<img src=".\logo512.png" width="25" height="25" style={{border:"2px solid red", borderRadius:"50%", marginBottom:"5px"}} />,
+        Picture:<span  style={{border:"2px solid #FF7285", borderRadius:"50%", margin:"5px",width:"30", height:"30", padding:'4px 6px'}}><LockOpenIcon  style={{fontSize:'18px', color:'#FF7285'}}/></span>,
+        
         title:"Ehigiamouse Emmanuel,",
         descriptiom:"This is not a description. This is a description."
         // statusFInish:"finish",
@@ -52,7 +59,7 @@ function Stepz(prop) {
            
       time:"5 months",
       subtitle:"DOAS",
-      Picture:<img src=".\logo512.png" width="25" height="25" style={{border:"2px solid red", borderRadius:"50%", marginBottom:"5px"}} />,
+      Picture:<span  style={{border:"2px solid #FF7285", borderRadius:"50%", margin:"5px",width:"30", height:"30", padding:'4px 6px'}}><QuestionAnswerIcon  style={{fontSize:'18px', color:'#FFCA83'}}/></span>,
       title:"Ehigiamouse Emmanuel,",
       descriptiom:"This is not a description. This is a description."
       // statusFInish:"finish",
@@ -63,47 +70,65 @@ function Stepz(prop) {
            
     time:"6 months",
     subtitle:"DOAS",
-    Picture:<img src=".\logo512.png" width="25" height="25" style={{border:"2px solid red", borderRadius:"50%", marginBottom:"5px"}} />,
+    Picture:<span  style={{border:"2px solid #A3A1FB", borderRadius:"50%", margin:"5px",width:"30", height:"30", padding:'4px 6px'}}><ReceiptIcon  style={{fontSize:'18px', color:'#A3A1FB'}}/></span>,
     title:"Ehigiamouse Emmanuel,",
     descriptiom:"This is not a description. This is a description."
     // statusFInish:"finish",
     // statusProcess:"process",
     // statusWait:"wait"
 },
-{
+// {
            
-  time:"7 months",
-  subtitle:"DOAS",
-  Picture:<img src=".\logo512.png" width="25" height="25" style={{border:"2px solid red", borderRadius:"50%", marginBottom:"5px"}} />,
-  title:"Ehigiamouse Emmanuel,",
-  descriptiom:"This is not a description. This is a description."
-  // statusFInish:"finish",
-  // statusProcess:"process",
-  // statusWait:"wait"
-},
-{
+//   time:"7 months",
+//   subtitle:"DOAS",
+//   Picture:<img src=".\logo512.png" width="25" height="25" style={{border:"2px solid red", borderRadius:"50%", marginBottom:"5px"}} />,
+//   title:"Ehigiamouse Emmanuel,",
+//   descriptiom:"This is not a description. This is a description."
+//   // statusFInish:"finish",
+//   // statusProcess:"process",
+//   // statusWait:"wait"
+// },
+// {
            
-  time:"8 months",
-  subtitle:"DOAS",
-  Picture:<img src=".\logo512.png" width="25" height="25" style={{border:"2px solid red", borderRadius:"50%", marginBottom:"5px"}} />,
-  title:"Ehigiamouse Emmanuel,",
-  descriptiom:"This is not a description. This is a description."
-  // statusFInish:"finish",
-  // statusProcess:"process",
-  // statusWait:"wait"
-},
+//   time:"8 months",
+//   subtitle:"DOAS",
+//   Picture:<img src=".\logo512.png" width="25" height="25" style={{border:"2px solid red", borderRadius:"50%", marginBottom:"5px"}} />,
+//   title:"Ehigiamouse Emmanuel,",
+//   descriptiom:"This is not a description. This is a description."
+//   // statusFInish:"finish",
+//   // statusProcess:"process",
+// //   // statusWait:"wait"
+// },
         
     ]
     const { Step } = Steps;
     const [current, setCurrent] = React.useState(0);
+    
+
+
+    // useEffect(() => {
+    //   const next = () => {
+    //     setCurrent(props.current);
+    //     console.log('useeFFECT')
+    //   }
+    //   next();
+      
+    // }, [])
+
+
+
+
+  ;
+
+  const prev = () => {
+    setCurrent(parseInt(props.current)-1);
+  };
 
   const next = () => {
     setCurrent(current + 1);
   };
 
-  const prev = () => {
-    setCurrent(current - 1);
-  };
+  
 
   return (
 
@@ -111,14 +136,15 @@ function Stepz(prop) {
   <div className="steps">
  
     <Divider />
-
-    <Steps  current={current} direction="vertical">
-      <Step title={'James John'} subTitle= {Array[1].subtitle} description={Array[1].time} icon={Array[1].Picture}/>
-      <Step title={'Harrison Ford'} subTitle= {Array[2].subtitle} description={Array[2].time} icon={Array[2].Picture}/>
-      <Step title={'Jolly Fuss'} subTitle= {Array[3].subtitle} description={Array[3].time} icon={Array[3].Picture}/>
-      <Step title={'Spade David'} subTitle= {Array[4].subtitle} description={Array[4].time} icon={Array[4].Picture}/>
-      <Step title={'Godwin Obaseki'} subTitle= {Array[5].subtitle} description={Array[5].time} icon={Array[5].Picture}/>
-      </Steps>
+    {console.log(props)}
+                    {console.log("checked")}
+    <Steps  current={parseInt(props.current)-1} direction="vertical">
+      {props.sequence2?.map(item=>(<Step key={item.name} title={item.name} subTitle= {''} description={item.time} icon={<img src={(item.profilePic === null) ? profilePic : baseURL.concat(item.profilePic)  } />}/>))}
+      {/* <Step title={'Harrison Ford'} subTitle= {Array[1].subtitle} description={Array[1].time} icon={Array[1].Picture}/>
+      <Step title={'Jolly Fuss'} subTitle= {Array[2].subtitle} description={Array[2].time} icon={Array[2].Picture}/>
+      <Step title={'Spade David'} subTitle= {Array[3].subtitle} description={Array[3].time} icon={Array[3].Picture}/>
+      <Step title={'Godwin Obaseki'} subTitle= {Array[4].subtitle} description={Array[4].time} icon={Array[4].Picture}/> */}
+    </Steps>
  
   </div>
 

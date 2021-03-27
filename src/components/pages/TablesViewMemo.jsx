@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Box, Divider, FormControl, FormHelperText, Grid, InputLabel, makeStyles, MenuItem, Select, TextField, withStyles, Paper, SvgIcon, Container } from '@material-ui/core';
+import React, { useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
-import Request from './../MainMemoTables'
-import MemoSide from './../MemoSide'
-import ApprovalViewer from './../pages/ApprovalViewer'
-import http from './../../httpCommon'
-import ApprovalJourney from '../../ApprovalJourney';
 import MemoSideDashboard from '../MemoSideDashboard';
+import Request from './../MainMemoTables';
+import http from './../../uploaderz';
+import IsLoading from '../../assets/IsLoading';
+
 
 var InitiatedRequest = 7786790;
 var CompletedRequest = 7786790;
@@ -35,7 +33,11 @@ const TablesViewMemo = (props) => {
     var [rows, setRows, ref1] = useStateRef([]);
     var [rowss, setRows1] = useState([]);
     let [docs, setDocs, docref] = useStateRef([])
-
+    let [img, setImg]=useState([])
+  
+  
+  
+   
 
 
 
@@ -65,19 +67,20 @@ const TablesViewMemo = (props) => {
                         <div className='col'>
                             <div className='row' style={{ marginBottom: '16px' }}>
 
-
+        
+    
 
                             </div>
-                            <div className='row'>
+                            <div style={{display:'flex', justifyContent:'space-between'}}>
                                 <div className='col' >
-                                    <div style={{ fontWeight: 'bold' }}>Facility Request Management</div>
+                                    <div style={{fontWeight: 'bold'}}>Facility Request Management</div>
                                     <div className='col col-lg-2' style={{ width: '300px', height: 'auto' }}>
-                                        <MemoSideDashboard rows1={props.row} />
+                                        <MemoSideDashboard rows1={props.row} sequence1={props?.sequence} />
                                     </div>
                                     
                                 </div>
                                 <div style={{display:'flex', direction:'column'}}>
-                                <div className='col col-lg-10' style={{ width: '680px', marginLeft: '0.3vw' }} >
+                                <div className='col col-lg-8' style={{ width: '680px', marginLeft: '0.3vw' }} >
                                     <Request rows1={props.row} docs={props.docs} journey={props.journey} />
                                 </div>
                                 

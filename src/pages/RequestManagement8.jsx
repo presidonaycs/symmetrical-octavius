@@ -11,17 +11,24 @@ import http from '../httpCommon.js'
 import TechnicalReview24 from './../components/pages/TechnicalReview24'
 import { Badge, Button, InputAdornment, MenuItem, Select, TextField } from '@material-ui/core';
 import LocationDetails from '../components/LocationDetails';
-import SplitButton from '../input/SplitButton';
+import SplittedButton from '../input/SplitButton';
 import SplitsButton from '../input/SplitsButton';
+import Cookies from 'universal-cookie'
+import TechnicalReviewModal24 from './../components/pages/TechnicalReviewModal24'
+import TechnicalReviewModalCancel24 from './../components/pages/TechnicalReviewModalCancel24'
 
+import TechnicalReviewModal16 from './../components/pages/TechnicalReviewModal16'
+import FrankForm from './../components/pages/FrankForm'
 
 import ViewMemoForm from '../components/pages/ViewMemoForm';
 import IoMdClose from 'react-icons/io';
 import TechnicalReview16 from './TechnicalReview16';
 import TablesViewMemo from '../components/pages/TablesViewMemo';
+import IsLoading from '../assets/IsLoading';
+import httpCommon from '../httpCommon.js';
 
 
-
+const cookies = new Cookies();
 const token1 = sessionStorage.getItem('token');
 const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOiIxIiwiRmlyc3ROYW1lIjoiRWRvIEdvdiIsIkxhc3ROYW1lIjoiQWRtaW4iLCJleHAiOjE2MTM0MDUwMzUsImlzcyI6InNlcnZlciIsImF1ZCI6ImNsaWVudCJ9.uBytGBfWejiG7x00iu80MoJRFbT5IGDjAJrv58zsMTE';
 const BootstrapButton = withStyles({
@@ -117,11 +124,11 @@ const useStyles = makeStyles({
 
 const chkStatus = (status) => {
   if (status === 1)
-    return { color: 'yellow', margin: '2px', fontSize: '12px' }
+    return { color: '#0DAC26', margin: '2px', fontSize: '12px' }
   else if (status === 2)
-    return { color: 'red', margin: '2px', fontSize: '10px' }
-  else
-    return { color: 'green', margin: '2px', fontSize: '10px' }
+    return { color: '#FDCC29', margin: '2px', fontSize: '10px' }
+  else if (status === 3)
+    return { color: '#EF0621', margin: '2px', fontSize: '10px' }
 }
 
 
@@ -138,15 +145,24 @@ export default function Tables() {
   let [error, setError] = React.useState(null)
   let [rows, setRow] = React.useState([])
   let [rowsReviewed, setReviewedRow] = React.useState([])
+  let [rowsReviewed2, setReviewedRow2] = React.useState([])
+let [loading, setLoading] = useState(false)
   let [isCount, setIsCount] = React.useState('')
   const [showFormModal, setShowFormModal] = useState(false);
   const [details, setDetails] = useState([]);
+  const [formCancelModal, setFormCancelModal] = useState(false)
+
   var useStateRef = require('react-usestateref')
   const [selectedRecord, setSelectedRecord] = useState([]);
   let [requestID, setRequestID] = React.useState(null);
   let [rowValues, setRowValues, recRef] = useStateRef(0)
   let [showModal16, setShowModal16] = React.useState(false);
   let [show19, setShow19] = React.useState(false);
+  let [technicalData, setTechnicalData] = useState({})
+  let [review, setReview] = useState("")
+  let [passModal, setPassModal] = useState(false);
+  let [canModal, setCanModal] = useState(false);
+  let [typedValue, setTypedValue] = useState('')
 
 
   var InitiatedRequest = 7786790;
@@ -167,6 +183,26 @@ export default function Tables() {
 
 
   let [responseData, setResponseData] = useState({
+    data: {
+      requestId: 0,
+      memoInitiationDate: "",
+      memoInitiator: "",
+      costImplication: 0,
+      status: "",
+      currentApprovalStage: 0,
+      subject: "",
+      details: "",
+      lastMaintainanceDate: "",
+      approvalJourneyResponse: [
+
+      ],
+      uploadedDocuments: [
+
+      ]
+    }
+  })
+
+  let [responseData2, setResponseData2] = useState({
     data: {
       requestId: 0,
       memoInitiationDate: "",
@@ -233,6 +269,31 @@ export default function Tables() {
     }
   }
 
+  const fetchTechReviewDetails=()=>{
+    setLoading(true);
+    let url = 'View-TechReviewDetails'
+    httpCommon.get(url, {
+      params:{
+        requestid:recRef.current
+      }
+    })
+    .then((response)=>{
+      console.log(response)
+      setTechnicalData(response.data.data)
+      setLoading(false)
+    })
+    
+  }
+
+  
+
+
+const closeCanModal=()=>{
+  setFormCancelModal(false);
+}
+
+
+
   const sendRequestId = (e) => {
     const req = e.currentTarget.getAttribute('data-item')
     setRequestID(req);
@@ -245,12 +306,26 @@ export default function Tables() {
 
 
   const handleAccept = () => {
+    fetchData();
+    fetchTechReviewDetails();
     setShowFormModal(true);
+
   }
+
+  const handleCancel = () => {
+    fetchData();
+    fetchTechReviewDetails();
+    setFormCancelModal(true);
+
+  }
+
+  
 
 
 
   const goLink = () => {
+    fetchData();
+    fetchTechReviewDetails();
     setShowModal16(true);
   
     
@@ -272,44 +347,95 @@ export default function Tables() {
   }
 
 
+  useEffect(()=>{
+    setLoading(true);
+    const fetchApprovalRequests = async () =>{
+      let url="FinalApproval"
+      await http.get(url)
+      .then(res => {
+        console.log('server')
+        console.log(res.data.data)
+        setError(res.data.code)
+        setReviewedRow2(res.data.data)
+        setIsCount(res.data.data.count)
+
+        setLoading(false);
+      })
+      
+    }
+
+    fetchApprovalRequests();
+  }, []);
 
 
+  const cancelRequest=()=>{
+    httpCommon.post("DeclineRequest" , {
+        // requestid:props.id.current,
+        // addtionalcomment:comments
+      
+    })
+    .then((res)=>(console.log(res)))
+    console.log("hiya")
+    // props.handleClose()
+    // setSuccess(true) 
+  }
 
+
+  const onPassModal=()=>{
+    setPassModal(true)
+
+  }
+
+  const offPassModal=()=>{
+    setPassModal(false)
+    
+  }
   
-
+  useEffect(() => {
+    setLoading(true)
   const fetchReviewedData = async () => {
     let url = 'FinalApprovalReview';
 
-    console.log(url)
-    http.get(url)
+      console.log(url)
+      await http.get(url)
       .then((response) => {
         console.log('server')
         console.log(response.data.data)
         setError(response.data.code)
         setReviewedRow(response.data.data)
+        // setIsCount(response.data.data.count)
+        setLoading(false);
 
 
 
 
       })
-
+      
   }
-  useEffect(() => {
+  
     fetchReviewedData()
 
   }, [])
 
 
+  const handleApprove=(e)=>{
+    http.post("ApproveRequest" , {
+      requestId:recRef.current,
+    
+  })
+  .then((res)=>console.log(res))
+  
+  }
 
 
 
   const chkStatus = (status) => {
-    if (status === 3)
-      return { color: 'green', margin: '2px', fontSize: '14px' }
+    if (status === 1)
+      return { color: '#0DAC26', margin: '2px', fontSize: '14px' }
     else if (status === 2)
-      return { color: 'red', margin: '2px', fontSize: '14px' }
-    else
-      return { color: 'yellow', margin: '2px', fontSize: '14px' }
+      return { color: '#FDCC29', margin: '2px', fontSize: '14px' }
+    else if (status === 3)
+      return { color: '#EF0621', margin: '2px', fontSize: '14px' }
   }
 
   const handleClick = (e) => {
@@ -333,12 +459,12 @@ export default function Tables() {
 
   const handleIsReviewedRequest = () => {
     isRequest = false;
-    fetchReviewedData()
+    // fetchReviewedData()
     setIsRequest(isRequest)
   }
 
-  const isGreen = { backgroundColor: 'light-green', borderRadius: '40px' }
-  const isWhite = { backgroundColor: 'white', borderRadius: '40px' }
+  const isGreen = { backgroundColor: 'light-green', borderRadius: '40px',border:"1px solid #707070" }
+  const isWhite = { backgroundColor: 'white', borderRadius: '40px',border:"1px solid #707070" }
 
   if (isRequest) {
     const column = [
@@ -373,12 +499,12 @@ export default function Tables() {
       {
         title: 'Action',
         dataIndex: 'action',
-        render: text => <SplitsButton onClick={handleAccept}>{text}</SplitsButton>
+        render: text => <SplitsButton  handleAccept={handleAccept} handleCancel={handleCancel}>{text}</SplitsButton>
 
       }
     ];
 
-    let data = rows.map((it) => (
+    let data = rowsReviewed2.map((it) => (
       {
         key: it.requestId,
         items: it.items,
@@ -387,38 +513,50 @@ export default function Tables() {
         initiatorsName: it.initiatorsName,
         agency: it.agency,
         dateReceived: it.dateReceived,
-        action: ""
+        requestId: it.requestId,
+
       }
     ))
 
+    if(loading){
+      return(
+        <IsLoading/>
+      )
+    }
+    else{
     return (
       <div style={{ width: '100%' }}>
-        <TechnicalReview24 show={showFormModal} handleClose={closeModal} />
-        <TechnicalReview16 show16={showModal16} handleClose16={goLinkNot} />
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <div>
+        <TechnicalReviewModal24 show={showFormModal} handleClose={closeModal} row={responseData} id={recRef} tech={technicalData} />
+        <TechnicalReviewModal16 show16={showModal16} handleClose16={goLinkNot} row={responseData} id={recRef} tech={technicalData}/>
+        <TechnicalReviewModalCancel24 show={formCancelModal} handleClose={closeCanModal} row={responseData} id={recRef} tech={technicalData}/>
+        <div style={{ display: 'flex', justifyContent: 'space-between'}}>
+        <div>
 
-            <div>Good Morning</div>
-            <div style={{ fontSize: '23px' }}>Osagie Osaigbovo; #{numb}</div>
+          <div>Good Day</div>
+          <div style={{ fontSize: '23px' }}>{cookies.get("firstName")} {cookies.get("lastName")}; #{cookies.get("staffNumber")}</div>
 
-            <div>{post} {ministry} | {grade}</div>
-          </div>
-          <div>
-            <LocationDetails />
-          </div>
+          <div>{cookies.get("role")} {cookies.get("mda")} | {grade}</div>
         </div>
+        <div>
+          <LocationDetails />
+        </div>
+        {console.log('passed')}
+        
+      </div>
+      <FrankForm show={passModal} handleClose={offPassModal} accept={cancelRequest} />
         <div style={{ width: '100%' }}>
 
-          <div style={{ marginLeft: '46%', marginBottom: '1%' }} className='row'>
-            <div style={{ marginRight: '107px', width: '150px' }}><SplitButton /></div>
-            <SearchInput className='col-sm-3' style={{ width: '100%' }} />
-          </div>
+          
           <div style={{ display: 'flex' }} className='row'>
             <Grid container justify="center">
               <Grid item sm={11}>
+              <div style={{display:'flex',justifyContent:'flex-end'}}>
+            <div style={{width: '250px',margin:'8px' }}><SplittedButton /></div>
+            <SearchInput style={{marginRight:'16px'}}  onChange={e=>setTypedValue(e.target.value)} value={typedValue}/>
+              </div>
                 <TableContainer component={Paper} style={{ width: '100%' }}>
                   <div className={classes.clDiv}>
-                    <div style={{ fontWeight: '900', fontFamily: 'auto' }}>
+                    <div style={{ fontWeight: '900'}}>
                       Maintenance Request Management
                   </div>
                     <div style={{ display: 'flex' }}>
@@ -443,7 +581,16 @@ export default function Tables() {
                       </div>
                     </div>
                   </div>
-                  <Table
+                  <Table  
+                  onRow={(record, rowIndex) => {
+                  console.log(record.key)
+                  console.log(record)
+
+                  return {
+                      onClick: event => setRowValues(record.key),
+                  };
+                  
+                }}
                     columns={column}
                     dataSource={data}
                     bordered
@@ -456,6 +603,7 @@ export default function Tables() {
         </div>
       </div>
     );
+    }
   }
   else {
     let columned = [
@@ -502,33 +650,37 @@ export default function Tables() {
         initiatorsName: it.initiatorsName,
         agency: it.agency,
         approvalType: it.approvalType,
+        requestId: it.requestId,
         dateTreated: it.dateTreated,
 
       }
     ))
     return (
       <div style={{ width: '100%' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <div>
+       <div style={{ display: 'flex', justifyContent: 'space-between'}}>
+        <div>
 
-            <div>Good Morning</div>
-            <div style={{ fontSize: '23px' }}>Osagie Osaigbovo; #{numb}</div>
+          <div>Good Day</div>
+          <div style={{ fontSize: '23px' }}>{cookies.get("firstName")} {cookies.get("lastName")}; #{cookies.get("staffNumber")}</div>
 
-            <div>{post} {ministry} | {grade}</div>
-          </div>
-          <div>
-            <LocationDetails />
-          </div>
+          <div>{cookies.get("role")} {cookies.get("mda")} | {grade}</div>
         </div>
-        <div style={{ marginLeft: '58%' }} className='row'>
-          <div style={{ margin: '7px' }}><StyledMenu className='col-sm-6' /></div>
-          <SearchInput className='col-sm-3' />
+        <div>
+          <LocationDetails />
         </div>
+        {console.log('passed')}
+        
+      </div>
+        
         <div style={{ display: 'flex' }} className='row'>
-          <TablesViewMemo show={show19} handleClose={unShow19} row={responseData} docs={responseData.uploadedDocuments ?? []} journey={responseData.approvalJourneyResponse ?? []} />
+          <TablesViewMemo show={show19} handleClose={unShow19} row={responseData} docs={responseData.uploadedDocuments ?? []} journey={responseData.approvalJourneyResponse ?? []} sequence={responseData.approvalSequence ?? []}/>
 
           <Grid container sm={12} justify='center' alignItems='center'>
             <Grid item sm={11}>
+            <div style={{display:'flex',justifyContent:'flex-end'}}>
+            <div style={{width: '250px',margin:'8px' }}><SplittedButton /></div>
+            <SearchInput style={{marginRight:'16px'}}  onChange={e=>setTypedValue(e.target.value)} value={typedValue}/>
+              </div>
               <TableContainer component={Paper} style={{ width: '100%' }}>
                 <div className={classes.clDiv}>
                   <div>

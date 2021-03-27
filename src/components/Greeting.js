@@ -1,5 +1,4 @@
 import { makeStyles, Typography } from '@material-ui/core';
-import PinDropIcon from '@material-ui/icons/PinDrop';
 import PinDropOutlinedIcon from '@material-ui/icons/PinDropOutlined';
 import React from 'react';
 

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Box, Divider, FormControl, FormHelperText, Grid, InputLabel, makeStyles, MenuItem, Select, TextField, withStyles, Paper, SvgIcon, Container } from '@material-ui/core';
-
+import { Container } from '@material-ui/core';
+import React, { useEffect } from 'react';
 import Request from './../components/MainMemo';
-import MemoSide from './MemoSide';
 import LocationDetails from './layouts/LocationDetails';
+import MemoSide from './MemoSide';
+
 
 var InitiatedRequest = 7786790;
     var CompletedRequest = 7786790;

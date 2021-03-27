@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Box, Divider, FormControl, FormHelperText, Grid, InputLabel, makeStyles, MenuItem, Select, TextField, withStyles, Paper, SvgIcon, Card } from '@material-ui/core';
-import { ReactComponent as Logo } from "./../components/iconComponent/upload.svg"
-import pics from './../images/DSC_2930.JPG'
-import PhotoViewer from "../components/PhotoViewer"
-import http from './../httpCommon'
-import { useHistory  } from 'react-router-dom'
+import { Box, Button, Card, Divider, FormControl, Grid, InputLabel, makeStyles, MenuItem, Paper, Select, SvgIcon, TextField, withStyles } from '@material-ui/core';
+import React, { useEffect, useState,useCallback,useRef } from 'react';
+import { useHistory } from 'react-router-dom';
+import { ReactComponent as Logo } from "./../components/iconComponent/upload.svg";
+import http from './../httpCommon';
 import LocationDetails from './layouts/LocationDetails';
+import Cookies from "universal-cookie";
+import UploadButton from './UploadButton'
+import SuccessModal from '../assets/SuccessModal'
+var baseURL='http://devsvr.edogoverp.com/'
+
+
 
 
 
@@ -14,7 +18,7 @@ const BootstrapButton = withStyles({
         boxShadow: 'none',
         borderRadius: '20px 20px 20px 20px',
         textTransform: 'none',
-        fontSize: 12,
+        fontSize: '0.9rem',
         padding: '2px 12px',
         width: '240px',
         lineHeight: 1,
@@ -33,13 +37,13 @@ const BootstrapButton = withStyles({
             '"Segoe UI Symbol"',
         ].join(','),
         '&:hover': {
-            backgroundColor: 'yellow',
+            backgroundColor: 'lightgreen',
             boxShadow: 'none',
         },
         '&:active': {
             boxShadow: 'none',
-            backgroundColor: 'yellow',
-            borderColor: 'yellow',
+            backgroundColor: 'lightgreen',
+            borderColor: 'lightgreen',
         },
 
     },
@@ -49,7 +53,7 @@ const BooButton = withStyles({
     root: {
         boxShadow: 'none',
         textTransform: 'none',
-        fontSize: 12,
+        fontSize: '0.9rem',
         padding: '2px 12px',
         width: '280px',
 
@@ -69,13 +73,13 @@ const BooButton = withStyles({
             '"Segoe UI Symbol"',
         ].join(','),
         '&:hover': {
-            backgroundColor: 'yellow',
+            backgroundColor: 'lightgreen',
             boxShadow: 'none',
         },
         '&:active': {
             boxShadow: 'none',
-            backgroundColor: 'yellow',
-            borderColor: 'yellow',
+            backgroundColor: 'lightgreen',
+            borderColor: 'lightgreen',
         },
 
     },
@@ -85,12 +89,12 @@ const useStyles = makeStyles({
     costBox: {
       display: 'flex',
       flexDirection: 'column',
-      fontSize: '16px'
+      fontSize: '0.9rem'
   
   
     },
     myDivs: {
-      fontSize: '16px',
+      fontSize: '0.9rem',
       marginTop: '12px',
       fontFamily: 'avenir',
     },
@@ -98,11 +102,11 @@ const useStyles = makeStyles({
       display: 'flex',
       justifyContent: 'space-between',
       alignItems: 'center',
-      fontSize: '16px',
+      fontSize: '0.9rem',
       padding: '6px',
   
       borderRadius: '3px',
-      fontFamily: 'auto'
+      fontFamily: 'avenir'
   
     },
   
@@ -133,6 +137,7 @@ var numb = 78943
 var grade = 'Grade level 8'
 var descriptions = 'sorry its ovaaaaaaaaaaaaaaaaaa'
 
+let cookies = new Cookies();
 
 const EditRequest = (props) => {
     const classes = useStyles()
@@ -143,13 +148,100 @@ const EditRequest = (props) => {
   
     const [error, setError] = useState('')
     const [selValue, setSelValue, selValueRef] = useStateRef(0)
-    const [subject, setSubject,SubRef] = useStateRef(props.rowss.subject)
-    const [details, setDetails,DetRef] = useStateRef(props.rowss.details)
+    const [subject, setSubject] = useState('')
+    const [details, setDetails] = useState('')
+    const [imagess, setImagess] = useState([]);
+    const [pat, setPath] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [selErr, setSelErr] = useState(false);
+  const [subErr, setSubErr] = useState(false)
+  const [detErr, setDetErr] = useState(false)
+  const [success, setSuccess] = useState(false);
+  const textInput = useRef(null);
+
+
+  useEffect(() => {
+    textInput.current.focus();
+  }, []);
 
 
 
+    var imgis = {
+      image:'', 
+      name:''
+    }
+    var path=''
+     var facImg = [];
+    
+    const recImagg = (e,n) =>{
+     
+      
+      
+    imgis.image = e;
+    imgis.name = n;
+    path = `http://devsvr.edogoverp.com${e}`
+    facImg.push(imgis);
+    
+    setPath(path)
+    imagess.push(imgis)
+    //setImgState()
+    
+    }
+    
+    
+    
+    
+    console.log(facImg)
+    
+
+
+
+
+    
+  const validate = (Request, subject, details) =>{
+    if(selValueRef.current === null || selValueRef.current === "" || selValueRef.current === undefined || selValueRef.current === 0 || subject === null || subject === "" || subject === undefined || details === null || details === "" || details === undefined)
+      return true
+    else
+      return false
+  }
+
+
+
+const pingError = (Request, subject, details) =>{
+    if(selValueRef.current === null || selValueRef.current === "" || selValueRef.current === undefined|| selValueRef.current === 0)
+      setSelErr(true)
+    else setSelErr(false)
+    if(subject === null || subject === "" || subject === undefined)
+      setSubErr(true)
+    else setSubErr(false)
+    if(details === null || details === "" || details === undefined)
+      setDetErr(true)
+    else setDetErr(false)
+  }
+
+  const resetErrors=()=>{
+    setSelErr(false);
+    setDetErr(false);
+    setSubErr(false);
+  }
+     
+
+
+
+
+    useEffect(()=>{
+      const setInit = ()=>{
+        setSubject(props.rowss.subject)
+        setDetails(props.rowss.details)
+      }
+      setInit();
+    }, [])
 
     const handleSave = (e) => {
+      if(validate(Request, subject, details)){
+        pingError(Request, subject, details);
+      }
+      else{
         e.preventDefault();
         let url = ''
         console.log(url)
@@ -157,28 +249,58 @@ const EditRequest = (props) => {
         console.log('wait')
         http.post(url, {
           id: props.requestId,
-          subject: SubRef.current,
-          detail: DetRef.current,
+          subject: subject,
+          detail: details,
           storeAsDraft: true,
           approvalStatusId: 0,
           requestcategoryid: selValueRef.current,
-          images: []
+          images: facImg
     
         })
           .then((response) => {
             console.log('server')
             console.log(response.data)
             console.log("yess")
-    
+            window.location.reload();
           })
     
-          window.location.reload();
+          
+        
     
-    
+      }
+    }
+      const closeModal = ()=>{
+        setSuccess(false);
+        history.push("/facility-portal")
+      }
+      
+
+      function formattedDate(date){
+
+        var year = date.getFullYear();
+        var month = date.getMonth()+1;
+        var day = date.getDate();
+        
+        if (day < 10) {
+          day = '0' + day;
+        }
+        if (month < 10) {
+          month = '0' + month;
+        }
+        
+         return day + '.' + month + '.' + year
+      }
+
+      const changeDetails = (event) =>{
+        setDetails(event.target.value)
+
+        cookies.set('dettails', event.target.value, {path:"/"})
+
       }
 
       const handleChangeSubject = (event) => {
         setSubject(event.target.value)
+        cookies.set('subbject', event.target.value, {path:"/"})
       }
 
       const handleSelect = (e) =>{
@@ -197,8 +319,8 @@ const EditRequest = (props) => {
         console.log('wait')
         http.post(url, {
           id : props.requestId,
-          subject: SubRef.current,
-          detail: DetRef.current,
+          subject:subject,
+          detail: details,
           storeAsDraft: false,
           approvalStatusId: 0,
           requestcategoryid: selValueRef.current,
@@ -208,15 +330,17 @@ const EditRequest = (props) => {
             console.log('server')
             console.log(response.data.data)
             console.log("yess")
-    
+            console.log(subject)
+            console.log(details)
+            window.location.reload();
           })
-          window.location.reload();
+         
     
     
       }
     
 
-
+      const dayte = formattedDate(new Date());
     
     console.log('main memo called')
     console.log(props.rows1)
@@ -228,28 +352,31 @@ const EditRequest = (props) => {
     return (
         < Grid Container>
       <div className='col'>
-        <div className='row flex space-between' style={{ marginBottom: '16px' }}>
+        
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <div>
             <div>Good Morning</div>
-            <div style={{ fontSize: '23px' }}>Osagie Osaigbovo; #{numb}</div>
+            <div style={{ fontSize: '0.9rem' }}>{cookies.get("firstName")} {cookies.get("lastName")}; #{cookies.get("staffNumber")}</div>
 
-            <div>{post} {ministry} | {grade}</div>
+            <div>{cookies.get("role")} {cookies.get("mda")} | {grade}</div>
           </div>
-          <div>
+        <div>
             <LocationDetails />
-          </div>
+      </div>
+        {console.log('passed')}
 
-        </div>
+      </div>
+
         <Grid container>
           <Grid item lg style={{ marginBottom: '1vw' }}>
-            <div style={{ fontWeight: 'bold', fontFamily: 'auto', paddingBottom: '1vw' }}>Facility Request Management</div>
+            <div style={{ fontWeight: 'bold', fontFamily: 'avenir', paddingBottom: '1vw' }}>Facility Request Management</div>
 
             <Box flexDirection='column' style={{ justifyContent: 'space-between' }}>
               <div style={{ width: '21.5vw' }}>
 
             <form onSubmit={handleSubmit}>
                 <div className={classes.root}>
-                  <Card style={{ marginBottom: '1vw', height: '13vw', justifyContent: 'space-between' }}>
+                  <Card style={{ marginBottom: '1vw', justifyContent: 'space-between' }}>
                     <Box style={{ backgroundColor: 'white' }, { borderRadius: '3px' }, { margin: '20px' }}>
                       <Box style={{ margin: '10px 0px 10px 0px' }}>
                         <FormControl className={classes.formControl} >
@@ -258,16 +385,15 @@ const EditRequest = (props) => {
                                 </InputLabel>
                           <Select
                             labelId="demo-simple-select-placeholder-label-label"
-                            displayEmpty
                             disableUnderline
                             style={{ width: '19vw' }}
                             required
-                            onChange = {handleSelect}
-                            value = {parseInt(props.rowss.requestCategoryId)}
+                            onChange = {e=>{setSelValue(e.target.value); setSelErr(false)}}
+                            value = {props.rowss ? props.rowss?.requestCategoryId:""}
                             className={classes.selectEmpty}
                           >
                             <MenuItem value={1} >
-                              <span style={{ fontSize: '16px' }}>Facility Maintenance</span>
+                              Facility Maintenance
                             </MenuItem>
                             <MenuItem value={2}>Energy & Power Maintenance</MenuItem>
                             <MenuItem value={3}>Office Equipment</MenuItem>
@@ -276,11 +402,11 @@ const EditRequest = (props) => {
                           </Select>
                         </FormControl>
                       </Box>
+                      <SuccessModal show={success} closeModal={closeModal}/>
 
                       <Divider style={{ margin: '0px 0px 0px 0px' }} />
-                      <Box className={classes.myDivs} fontSize='16px'><span style={{ fontWeight: 'bolder', size: '18vw', margin: '10px 0px 10px 0px' }}> Memo initiation date: </span> {date}</Box>
-                      <Box className={classes.myDivs}> <span style={{ fontWeight: 'bolder', size: '18vw', fontSize: '16px', margin: '10px 0px 10px 0px' }}>Memo initiator:</span> {initiator}</Box>
-                      <Box className={classes.myDivs}> <span style={{ fontWeight: 'bolder', size: '18vw', fontSize: '16px', margin: '10px 10px 20px 0px' }}>View Memo:</span> {viewMemo}</Box>
+                      <Box className={classes.myDivs}><span style={{ fontWeight: 'bolder',  margin: '10px 0px 10px 0px' }}> Memo initiation date: {dayte}  </span> </Box>
+                      <Box className={classes.myDivs}> <span style={{ fontWeight: 'bolder', margin: '10px 0px 10px 0px' }}>Memo initiator: {cookies.get("firstName")} {cookies.get("lastName")}</span> {initiator}</Box>
                     </Box>
                   </Card>
                   {/* <Card style={{ marginBottom: '1vw' }}>
@@ -317,10 +443,10 @@ const EditRequest = (props) => {
 
 
           <Grid item lg style={{ marginTop: '1vw' }} >
-            <Box flexDirection='column' style={{ maxWidth: '100%' }, { padding: '20px', border: '1px  red', }} fontSize='62.5%' >
+            <Box flexDirection='column' style={{ maxWidth: '100%' }, { padding: '20px' }} fontSize='0.9rem' >
               <Box >
                 <Box flexDirection='column' maxWidth='100%' width='700px' minWidth='10%'>
-                  <Paper style={{ marginTop: '147px' }, { padding: '20px', border: '1px  red', maxWidth: '100%', minWidth: '10%' }}>
+                  <Paper style={{ marginTop: '147px' }, { padding: '20px', maxWidth: '100%', minWidth: '10%' }}>
                     <Box>
                       <TextField id="outlined-details-static"
                         label="Subject:"
@@ -332,9 +458,10 @@ const EditRequest = (props) => {
                         }}
                         style={{ width: '100%' }, { backgroundColor: 'white' }, { margin: '0px' }}
                         fullWidth
-                        onChange={handleChangeSubject}
+                        onChange={(e)=>{setSubject(e.target.value); setSubErr(false); }}
                         defaultValue={props.rowss?.subject ?? ""}
                         // value = {subject}
+                        ref={textInput}
 
 
                       />
@@ -355,21 +482,22 @@ const EditRequest = (props) => {
                         InputProps={{ disableUnderline: true }}
                         fullWidth
                         defaultValue={props.rowss?.details ?? ""}
-                        onChange={e => setDetails(e.target.value)}
+                        onChange={(e)=>{setDetails(e.target.value); setDetErr(false); }}
                       />
                     </Box>
                     <Divider />
 
                     <Box>
-                      <BootstrapButton
-                        variant='contained'
-                        startIcon={<SvgIcon style={{ marginTop: '9px' }}>
-                          <Logo />
-                        </SvgIcon>}
-                        type = 'submit'
-                      >
-                        Upload Supporting Documents
-                        </BootstrapButton>
+                    <UploadButton style={{width:'200px'}} sendImagg={recImagg}/>
+                    {
+                      props.rowss?.uploadedDocuments?.map((item)=>(
+                        <div key={item.name}><a href={item.filePath}>{item.fileName}</a></div>
+                      )
+
+                      )
+                    }
+                    
+                   
                     </Box>
                   </Paper>
                 </Box>
@@ -380,7 +508,7 @@ const EditRequest = (props) => {
                 </BooButton>
                   </Box>
                   <Box style={{ justifyContent: 'flex-end' }}>
-                    <BooButton className='btn-block' style={{ marginLeft: '0px', maxWidth: '100%', marginRight: '0px' }}  type = 'submit'>
+                    <BooButton className='btn-block' style={{ marginLeft: '0px', maxWidth: '100%', marginRight: '0px' }}  onClick={handleSubmit}>
                       Submit Request
                 </BooButton>
                   </Box>

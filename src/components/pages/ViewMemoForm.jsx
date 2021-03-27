@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Box, Divider, FormControl, FormHelperText, Grid, InputLabel, makeStyles, MenuItem, Select, TextField, withStyles, Paper, SvgIcon, Container } from '@material-ui/core';
+import React from 'react';
 import { IoMdClose } from 'react-icons/io';
-import Request from './../MainMemo1'
-import MemoSide from './../MemoSide'
+import Request from './../MainMemo1';
+import MemoSide from './../MemoSide';
 
-import http from './../../httpCommon'
-import ApprovalJourney from '../ApprovalJourney';
 
 var InitiatedRequest = 7786790;
 var CompletedRequest = 7786790;
@@ -64,12 +61,12 @@ const ViewMemoForm = (props) => {
                 <div className='col' >
                   <div style={{ fontWeight: 'bold', fontFamily: 'auto' }}>Facility Request Management</div>
                   <div className='col col-lg-2' style={{ width: '300px', height: 'auto' }}>
-                    <MemoSide rows1={props.row} />
+                    <MemoSide rows1={props.row} sequence1={props?.sequence}/>
                   </div>
                 </div>
 
                 <div className='col col-lg-10' style={{ width: '680px', marginLeft: '0.3vw' }} >
-                  <Request rows1={props.row} docs={props.docs} />
+                  <Request rows1={props.row} docs={props.docs} journey={props.journey}/>
                 </div>
               </div>
             </div>

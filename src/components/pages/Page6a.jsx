@@ -1,7 +1,7 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
-import { Table, Input, Button, Popconfirm, Form, Typography, Select } from 'antd';
+import { DeleteOutlined, SearchOutlined } from '@ant-design/icons';
+import { Button, Form, Input, Popconfirm, Select, Table, Typography } from 'antd';
 import 'antd/dist/antd.css';
-import { DeleteOutlined, EnvironmentOutlined, SearchOutlined } from '@ant-design/icons';
+import React, { useContext } from 'react';
 
 const { Option } = Select;
 const { Text } = Typography;

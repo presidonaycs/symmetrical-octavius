@@ -1,7 +1,6 @@
-import React from 'react';
-import {Box, Divider, makeStyles} from '@material-ui/core'
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import { Box, Divider, makeStyles } from '@material-ui/core';
 import LensIcon from '@material-ui/icons/Lens';
+import React from 'react';
 
 
 const useStyles = makeStyles({

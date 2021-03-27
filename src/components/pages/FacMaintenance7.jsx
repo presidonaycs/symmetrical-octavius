@@ -1,29 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import dom from 'react-dom';
+import { Badge, Button } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import LensIcon from '@material-ui/icons/Lens'
-import http from './../../httpCommon'
-import { Badge, Button, InputAdornment, MenuItem, Select, TextField } from '@material-ui/core';
-import LocationDetails from '../layouts/LocationDetails';
-import SearchInput from '../inputs/SearchInput';
-import SplitButton from '../../input/SplitButton';
-import Page10 from './Page10';
-import ViewMemoForm from './ViewMemoForm'
 import { Table } from 'antd';
-import Page10Final from './../Page10Final'
+import React, { useEffect, useState } from 'react';
+import SplittedButton from '../../input/SplitButton';
+import SearchInput from '../inputs/SearchInput';
+import LocationDetails from '../layouts/LocationDetails';
+import http from './../../httpCommon';
+import Page10Final from './../Page10Final';
+import ViewMemoForm from './ViewMemoForm';
+import Cookies from "universal-cookie";
+import LensIcon from '@material-ui/icons/Lens';
+import IsLoading from './../../assets/IsLoading'
 
 
 
 
 
 
+
+
+const cookies = new Cookies();
 
 const token1 = sessionStorage.getItem('token');
 const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOiIxIiwiRmlyc3ROYW1lIjoiRWRvIEdvdiIsIkxhc3ROYW1lIjoiQWRtaW4iLCJleHAiOjE2MTM0MDUwMzUsImlzcyI6InNlcnZlciIsImF1ZCI6ImNsaWVudCJ9.uBytGBfWejiG7x00iu80MoJRFbT5IGDjAJrv58zsMTE';
@@ -120,10 +120,7 @@ const useStyles = makeStyles({
 
 
 
-function createData(items, requestInitiator, Agency, Amount, PaymentStatus, DateRecieved, Action) {
 
-  return { items, requestInitiator, Agency, Amount, PaymentStatus,DateRecieved, Action };
-}
 
 const chkStatus = (status) => {
   if (status === 1)
@@ -158,8 +155,9 @@ const FacMaintenance7 = () => {
   let [show, setShow] = useState(false);
   var [clickedRequestId, setClickedRequestId, ref] = useStateRef(0);
   let [showModal, setShowModal, reff] = useStateRef(false)
-
+  let [loading, setLoading] = useState(false)
   let [rowValues, setRowValues, recRef] = useStateRef({})
+  let [typedValue, setTypedValue] = useState('')
 
 
   var InitiatedRequest = 7786790;
@@ -178,17 +176,18 @@ const FacMaintenance7 = () => {
 
 
 
-
   let [responseData, setResponseData] = useState({data: {
     requestId:  0,
     memoInitiationDate: "",
     memoInitiator: "",
+    requestCategoryId: 0,
     costImplication: 0,
     status: "",
     currentApprovalStage: 0,
     subject: "",
     details: "",
     lastMaintainanceDate: "",
+    approvalSequence:[],
     approvalJourneyResponse: [
      
     ],
@@ -199,11 +198,12 @@ const FacMaintenance7 = () => {
   })
   
 
-  
+  let [responseData2, setResponseData2] = useState({})
   
 
   const fetchDatas = async () => {
-    let url = 'View-Memo-Details' // 'Director-ReviewedApprovals';
+    setLoading(true);
+    let url = 'View-Memo-Details' 
     console.log('hey')
     console.log(url)
     console.log(recRef.current)
@@ -213,10 +213,10 @@ const FacMaintenance7 = () => {
     }
     else{
       console.log('hey again')
-      http.get(url, {
+     await http.get(url, {
         params: {
          
-          requestID:recRef.current
+          requestID:recRef.current.key
         }
       })
         .then((response) => {
@@ -225,9 +225,13 @@ const FacMaintenance7 = () => {
         //  setError(response.data.code)
           if(response.data.data === null){
             console.log('la la la')
+            setLoading(false)
           }
           else{
             setResponseData(response.data.data)
+            setResponseData2(response.data.data)
+            setLoading(false)
+
             
 
           }
@@ -250,10 +254,12 @@ const FacMaintenance7 = () => {
   }
 
   let raiseMemo =()=>{
+    setLoading(true)
     console.log(responseData)
-    console.log(recRef)
-
+    console.log('record' + recRef)
+    fetchDatas()
     setMemoState(true)
+    setLoading(false)
     
     console.log(requestID);
   }
@@ -271,6 +277,7 @@ let sendRequestId=(e)=>{
   }
 
   const fetchData = async () => {
+    setLoading(true)
     let url = 'Technical-Review' 
   
     console.log(url)
@@ -281,7 +288,7 @@ let sendRequestId=(e)=>{
         setRows(response.data.data)
   
         setIsCount((response.data.count).toString())
-  
+        setLoading(false)
   
   
       })
@@ -338,6 +345,7 @@ let sendRequestId=(e)=>{
     {
       title: 'Payment Status',
       dataIndex: 'paymentStatus',
+      render:(text,record,index) => <div><span style={{marginTop:'8px'}}><LensIcon style={{color:'#FDCC29', font:"normal normal normal 17px/25px Avenir"}}/></span> <span >Pending</span></div>
     },
     {
       title: 'Date Received',
@@ -346,9 +354,9 @@ let sendRequestId=(e)=>{
     {
       title: 'Action',
       dataIndex: 'action',
-      render:(text,record,index) => <BootstrapButton onClick={(e)=>{ setShow(true)
+      render:(text,record,index) => <BootstrapButton onClick={(e)=>{setShow(true)
         
-        }}  >{text}</BootstrapButton>,
+        }}>{text}</BootstrapButton>,
     }
   ];
 
@@ -370,6 +378,10 @@ let sendRequestId=(e)=>{
   ))
   
 
+  if(loading){
+    return <IsLoading/>
+  }
+else{
 
   return (
     
@@ -377,25 +389,29 @@ let sendRequestId=(e)=>{
     
     <div style={{ width: '100%' }}>
       
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between'}}>
         <div>
 
           <div>Good Morning</div>
-          <div style={{ fontSize: '23px' }}>Osagie Osaigbovo; #{numb}</div>
+          <div style={{ fontSize: '23px' }}>{cookies.get("firstName")} {cookies.get("lastName")}; #{cookies.get("staffNumber")}</div>
 
-          <div>{post} {ministry} | {grade}</div>
+          <div>{cookies.get("role")} {cookies.get("mda")} | {grade}</div>
         </div>
         <div>
           <LocationDetails />
         </div>
+        {console.log('passed')}
+        
       </div>
-      <div style={{ marginLeft: '46%', marginBottom: '1%' }} className='row'>
-        <div style={{ marginRight: '107px', width: '150px' }}><SplitButton /></div>
-        <SearchInput  className='col-sm-3' style={{ width: '100%', placeholder:'search transactions, invoices or help' }} />
-      </div>
+
+
+     
       <Grid container justify='center' >
         <Grid item sm={11}>
-
+        <div style={{display:'flex',justifyContent:'flex-end'}}>
+            <div style={{width: '250px',margin:'8px' }}><SplittedButton /></div>
+            <SearchInput style={{marginRight:'16px'}}  onChange={e=>setTypedValue(e.target.value)} value={typedValue}/>
+              </div>
           <TableContainer component={Paper} style={{ width: '100%' }}>
             <div className={classes.clDiv}>
               <Badge badgeContent={isCount} showZero color='error'>
@@ -407,6 +423,8 @@ let sendRequestId=(e)=>{
             <Table onRow={(record, rowIndex) => {
                   console.log(record.key)
                   console.log(record)
+                  console.log(responseData)
+
 
                   return {
                       onClick: event => setRowValues(record),
@@ -424,11 +442,12 @@ let sendRequestId=(e)=>{
           </TableContainer>
         </Grid>
       </Grid>
-        <ViewMemoForm show = {memoState} handleClose = {closeMemo} row={rowValues}/>
-        <Page10Final show={show} handleClose={handleClose} row={rowValues} />    
+        <ViewMemoForm show = {memoState} handleClose = {closeMemo} row={responseData2} docs={responseData2.uploadedDocuments??[]} journey={responseData2.approvalJourneyResponse??[]} sequence={responseData2.approvalSequence??[]}/>
+        <Page10Final show={show} handleClose={handleClose} row={rowValues} data={recRef}/>    
         </div>
   
   );
+}
 };
 
 export default FacMaintenance7;

@@ -15,7 +15,7 @@ const UploadButton = (props) => {
   const [imagess, setImagess] = React.useState([])
 
 
-  props.sendImagg ? props.sendImagg(imagg, namm) : console.log('Hello') 
+  props.sendImagg ? props.sendImagg(imagg, namm) : console.log('') 
   
 
   const onChange = (e) => {
